@@ -4,28 +4,36 @@
 
 void Game::spawnMeteorite()
 {
-	meteorite = new Enemy();
+	if (!meteorite) 
+	{
+		meteorite = new Enemy(*this);
+	}
+	
+}
+
+void Game::checkMeteorite()
+{
+	if (meteorite && !meteorite->isActive())
+	{
+		delete meteorite;
+		meteorite = nullptr;
+	}
 }
 
 void Game::update()
 {
 	if (!player_init && graphics::getGlobalTime() > 1000 )
 	{
-		player = new Player();
+		player = new Player(*this);
 		player_init = true;
 	}
 
-	if (player)
-	{
-		player->update();
-	}
+	if (player) player->update();
 
+	checkMeteorite();
 	spawnMeteorite();
 
-	if (meteorite)
-	{
-		meteorite->update();
-	}
+	if (meteorite) meteorite->update();
 }
 
 void Game::draw()
@@ -48,10 +56,8 @@ void Game::draw()
 		graphics::drawText(30, 30, 20, info, brush);
 	}
 
-	if (meteorite)
-	{
-		meteorite->draw();
-	}
+
+	if (meteorite) meteorite->draw();
 }
 
 void Game::init()
@@ -70,5 +76,10 @@ Game::~Game()
 	if (player)
 	{
 		delete player;
+	}
+
+	if (meteorite)
+	{
+		delete meteorite;
 	}
 }

@@ -7,8 +7,9 @@ class Game
 {
 	Player *player = nullptr;
 	bool player_init = false;
-	Enemy* meteorite = NULL;
+	Enemy *meteorite = nullptr;
 	void spawnMeteorite();
+	void checkMeteorite();
 public:
 	void update();
 	void draw();

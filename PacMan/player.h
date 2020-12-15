@@ -9,6 +9,7 @@ class Player : public GameObject
 	float height = 1.0f;
 
 public:
+	Player(const class Game& game);
 	void update() override;
 	void draw() override;
 	void init() override;

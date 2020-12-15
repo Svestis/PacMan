@@ -9,12 +9,15 @@ class Enemy : public GameObject
 	float size;
 	float rotation;
 	float speed;
+	bool active = true;
 	graphics::Brush brush;
 
 public:
+
 	void update() override;
 	void draw() override;
 	void init() override;
-	Enemy();
+	bool isActive() { return active; };
+	Enemy(const class Game& game);
 	~Enemy();
 };
