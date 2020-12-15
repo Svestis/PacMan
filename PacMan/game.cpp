@@ -2,6 +2,11 @@
 #include "graphics.h"
 #include "config.h"
 
+void Game::spawnMeteorite()
+{
+	meteorite = new Enemy();
+}
+
 void Game::update()
 {
 	if (!player_init && graphics::getGlobalTime() > 1000 )
@@ -13,6 +18,13 @@ void Game::update()
 	if (player)
 	{
 		player->update();
+	}
+
+	spawnMeteorite();
+
+	if (meteorite)
+	{
+		meteorite->update();
 	}
 }
 
@@ -27,14 +39,25 @@ void Game::draw()
 
 	// draw player
 
-	if (player) {
-		player->draw();
+	if (player) player->draw();
+
+	if (player)
+	{
+		char info[40];
+		sprintf_s(info, "(%6.2f, %6.2f)", player->getPosX(), player->getPosY());
+		graphics::drawText(30, 30, 20, info, brush);
+	}
+
+	if (meteorite)
+	{
+		meteorite->draw();
 	}
 }
 
 void Game::init()
 {
-
+	graphics::setFont(std::string(ASSET_PATH) + std::string(FONT));
+	graphics::playMusic(std::string(ASSET_PATH) + std::string(WELCOME_MUSIC), 1.0f, true, 4000);
 }
 
 Game::Game()

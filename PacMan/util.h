@@ -1,0 +1,8 @@
+#pragma once
+
+#include <random>
+
+float rand0to1()
+{
+	return rand() / (float)RAND_MAX;
+}
