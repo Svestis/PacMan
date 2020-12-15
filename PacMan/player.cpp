@@ -34,10 +34,16 @@ void Player::draw()
 	float glow = 0.5f + 0.5f * sinf(graphics::getGlobalTime());
 
 	graphics::Brush brush;
-	brush.texture = std::string(ASSET_PATH) + "spac.png";
 	brush.outline_opacity = 0.0f;
 
 	graphics::setOrientation(-90.f);
+	brush.fill_opacity = 0.2f;
+	/* Shawod*/
+	brush.texture = std::string(ASSET_PATH) + "spac.png";
+	graphics::drawRect(pos_x-10, pos_y+30, 100, 100, brush);
+	
+	brush.fill_opacity = 1.0f;
+	brush.texture = std::string(ASSET_PATH) + "spac.png";
 	graphics::drawRect(pos_x, pos_y, 100, 100, brush);
 	graphics::setOrientation(0.f);
 
