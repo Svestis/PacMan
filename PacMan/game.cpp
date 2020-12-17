@@ -63,7 +63,7 @@ void Game::draw()
 void Game::init()
 {
 	graphics::setFont(std::string(ASSET_PATH) + std::string(FONT));
-	graphics::playMusic(std::string(ASSET_PATH) + std::string(WELCOME_MUSIC), 1.0f, true, 4000);
+	graphics::playMusic(std::string(ASSET_PATH) + std::string(WELCOME_MUSICM), 1.0f, true, 4000);
 }
 
 Game::Game()

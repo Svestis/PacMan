@@ -8,5 +8,6 @@
 #define PLAYER_POSITION_X
 #define PLAYER_POSITION_Y
 #define FONT "Cheapmot.ttf"
-#define WELCOME_MUSIC "welcome_music.mp3"
+#define BACKGROUND_MENU "back1_1.png"
+#define WELCOME_MUSICM "welcome_music_modern.mp3"
 #define PAC0 "pacman.png"
