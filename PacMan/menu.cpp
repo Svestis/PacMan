@@ -51,23 +51,35 @@ void Menu::update()
 	{
 		hover_i = 1.5f;
 	}
-	// Openning info panel
+	// Music on/off
 	else if (mouse.button_left_released && (mouse.cur_pos_x >= 485-83) &&
 		(mouse.cur_pos_x <= 520-83) && (mouse.cur_pos_y >= CANVAS_HEIGHT - 50) && (mouse.cur_pos_y <= CANVAS_HEIGHT - 30) && modern)
 	{
 		music_on = !music_on;
 		updateMusic(modern);
 	}
-	// Hover effect on info button
+	// Hover effect on music on/off
 	else if ((mouse.cur_pos_x >= 485-83) &&  (mouse.cur_pos_x <= 515-83) && (mouse.cur_pos_y >= CANVAS_HEIGHT - 50) && (mouse.cur_pos_y <= CANVAS_HEIGHT - 30) && modern)
 	{
 		hover_m = 1.5f;
+	}
+	// Sound on/off
+	else if (mouse.button_left_released && (mouse.cur_pos_x >= 485 + 83) &&
+		(mouse.cur_pos_x <= 520 + 83) && (mouse.cur_pos_y >= CANVAS_HEIGHT - 50) && (mouse.cur_pos_y <= CANVAS_HEIGHT - 30) && modern)
+	{
+		sound_on = !sound_on; //TODO: Add function to turn sound on off
+	}
+	// Hover effect on sound on/off
+	else if ((mouse.cur_pos_x >= 485 + 83) && (mouse.cur_pos_x <= 515 + 83) && (mouse.cur_pos_y >= CANVAS_HEIGHT - 50) && (mouse.cur_pos_y <= CANVAS_HEIGHT - 30) && modern)
+	{
+		hover_s = 1.5f;
 	}
 	else
 	{
 		hover_c = 1.f;
 		hover_i = 1.f;
 		hover_m = 1.f;
+		hover_s = 1.f;
 	}
 	// Chaning modern flag according to mousclick
 	// TODO: Change it for button click for modern or classic
@@ -131,13 +143,13 @@ void Menu::draw()
 		// Setting the image brush for the info button
 		brush.texture = std::string(ASSET_PATH) + std::string(INFO);
 
-		// Drawing image for close button
+		// Drawing image for info button
 		graphics::drawRect(CANVAS_WIDTH - 30, CANVAS_HEIGHT - 40, 40, 40, brush);
 
 		// Resetting hover
 		graphics::resetPose();
 
-		// Taking out the close button if hover
+		// Taking out the music button if hover
 		graphics::setScale(hover_m, hover_m);
 
 		if (!music_on)
@@ -157,22 +169,37 @@ void Menu::draw()
 		// Resseting hover
 		graphics::resetPose();
 
-		// Taking out the close button if hover
-		graphics::setScale(hover_m, hover_m);
+		// Taking out the sound button if hover
+		graphics::setScale(hover_s, hover_s);
 
 		if (!sound_on)
 		{
-			// Setting the image brush for the music off button
-			brush.texture = std::string(ASSET_PATH) + std::string(MUSIC_OFF);
+			// Setting the image brush for the sound off button
+			brush.texture = std::string(ASSET_PATH) + std::string(SOUND_OFF);
 		}
 		else
 		{
-			// Setting the image brush for the music on button
+			// Setting the image brush for the sound on button
 			brush.texture = std::string(ASSET_PATH) + std::string(SOUND_ON);
 		}
 
 		// Drawing image for sound button
 		graphics::drawRect(500 + 83, CANVAS_HEIGHT - 40, 40, 40, brush);
+
+		// Resetting hover
+		graphics::resetPose();
+
+		// Taking out the banner hover
+		graphics::setScale(hover_b, hover_b);
+
+		// Setting the image brush for the banner button
+		brush.texture = std::string(ASSET_PATH) + std::string(CLASSIC);
+
+		// Drawing image for sound button
+		graphics::drawRect(500, CANVAS_HEIGHT - 100, 180, 60, brush);
+
+		// Resetting hover
+		graphics::resetPose();
 
 		// ----- Title -----
 

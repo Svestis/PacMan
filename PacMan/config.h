@@ -44,6 +44,9 @@
 #define MUSIC_ON "music_on.png"
 #define MUSIC_OFF "music_off.png"
 #define SOUND_ON "sound_on.png"
+#define SOUND_OFF "sound_off.png"
+#define CLASSIC "classic.png"
 #define PAC0 "pacman.png"
 
 // SOUNDS
+#define CHOMP "pacman_chomp.mp3"

@@ -5,7 +5,7 @@
 class Menu
 {
 	bool modern = true, music_on = true, sound_on = true;
-	float hover_c = 1.f, hover_i = 1.f, hover_m = 1.f, hover_s = 1.f;
+	float hover_c = 1.f, hover_i = 1.f, hover_m = 1.f, hover_s = 1.f, hover_b = 1.f;
 	int score = 0; int highscore = 0;
 	const class Console& curr_console;
 	graphics::Brush brush;
