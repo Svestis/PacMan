@@ -26,6 +26,20 @@
 #define TITLE "PAC - MAN"
 #define SCORE "SCORE"
 #define HSCORE "HI SCORE"
+#define BC "Back to classics"
+#define BR "Are you bored?"
+#define MUSIC "MUSIC"
+#define SOUND "SOUND"
+#define INFOT "INFO"
+#define CLOSET "CLOSE"
+#define PLAY "PRESS ENTER TO PLAY"
+#define MUSICT "M: TURN ON/OFF THE MUSIC"
+#define SOUNDT "N: TURN ON/OFF THE SOUND"
+#define SWITCH "SHIFT: SWITCH TO MODERN MODE"
+#define ESCA "ESC: CLOSE THE GAME"
+#define MULTIT "Multiplayer"
+#define SINGLET "Singleplayer"
+#define WEBPAGE "start https://github.com/Svestis/PacMan"
 
 // MUSIC
 #define WELCOME_MUSICM "welcome_music_modern.mp3"
@@ -47,6 +61,9 @@
 #define SOUND_OFF "sound_off.png"
 #define CLASSIC "classic.png"
 #define PAC0 "pacman.png"
+#define DF "trysomethingdifferent.png"
+#define SINGLEPALYER "single_player2.png"
+#define MULTIPLAYER "single_player2.png"
 
 // SOUNDS
 #define CHOMP "pacman_chomp.mp3"
