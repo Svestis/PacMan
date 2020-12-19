@@ -99,10 +99,9 @@ void Menu::update()
 	}
 	// Single player
 	else if ((mouse.button_left_released && (mouse.cur_pos_x >= 300 - 120) &&
-		(mouse.cur_pos_x <= 300 + 120) && (mouse.cur_pos_y >= CANVAS_HEIGHT /2 - 58) && (mouse.cur_pos_y <= CANVAS_HEIGHT/2 + 15) && modern) || graphics::getKeyState(graphics::SCANCODE_SPACE))
+		(mouse.cur_pos_x <= 300 + 120) && (mouse.cur_pos_y >= CANVAS_HEIGHT /2 - 58) && (mouse.cur_pos_y <= CANVAS_HEIGHT/2 + 15) && modern) || graphics::getKeyState(graphics::SCANCODE_RETURN))
 	{
 		//TODO: Add functionality for single player
-		//TODO: Check enter scancode
 	}
 	// single player hover
 	else if ((mouse.cur_pos_x >= 300 - 120) && (mouse.cur_pos_x <= 300 + 120) && (mouse.cur_pos_y >= CANVAS_HEIGHT/2 - 58) && (mouse.cur_pos_y <= CANVAS_HEIGHT/2 + 15) && modern)

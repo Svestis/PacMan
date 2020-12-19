@@ -2,7 +2,10 @@
 
 #include <random>
 
-float rand0to1()
+float rand0to1();
+
+struct Disk
 {
-	return rand() / (float)RAND_MAX;
-}
+	float cx, cy;
+	float radius;
+};

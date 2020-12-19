@@ -85,9 +85,33 @@ void Player::draw()
 
 	graphics::drawDisk(pos_x-50*height, pos_y, 100, brush);
 	graphics::resetPose();
+
+	/*
+	brush.outline_opacity = 1.f;
+	brush.texture = "";
+	brush.fill_color[0] = 0.3f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 0.3f;
+	brush.fill_opacity = 0.3f;
+	brush.gradient = false;
+
+	Disk hull = getCollisionHull();
+
+	graphics::drawDisk(hull.cx, hull.cy, hull.radius, brush);*/
+
+
 }
 
 void Player::init()
 {
 
+}
+
+Disk Player::getCollisionHull() const
+{
+	Disk disk;
+	disk.cx = pos_x;
+	disk.cy = pos_y;
+	disk.radius = 55.0f;
+	return disk;
 }

@@ -3,7 +3,7 @@
 #include "gameobject.h"
 #include "graphics.h"
 
-class Enemy : public GameObject
+class Enemy : public GameObject, public Collidable
 {
 	float pos_x, pos_y;
 	float size;
@@ -11,7 +11,6 @@ class Enemy : public GameObject
 	float speed;
 	bool active = true;
 	graphics::Brush brush;
-
 public:
 
 	void update() override;
@@ -20,4 +19,5 @@ public:
 	bool isActive() { return active; };
 	Enemy(const class Game& game);
 	~Enemy();
+	Disk getCollisionHull() const override;
 };
