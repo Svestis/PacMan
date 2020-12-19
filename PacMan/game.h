@@ -5,7 +5,7 @@
 
 class Game
 {
-	typedef enum {STATUS_START, STATUS_PLAYING} status_t;
+	typedef enum { STATUS_START, STATUS_PLAYING} status_t;
 	Player *player = nullptr;
 	bool player_init = false;
 	Enemy *meteorite = nullptr;

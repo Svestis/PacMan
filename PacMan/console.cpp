@@ -2,7 +2,7 @@
 
 void Console::createMenu()
 {
-	if (!menu) menu = new Menu(*this);
+	//if (!menu) menu = new Menu(*this);
 }
 
 void Console::createPacManSigle()
