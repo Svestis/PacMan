@@ -1,25 +1,24 @@
 #pragma once
 
 #include "gameelement.h"
-#include "config.h"
 #include "graphics.h"
+#include "config.h"
 
-class PacMan : public GameElement
+class Phantom : public GameElement
 {
-	rotation rot = CENTER;
+	typedef enum {PINKY, BLINKY, INKY, CLYDE} character;
+	Position pos{ CANVAS_WIDTH / 2 + 50, CANVAS_HEIGHT / 2 + 50 };
+	rotation rot = LEFT1;
+	character enemy;
 	double timer = 0;
-	bool modern = false,
-		 start = true,
-		 multi = false; // Take it from game
-	Position pos{ CANVAS_WIDTH/2, CANVAS_HEIGHT/2 };
+	bool modern = true,
+		start = true; // Take it from game
 	float speed = 10.f;
 	graphics::Brush brush;
 public:
 	void update() override;
 	void draw() override;
 	void init() override;
-	void drawPacmanC();
-	void drawPacmanM();
 	void updateLeftC() override;
 	void updateRightC() override;
 	void updateUpC() override;
@@ -32,7 +31,6 @@ public:
 	void updateM() override;
 	void drawInitM() override;
 	void drawInitC() override;
-	void updateMulti();
-	PacMan();
-	~PacMan();
+	Phantom(character c);
+	~Phantom();
 };

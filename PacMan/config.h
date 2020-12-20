@@ -21,6 +21,18 @@
 #define COLORBLUE_R .286f
 #define COLORBLUE_G .969f
 #define COLORBLUE_B .965f
+#define COLORCLYDE_R .725f
+#define COLORCLYDE_G .380f
+#define COLORCLYDE_B .129f
+#define COLORBLINKY_R .682f
+#define COLORBLINKY_G .141f
+#define COLORBLINKY_B .129f
+#define COLORPINKY_R .604f
+#define COLORPINKY_G .137f
+#define COLORPINKY_B .741f
+#define COLORINKY_R .129f
+#define COLORINKY_G .529f
+#define COLORINKY_B .686f
 
 // TEXT
 #define TITLE "PAC - MAN"
@@ -46,6 +58,16 @@
 #define PONG "pong"
 #define WEBPAGEPONG "start https://www.playretrogames.com/coin-op-arcade/all"
 #define BACKT "back"
+#define SELECTCHAR "player 2 select character"
+#define CHARNICK "CHARACTER                    -                    NICKNAME"
+#define PINCKYT "- SPEEDY"
+#define BLINKYT "- SHADOW"
+#define INKYT "- BASHFUL"
+#define CLYDET "- POKEY"
+#define PINCKYTN "PINKY"
+#define BLINKYTN "BLINKY"
+#define INKYTN "INKY"
+#define CLYDETN "CLYDE"
 
 // MUSIC
 #define WELCOME_MUSICM "welcome_music_modern.mp3"
@@ -84,6 +106,83 @@
 #define BOREDARC "arcades.png"
 #define BOREDPONG "pong.png"
 #define BACK "back.png"
+#define BLINKY_C_UP_1 "blinky_c_up_1.png"
+#define BLINKY_C_UP_2 "blinky_c_up_2.png"
+#define BLINKY_C_DOWN_1 "blinky_c_down_1.png"
+#define BLINKY_C_DOWN_2 "blinky_c_down_2.png"
+#define BLINKY_C_LEFT_1 "blinky_c_left_1.png"
+#define BLINKY_C_LEFT_2 "blinky_c_left_2.png"
+#define BLINKY_C_RIGHT_1 "blinky_c_right_1.png"
+#define BLINKY_C_RIGHT_2 "blinky_c_right_2.png"
+#define PINKY_C_UP_1 "pinky_c_up_1.png"
+#define PINKY_C_UP_2 "pinky_c_up_2.png"
+#define PINKY_C_DOWN_1 "pinky_c_down_1.png"
+#define PINKY_C_DOWN_2 "pinky_c_down_2.png"
+#define PINKY_C_LEFT_1 "pinky_c_left_1.png"
+#define PINKY_C_LEFT_2 "pinky_c_left_2.png"
+#define PINKY_C_RIGHT_1 "pinky_c_right_1.png"
+#define PINKY_C_RIGHT_2 "pinky_c_right_2.png"
+#define INKY_C_UP_1 "inky_c_up_1.png"
+#define INKY_C_UP_2 "inky_c_up_2.png"
+#define INKY_C_DOWN_1 "inky_c_down_1.png"
+#define INKY_C_DOWN_2 "inky_c_down_2.png"
+#define INKY_C_LEFT_1 "inky_c_left_1.png"
+#define INKY_C_LEFT_2 "inky_c_left_2.png"
+#define INKY_C_RIGHT_1 "inky_c_right_1.png"
+#define INKY_C_RIGHT_2 "inky_c_right_2.png"
+#define CLYDE_C_UP_1 "clyde_c_up_1.png"
+#define CLYDE_C_UP_2 "clyde_c_up_2.png"
+#define CLYDE_C_DOWN_1 "clyde_c_down_1.png"
+#define CLYDE_C_DOWN_2 "clyde_c_down_2.png"
+#define CLYDE_C_LEFT_1 "clyde_c_left_1.png"
+#define CLYDE_C_LEFT_2 "clyde_c_left_2.png"
+#define CLYDE_C_RIGHT_1 "clyde_c_right_1.png"
+#define CLYDE_C_RIGHT_2 "clyde_c_right_2.png"
+#define PACMAN_M_LEFT_3 "left_m_3.png"
+#define PACMAN_M_LEFT_1 "left_m_1.png"
+#define PACMAN_M_LEFT_2 "left_m_2.png"
+#define PACMAN_M_RIGHT_1 "right_m_1.png"
+#define PACMAN_M_RIGHT_2 "right_m_2.png"
+#define PACMAN_M_RIGHT_3 "right_m_3.png"
+#define PACMAN_M_UP_1 "up_m_1.png"
+#define PACMAN_M_UP_2 "up_m_2.png"
+#define PACMAN_M_UP_3 "up_m_3.png"
+#define PACMAN_M_DOWN_1 "down_m_1.png"
+#define PACMAN_M_DOWN_2 "down_m_2.png"
+#define PACMAN_M_DOWN_3 "down_m_3.png"
+#define BLINKY_M_UP_1 "blinky_m_up_1.png"
+#define BLINKY_M_UP_2 "blinky_m_up_2.png"
+#define BLINKY_M_DOWN_1 "blinky_m_down_1.png"
+#define BLINKY_M_DOWN_2 "blinky_m_down_2.png"
+#define BLINKY_M_LEFT_1 "blinky_m_left_1.png"
+#define BLINKY_M_LEFT_2 "blinky_m_left_2.png"
+#define BLINKY_M_RIGHT_1 "blinky_m_right_1.png"
+#define BLINKY_M_RIGHT_2 "blinky_m_right_2.png"
+#define PINKY_M_UP_1 "pinky_m_up_1.png"
+#define PINKY_M_UP_2 "pinky_m_up_2.png"
+#define PINKY_M_DOWN_1 "pinky_m_down_1.png"
+#define PINKY_M_DOWN_2 "pinky_m_down_2.png"
+#define PINKY_M_LEFT_1 "pinky_m_left_1.png"
+#define PINKY_M_LEFT_2 "pinky_m_left_2.png"
+#define PINKY_M_RIGHT_1 "pinky_m_right_1.png"
+#define PINKY_M_RIGHT_2 "pinky_m_right_2.png"
+#define INKY_M_UP_1 "inky_m_up_1.png"
+#define INKY_M_UP_2 "inky_m_up_2.png"
+#define INKY_M_DOWN_1 "inky_m_down_1.png"
+#define INKY_M_DOWN_2 "inky_m_down_2.png"
+#define INKY_M_LEFT_1 "inky_m_left_1.png"
+#define INKY_M_LEFT_2 "inky_m_left_2.png"
+#define INKY_M_RIGHT_1 "inky_m_right_1.png"
+#define INKY_M_RIGHT_2 "inky_m_right_2.png"
+#define CLYDE_M_UP_1 "clyde_m_up_1.png"
+#define CLYDE_M_UP_2 "clyde_m_up_2.png"
+#define CLYDE_M_DOWN_1 "clyde_m_down_1.png"
+#define CLYDE_M_DOWN_2 "clyde_m_down_2.png"
+#define CLYDE_M_LEFT_1 "clyde_m_left_1.png"
+#define CLYDE_M_LEFT_2 "clyde_m_left_2.png"
+#define CLYDE_M_RIGHT_1 "clyde_m_right_1.png"
+#define CLYDE_M_RIGHT_2 "clyde_m_right_2.png"
+
 
 // SOUNDS
 #define CHOMP "pacman_chomp.mp3"

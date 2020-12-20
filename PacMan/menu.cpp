@@ -3,6 +3,34 @@
 #include "config.h"
 #include <iostream>
 
+void Menu::updateM()
+{
+	graphics::getMouseState(mouse);
+	if (mouse.button_left_released)
+	{
+		music_on = !music_on;
+		updateMusic(modern);
+	}
+	else
+	{
+		hover[2] = 1.3f;
+	}
+}
+
+void Menu::updateS()
+{
+	graphics::getMouseState(mouse);
+
+	if (mouse.button_left_released)
+	{
+		sound_on = !sound_on; //TODO: Add function to turn sound on off
+	}
+	else
+	{
+		hover[3] = 1.3f;
+	}
+}
+
 void Menu::updateB()
 {
 	graphics::getMouseState(mouse);
@@ -121,28 +149,13 @@ void Menu::updateModernScreen()
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
 		(window2CanvasX(mouse.cur_pos_x) <= 520 - 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
 	{
-		if (mouse.button_left_released)
-		{
-			music_on = !music_on;
-			updateMusic(modern);
-		}
-		else
-		{
-			hover[2] = 1.3f;
-		}
+		updateM();
 	}
 	// Sound on/off
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 + 83) &&
 		(window2CanvasX(mouse.cur_pos_x) <= 520 + 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
 	{
-		if (mouse.button_left_released)
-		{
-			sound_on = !sound_on; //TODO: Add function to turn sound on off
-		}
-		else
-		{
-			hover[3] = 1.3f;
-		}
+		updateS();
 	}
 	// Back to classics
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 700 - 105) &&
@@ -190,7 +203,7 @@ void Menu::updateModernScreen()
 	{
 		if (mouse.button_left_released)
 		{
-			//TODO: Add functionality for MULTI player
+			current_status = STATUS_PLAYINGM;
 		}
 		else
 		{
@@ -242,8 +255,61 @@ void Menu::updateGameC()
 	}
 }
 
+void Menu::updateGameMSelection()
+{
+	time_counter += graphics::getDeltaTime();
+
+	if (time_counter > 200)
+	{
+		place_holder = !place_holder;
+		time_counter = 0;
+	}
+}
+
 void Menu::updateGameM()
 {
+	graphics::getMouseState(mouse);
+	// Closing windw on close window click
+	if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 13) &&
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 13) && (window2CanvasY(mouse.cur_pos_y) >= 14) && (window2CanvasY(mouse.cur_pos_y) <= 43))
+	{
+		updateX();
+	}
+	// Openning info panel
+	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 15) &&
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 14) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 53 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 25 + 5))
+	{
+		updateI();
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 25) && (window2CanvasX(mouse.cur_pos_x) <= 55) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 45) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 20))
+	{
+		updateFullScreen();
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20))
+	{
+		updateB();
+	}
+	// Music on/off
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 520 - 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
+	{
+		updateM();
+	}
+	// Sound on/off
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 + 83) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 520 + 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
+	{
+		updateS();
+	}
+	else
+	{
+		hover[0] = 1.f;
+		hover[8] = 1.f;
+		hover[4] = 1.f;
+		hover[2] = 1.f;
+		hover[3] = 1.f;
+	}
+	updateGameMSelection();
 }
 
 void Menu::updateGameB()
@@ -602,6 +668,13 @@ void Menu::drawGameC()
 
 void Menu::drawGameM()
 {
+	drawGameMSelection();
+
+	drawX();
+	drawB();
+	drawFullScreen();
+	drawM();
+	drawS();
 }
 
 void Menu::drawGameB()
@@ -649,6 +722,154 @@ void Menu::drawGameB()
 	drawB();
 }
 
+void Menu::drawM()
+{
+	brush.outline_opacity = 0.f;
+
+	// Taking out the music button if hover
+	graphics::setScale(hover[2], hover[2]);
+
+	if (!music_on)
+	{
+		// Setting the image brush for the music off button
+		brush.texture = std::string(ASSET_PATH) + std::string(MUSIC_OFF);
+	}
+	else
+	{
+		// Setting the image brush for the music on button
+		brush.texture = std::string(ASSET_PATH) + std::string(MUSIC_ON);
+	}
+
+	// Drawing image for sound button
+	graphics::drawRect(500 - 83, CANVAS_HEIGHT - 35, 40, 40, brush);
+
+	// Resseting hover
+	graphics::resetPose();
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = COLORPACKMAN_R;
+	brush.fill_color[1] = COLORPACKMAN_G;
+	brush.fill_color[2] = COLORPACKMAN_B;
+
+	// Music
+	graphics::drawText(398, CANVAS_HEIGHT - 61, 10.F, std::string(MUSIC), brush);
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
+}
+
+void Menu::drawS()
+{
+	
+	brush.outline_opacity = 0.f;
+
+	// Taking out the sound button if hover
+	graphics::setScale(hover[3], hover[3]);
+
+	// Setting the image brush for the close button
+	brush.texture = std::string(ASSET_PATH) + std::string(CLOSE);
+
+	if (!sound_on)
+	{
+		// Setting the image brush for the sound off button
+		brush.texture = std::string(ASSET_PATH) + std::string(SOUND_OFF);
+	}
+	else
+	{
+		// Setting the image brush for the sound on button
+		brush.texture = std::string(ASSET_PATH) + std::string(SOUND_ON);
+	}
+
+	// Drawing image for sound button
+	graphics::drawRect(500 + 83, CANVAS_HEIGHT - 35, 40, 40, brush);
+
+	// Resetting hover
+	graphics::resetPose();
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = COLORPACKMAN_R;
+	brush.fill_color[1] = COLORPACKMAN_G;
+	brush.fill_color[2] = COLORPACKMAN_B;
+
+	// Sound
+	graphics::drawText(563, CANVAS_HEIGHT - 61, 10.F, std::string(SOUND), brush);
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
+}
+
+void Menu::drawGameMSelection()
+{
+	time_counter += graphics::getDeltaTime();
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = COLORPACKMAN_R;
+	brush.fill_color[1] = COLORPACKMAN_G;
+	brush.fill_color[2] = COLORPACKMAN_B;
+	graphics::drawText(CANVAS_WIDTH / 2 - 177, CANVAS_HEIGHT / 2 - 200, 20.f, SELECTCHAR, brush);
+
+	graphics::drawText(CANVAS_WIDTH / 2 - 197, CANVAS_HEIGHT / 2 - 100, 20.f, CHARNICK, brush);
+
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
+
+	brush.outline_opacity = 0.f;
+	loc_brush.outline_opacity = 0.f;
+
+	if (place_holder)
+	{
+		loc_brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_DOWN_1);
+		graphics::drawRect(250, 180, 30, 30, loc_brush);
+		loc_brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_DOWN_1);
+		graphics::drawRect(250, 255, 30, 30, loc_brush);
+		loc_brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_DOWN_1);
+		graphics::drawRect(250, 330, 30, 30, loc_brush);
+		loc_brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_DOWN_1);
+		graphics::drawRect(250, 405, 30, 30, loc_brush);
+	}
+	else
+	{
+		loc_brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_DOWN_2);
+		graphics::drawRect(250, 180, 30, 30, loc_brush);
+		loc_brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_DOWN_2);
+		graphics::drawRect(250, 255, 30, 30, loc_brush);
+		loc_brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_DOWN_2);
+		graphics::drawRect(250, 330, 30, 30, loc_brush);
+		loc_brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_DOWN_2);
+		graphics::drawRect(250, 405, 30, 30, loc_brush);
+	}
+	
+	brush.fill_color[0] = COLORBLINKY_R;
+	brush.fill_color[1] = COLORBLINKY_G;
+	brush.fill_color[2] = COLORBLINKY_B;
+	graphics::drawText(330, 185, 15.f, BLINKYT, brush);
+	graphics::drawText(605, 185, 15.f, BLINKYTN, brush);
+	brush.fill_color[0] = COLORPINKY_R;
+	brush.fill_color[1] = COLORPINKY_G;
+	brush.fill_color[2] = COLORPINKY_B;
+	graphics::drawText(335, 260, 15.f, PINCKYT, brush);
+	graphics::drawText(610, 260, 15.f, PINCKYTN, brush);
+	brush.fill_color[0] = COLORINKY_R;
+	brush.fill_color[1] = COLORINKY_G;
+	brush.fill_color[2] = COLORINKY_B;
+	graphics::drawText(330, 335, 15.f, INKYT, brush);
+	graphics::drawText(612, 335, 15.f, INKYTN, brush);
+	brush.fill_color[0] = COLORCLYDE_R;
+	brush.fill_color[1] = COLORCLYDE_G;
+	brush.fill_color[2] = COLORCLYDE_B;
+	graphics::drawText(340, 410, 15.f, CLYDET, brush);
+	graphics::drawText(610, 410, 15.f, CLYDETN, brush);
+	// Setting color to defaults for txt
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
+}
+
 void Menu::drawModernScreen()
 {
 	graphics::Brush brush;
@@ -672,50 +893,12 @@ void Menu::drawModernScreen()
 	drawI();
 
 	drawFullScreen();
+
+	drawM();
 	
+	drawS();
+
 	brush.fill_opacity = 1.f;
-
-	graphics::resetPose();
-
-	// Taking out the music button if hover
-	graphics::setScale(hover[2], hover[2]);
-
-	if (!music_on)
-	{
-		// Setting the image brush for the music off button
-		brush.texture = std::string(ASSET_PATH) + std::string(MUSIC_OFF);
-	}
-	else
-	{
-		// Setting the image brush for the music on button
-		brush.texture = std::string(ASSET_PATH) + std::string(MUSIC_ON);
-	}
-
-	// Drawing image for sound button
-	graphics::drawRect(500 - 83, CANVAS_HEIGHT - 35, 40, 40, brush);
-
-	// Resseting hover
-	graphics::resetPose();
-
-	// Taking out the sound button if hover
-	graphics::setScale(hover[3], hover[3]);
-
-	if (!sound_on)
-	{
-		// Setting the image brush for the sound off button
-		brush.texture = std::string(ASSET_PATH) + std::string(SOUND_OFF);
-	}
-	else
-	{
-		// Setting the image brush for the sound on button
-		brush.texture = std::string(ASSET_PATH) + std::string(SOUND_ON);
-	}
-
-	// Drawing image for sound button
-	graphics::drawRect(500 + 83, CANVAS_HEIGHT - 35, 40, 40, brush);
-
-	// Resetting hover
-	graphics::resetPose();
 
 	// Taking out the banner hover
 	graphics::setScale(hover[4], hover[4]);
@@ -788,12 +971,6 @@ void Menu::drawModernScreen()
 
 	// Bored
 	graphics::drawText(245, CANVAS_HEIGHT - 195, 12.F, std::string(BR), brush);
-
-	// Music
-	graphics::drawText(398, CANVAS_HEIGHT - 61, 10.F, std::string(MUSIC), brush);
-
-	// Sound
-	graphics::drawText(563, CANVAS_HEIGHT - 61, 10.F, std::string(SOUND), brush);
 
 	// Multiplayer
 	graphics::drawText(255, WINDOW_HEIGHT / 2 - 65, 10.F, std::string(SINGLET), brush);

@@ -13,7 +13,7 @@ class Menu
 		 sound_on = true, 
 		 debug = false,
 		 full_screen = false,
-		 place_holder;
+		 place_holder = false;
 	float hover[9] = {1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f}; // Hovering for close button, info button, music button (or arcade), sound button (or pong), classic button (or back), bored button, single player, multiplayer & full screen
 	int score = 0, 
 		highscore = 0;
@@ -37,13 +37,19 @@ class Menu
 	void updateX(); // update function for close button
 	void updateB(); // update function for back button
 	void updateI(); // update function for info button
+	void updateM(); // update function for music button
+	void updateS(); // update function for sound button
 	void updateFullScreen(); // update function for full screen
+	void updateGameMSelection();
 	void drawMenuScreen(); // drawing menu screen
 	void drawModernScreen(); //drawing modern screen
 	void drawClassicScreen(); // drawing classic screen
 	void drawGameC(); // drawing game for single player state
 	void drawGameM(); // drawing game for multiplayer state
 	void drawGameB(); // drawing game for bored state
+	void drawM(); // drawing music button
+	void drawS(); //drawing sound button
+	void drawGameMSelection();
 	void drawX(); // close button
 	void drawI(); // info button
 	void drawB(); // back button

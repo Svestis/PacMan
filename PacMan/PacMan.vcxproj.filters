@@ -39,6 +39,9 @@
     <ClCompile Include="pacman.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="phantom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -69,6 +72,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pacdot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="phantom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
