@@ -1,7 +1,6 @@
 #include "graphics.h"
 #include "game.h"
 #include "config.h"
-//#include "console.h"
 #include "menu.h"
 
 // Setting the resize function
@@ -45,8 +44,6 @@ int main()
     //Console console; /* Creating a menu class instance*/
 
     graphics::createWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "PacMan"); /* Creating the window */
-    graphics::setFullScreen(menu.getFullScreen()); /* Setting the window to full screen */
-    //TODO: User selection is neccessary
 
     //graphics::setUserData(&game); /* Setting user data */
 

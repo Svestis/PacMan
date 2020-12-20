@@ -1,8 +1,68 @@
 #include "menu.h"
 #include "graphics.h"
 #include "config.h"
-#include "console.h"
 #include <iostream>
+
+void Menu::updateB()
+{
+	graphics::getMouseState(mouse);
+
+	if (mouse.button_left_released)
+	{
+		current_status = STATUS_START;
+	}
+	else
+	{
+		hover[4] = 1.3f;
+	}
+}
+
+void Menu::updateX()
+{
+	// Checking the mouse state
+	graphics::getMouseState(mouse);
+
+	if (mouse.button_left_released)
+	{
+		delete this;
+	}
+	else
+	{
+	
+		hover[0] = 1.3f;
+	}
+}
+
+void Menu::updateI()
+{
+	// Checking the mouse state
+	graphics::getMouseState(mouse);
+
+	if (mouse.button_left_released)
+	{
+		system(std::string(WEBPAGE).c_str());
+	}
+	else
+	{
+		hover[1] = 1.3f;
+	}
+}
+
+void Menu::updateFullScreen()
+{
+	// Checking the mouse state
+	graphics::getMouseState(mouse);
+
+	if (mouse.button_left_released)
+	{
+		full_screen = !full_screen;
+		graphics::setFullScreen(full_screen);
+	}
+	else
+	{
+		hover[8] = 1.2f;
+	}
+}
 
 void Menu::updateClassicScreen()
 {
@@ -31,7 +91,12 @@ void Menu::updateClassicScreen()
 	// Single player
 	else if (graphics::getKeyState(graphics::SCANCODE_RETURN))
 	{
-		//TODO: Add functionality for single player
+		current_status = STATUS_PLAYINGC;
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_RSHIFT))
+	{
+		full_screen = !full_screen;
+		graphics::setFullScreen(full_screen);
 	}
 }
 
@@ -41,96 +106,101 @@ void Menu::updateModernScreen()
 	graphics::getMouseState(mouse);
 
 	// Closing windw on close window click
-	if (mouse.button_left_released && (window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 13) &&
+	if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 13) &&
 		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 13) && (window2CanvasY(mouse.cur_pos_y) >= 14) && (window2CanvasY(mouse.cur_pos_y) <= 43))
 	{
-		delete this; //TODO: Check this
-	}
-	// Hover effect on close button
-	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 13) &&
-		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 13) && (window2CanvasY(mouse.cur_pos_y) >= 14) && (window2CanvasY(mouse.cur_pos_y) <= 43))
-	{
-		hover[0] = 1.3f;
+		updateX();
 	}
 	// Openning info panel
-	else if (mouse.button_left_released && (window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 15) &&
-		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 14) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 53 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 25 + 5))
-	{
-		system(std::string(WEBPAGE).c_str());
-	}
-	// Hover effect on info button
 	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 15) &&
 		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 14) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 53 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 25 + 5))
 	{
-		hover[1] = 1.3f;
-	}
+		updateI();
+	}	
 	// Music on/off
-	else if (mouse.button_left_released && (window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
 		(window2CanvasX(mouse.cur_pos_x) <= 520 - 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
 	{
-		music_on = !music_on;
-		updateMusic(modern);
-	}
-	// Hover effect on music on/off
-	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) && (window2CanvasX(mouse.cur_pos_x) <= 515 - 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
-	{
-		hover[2] = 1.3f;
+		if (mouse.button_left_released)
+		{
+			music_on = !music_on;
+			updateMusic(modern);
+		}
+		else
+		{
+			hover[2] = 1.3f;
+		}
 	}
 	// Sound on/off
-	else if (mouse.button_left_released && (window2CanvasX(mouse.cur_pos_x) >= 485 + 83) &&
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 + 83) &&
 		(window2CanvasX(mouse.cur_pos_x) <= 520 + 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
 	{
-		sound_on = !sound_on; //TODO: Add function to turn sound on off
-	}
-	// Hover effect on sound on/off
-	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 + 83) && (window2CanvasX(mouse.cur_pos_x) <= 515 + 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
-	{
-		hover[3] = 1.3f;
+		if (mouse.button_left_released)
+		{
+			sound_on = !sound_on; //TODO: Add function to turn sound on off
+		}
+		else
+		{
+			hover[3] = 1.3f;
+		}
 	}
 	// Back to classics
-	else if (mouse.button_left_released && (window2CanvasX(mouse.cur_pos_x) >= 700 - 105) &&
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 700 - 105) &&
 		(window2CanvasX(mouse.cur_pos_x) <= 700 + 105) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 150 - 30) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 150 + 30))
 	{
-		modern = !modern;
-		updateMusic(modern);
-	}
-	// Back to classics hover
-	else if ((window2CanvasX(mouse.cur_pos_x) >= 700 - 105) && (window2CanvasX(mouse.cur_pos_x) <= 700 + 105) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 150 - 30) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 150 + 30))
-	{
-		hover[4] = 1.3f;
+		if (mouse.button_left_released)
+		{
+			modern = !modern;
+			updateMusic(modern);
+		}
+		else
+		{
+			hover[4] = 1.3f;
+		}
 	}
 	// Bored
-	else if (mouse.button_left_released && (window2CanvasX(mouse.cur_pos_x) >= 300 - 105) &&
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 300 - 105) &&
 		(window2CanvasX(mouse.cur_pos_x) <= 300 + 105) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 150 - 30) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 150 + 30))
 	{
-		//TODO: Add functionality for bored state
-	}
-	// Bored on/off
-	else if ((window2CanvasX(mouse.cur_pos_x) >= 300 - 105) && (window2CanvasX(mouse.cur_pos_x) <= 300 + 105) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 150 - 30) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 150 + 30))
-	{
-		hover[5] = 1.1f;
+		if (mouse.button_left_released)
+		{
+			current_status = STATUS_PLAYINGB;
+		}
+		else
+		{
+			hover[5] = 1.1f;
+		}
 	}
 	// Single player
-	else if ((mouse.button_left_released && (window2CanvasX(mouse.cur_pos_x) >= 300 - 120) &&
-		(window2CanvasX(mouse.cur_pos_x) <= 300 + 120) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT / 2 - 58) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT / 2 + 15) && modern))
-	{
-		//TODO: Add functionality for single player
-	}
-	// single player hover
-	else if ((window2CanvasX(mouse.cur_pos_x) >= 300 - 120) && (window2CanvasX(mouse.cur_pos_x) <= 300 + 120) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT / 2 - 58) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT / 2 + 15))
-	{
-		hover[6] = 1.1f;
-	}
-	// Multi player
-	else if (mouse.button_left_released && (window2CanvasX(mouse.cur_pos_x) >= 300 - 120) &&
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 300 - 120) &&
 		(window2CanvasX(mouse.cur_pos_x) <= 300 + 120) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT / 2 - 58) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT / 2 + 15))
 	{
-		//TODO: Add functionality for MULTI player
+		if (mouse.button_left_released)
+		{
+			current_status = STATUS_PLAYINGC;
+		}
+		else
+		{
+			hover[6] = 1.1f;
+		}
 	}
-	// mulri player hover
-	else if ((window2CanvasX(mouse.cur_pos_x) >= 700 - 120) && (window2CanvasX(mouse.cur_pos_x) <= 700 + 120) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT / 2 - 58) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT / 2 + 15))
+	// Multi player
+	else if (window2CanvasX(mouse.cur_pos_x) >= 580 &&
+		window2CanvasX(mouse.cur_pos_x) <= 815 && window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT / 2 - 58 && window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT / 2 + 15)
 	{
-		hover[7] = 1.1f;
+		if (mouse.button_left_released)
+		{
+			//TODO: Add functionality for MULTI player
+		}
+		else
+		{
+			hover[7] = 1.1f;
+		}
+	}
+	// full screen
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 25) && (window2CanvasX(mouse.cur_pos_x) <= 55) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 45) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 20))
+	{
+		updateFullScreen();
 	}
 	else
 	{
@@ -142,6 +212,7 @@ void Menu::updateModernScreen()
 		hover[5] = 1.f;
 		hover[7] = 1.f;
 		hover[6] = 1.f;
+		hover[8] = 1.f;
 	}
 }
 
@@ -155,6 +226,86 @@ void Menu::updateMenuScreen()
 	else
 	{
 		updateClassicScreen();
+	}
+}
+
+void Menu::updateGameC()
+{
+	if (!pacman)
+	{
+		pacman = new PacMan();
+	}
+
+	if (pacman)
+	{
+		pacman->update();
+	}
+}
+
+void Menu::updateGameM()
+{
+}
+
+void Menu::updateGameB()
+{
+	graphics::getMouseState(mouse);
+
+	// Closing windw on close window click
+	if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 13) &&
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 13) && (window2CanvasY(mouse.cur_pos_y) >= 14) && (window2CanvasY(mouse.cur_pos_y) <= 43))
+	{
+		updateX();
+	}
+	// Openning info panel
+	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 15) &&
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 14) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 53 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 25 + 5))
+	{
+		updateI();
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH/4 + CANVAS_WIDTH/2 - 100) && (window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH / 4 + CANVAS_WIDTH / 2 + 100) 
+		&& (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT /2 - 100) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT/2+100))
+
+	{
+		if (mouse.button_left_released)
+		{
+			system(std::string(WEBPAGEPONG).c_str());
+		}
+		else
+		{
+			hover[2] = 1.1f;
+		}
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH / 4 - 100) && (window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH / 4 + 100)
+		&& (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT / 2 - 100) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT / 2 + 100))
+
+	{
+		if (mouse.button_left_released)
+		{
+			// TODO: Add pong game
+		}
+		else
+		{
+			hover[3] = 1.1f;
+		}
+	}
+	// full screen
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 25) && (window2CanvasX(mouse.cur_pos_x) <= 55) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 45) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 20))
+	{
+		updateFullScreen();
+	}
+	// back
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30+20))
+	{
+		updateB();
+	}
+	else
+	{
+		hover[0] = 1.f;
+		hover[1] = 1.f;
+		hover[2] = 1.f;
+		hover[3] = 1.f;
+		hover[4] = 1.f;
+		hover[8] = 1.f;
 	}
 }
 
@@ -182,6 +333,19 @@ void Menu::update()
 	if (current_status == STATUS_START) 
 	{
 		updateMenuScreen();
+	}
+	else if (current_status == STATUS_PLAYINGC)
+	{
+		graphics::stopMusic(1000);
+		updateGameC();
+	}
+	else if (current_status == STATUS_PLAYINGM)
+	{
+		updateGameM();
+	}
+	else if (current_status == STATUS_PLAYINGB)
+	{
+		updateGameB();
 	}
 	
 }
@@ -248,16 +412,27 @@ void Menu::drawClassicScreen()
 	brush.fill_color[0] = COLORBLUE_R;
 	brush.fill_color[1] = COLORBLUE_G;
 	brush.fill_color[2] = COLORBLUE_B;
+	loc_brush.fill_color[0] = COLORBLUE_R;
+	loc_brush.fill_color[1] = COLORBLUE_G;
+	loc_brush.fill_color[2] = COLORBLUE_B;
 
-	// Setting opacity
-	brush.fill_opacity = 1.f;
+	time_counter += graphics::getDeltaTime();
+
+	if (time_counter >= 750 && loc_brush.fill_opacity < 1.f)
+	{
+		loc_brush.fill_opacity = 1.f;
+		time_counter = 0.f;
+	}
+	if (time_counter >= 750 && loc_brush.fill_opacity != 0.f)
+	{
+		loc_brush.fill_opacity = 0.f;
+		time_counter = 0.f;
+	}
 
 	// Drawing text
-	graphics::drawText(CANVAS_WIDTH / 2 - 146, CANVAS_HEIGHT / 2, 25.f, std::string(PLAY), brush);
+	graphics::drawText(CANVAS_WIDTH / 2 - 146, CANVAS_HEIGHT / 2, 25.f, std::string(PLAY), loc_brush);
 
-	// Setting opacity
-	brush.fill_opacity = 0.5f;
-
+	brush.fill_opacity = .5f;
 	// Drawing text
 	graphics::drawText(CANVAS_WIDTH / 4 - 177, CANVAS_HEIGHT / 2 + 90, 25.f, std::string(MUSICT), brush);
 
@@ -265,7 +440,10 @@ void Menu::drawClassicScreen()
 	graphics::drawText(CANVAS_WIDTH / 4 * 3 - 179, CANVAS_HEIGHT / 2 + 90, 25.f, std::string(SOUNDT), brush);
 
 	// Drawing text
-	graphics::drawText(CANVAS_WIDTH / 2 - 208, CANVAS_HEIGHT / 2 + 140, 25.f, std::string(SWITCH), brush);
+	graphics::drawText(25, CANVAS_HEIGHT / 2 + 140, 25.f, std::string(SWITCH), brush);
+
+	// Drawing text
+	graphics::drawText(CANVAS_WIDTH / 2 + 45, CANVAS_HEIGHT / 2 + 140, 25.f, std::string(FULLSCREEN), brush);
 
 	// Setting color for text for classic game mode
 	brush.fill_color[0] = COLORRED_R;
@@ -277,6 +455,198 @@ void Menu::drawClassicScreen()
 
 	// Resetting opacity
 	brush.fill_opacity = 1.f;
+}
+
+void Menu::drawX()
+{
+
+	brush.outline_opacity = 0.f;
+
+	// Taking out the close button if hover
+	graphics::setScale(hover[0], hover[0]);
+
+	// Setting the image brush for the close button
+	brush.texture = std::string(ASSET_PATH) + std::string(CLOSE);
+
+	// Drawing image for close button
+	graphics::drawRect(CANVAS_WIDTH - 30, 30, 40, 40, brush);
+
+	brush.outline_opacity = 1.f;
+
+	graphics::resetPose();
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = COLORPACKMAN_R;
+	brush.fill_color[1] = COLORPACKMAN_G;
+	brush.fill_color[2] = COLORPACKMAN_B;
+
+	// Closed
+	graphics::drawText(952, 62, 10.F, std::string(CLOSET), brush);
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
+}
+
+void Menu::drawI()
+{
+	brush.outline_opacity = 0.f;
+
+	// Taking out the info button if hover
+	graphics::setScale(hover[1], hover[1]);
+
+	// Setting the image brush for the info button
+	brush.texture = std::string(ASSET_PATH) + std::string(INFO);
+
+	// Drawing image for info button
+	graphics::drawRect(CANVAS_WIDTH - 30, CANVAS_HEIGHT - 35, 40, 40, brush);
+
+	// Resetting hover
+	graphics::resetPose();
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = COLORPACKMAN_R;
+	brush.fill_color[1] = COLORPACKMAN_G;
+	brush.fill_color[2] = COLORPACKMAN_B;
+
+	// Info
+	graphics::drawText(957, CANVAS_HEIGHT - 58, 10.F, std::string(INFOT), brush);
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
+
+	brush.outline_opacity = 1.f;
+}
+
+void Menu::drawFullScreen()
+{
+	brush.outline_opacity = 0.f;
+
+	// Taking out the full screen
+	graphics::setScale(hover[8], hover[8]);
+
+	// Setting the image brush for on/off full screen
+	if (full_screen)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(NOTFULL);
+	}
+	else
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(FULL);
+	}
+
+	// Drawing image for multi player
+	graphics::drawRect(40, CANVAS_HEIGHT - 32, 38, 38, brush);
+
+	// Resetting hover
+	graphics::resetPose();
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = COLORPACKMAN_R;
+	brush.fill_color[1] = COLORPACKMAN_G;
+	brush.fill_color[2] = COLORPACKMAN_B;
+
+	// Full screen
+	graphics::drawText(7, WINDOW_HEIGHT - 55, 10.F, std::string(FULLT), brush);
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
+
+	brush.outline_opacity = 1.f;
+}
+
+void Menu::drawB()
+{
+	brush.outline_opacity = 0.f;
+
+	// Taking out the close button if hover
+	graphics::setScale(hover[4], hover[4]);
+
+	// Setting the image brush for the close button
+	brush.texture = std::string(ASSET_PATH) + std::string(BACK);
+
+	// Drawing image for close button
+	graphics::drawRect(40, 30, 40, 40, brush);
+
+	brush.outline_opacity = 1.f;
+
+	graphics::resetPose();
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = COLORPACKMAN_R;
+	brush.fill_color[1] = COLORPACKMAN_G;
+	brush.fill_color[2] = COLORPACKMAN_B;
+
+	// Closed
+	graphics::drawText(26, 62, 10.F, std::string(BACKT), brush);
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
+}
+
+void Menu::drawGameC()
+{
+	// TODO: Seperate classic game from modern game for single player
+	if (pacman)
+	{
+		pacman->draw();
+	}
+}
+
+void Menu::drawGameM()
+{
+}
+
+void Menu::drawGameB()
+{
+	brush.texture = std::string(ASSET_PATH) + std::string(BOREDARC);
+
+	brush.outline_opacity = 1.f;
+
+	graphics::setScale(hover[2], hover[2]);
+
+	graphics::drawRect(CANVAS_WIDTH / 4 + CANVAS_WIDTH /2 , CANVAS_HEIGHT / 2, 200, 200, brush);
+
+	graphics::resetPose();
+
+	brush.texture = std::string(ASSET_PATH) + std::string(BOREDPONG);
+
+	brush.outline_opacity = 1.f;
+
+	graphics::setScale(hover[3], hover[3]);
+
+	graphics::drawRect(CANVAS_WIDTH / 4 , CANVAS_HEIGHT / 2, 200, 200, brush);
+
+	graphics::resetPose();
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = COLORPACKMAN_R;
+	brush.fill_color[1] = COLORPACKMAN_G;
+	brush.fill_color[2] = COLORPACKMAN_B;
+
+	graphics::drawText(CANVAS_WIDTH / 4 + CANVAS_WIDTH/2 - 65, CANVAS_HEIGHT / 2 - 115, 10.f, BOREDT, brush);
+
+	graphics::drawText(CANVAS_WIDTH / 4 - 100 + 104 - 15, CANVAS_HEIGHT / 2 - 115, 10.f, PONG, brush);
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
+
+	drawX();
+
+	drawI();
+
+	drawFullScreen();
+
+	drawB();
 }
 
 void Menu::drawModernScreen()
@@ -294,31 +664,17 @@ void Menu::drawModernScreen()
 	// Drawing image for background
 	graphics::drawRect(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, 600, CANVAS_HEIGHT, brush);
 
-	// Setting opacity to default
-	brush.fill_opacity = 1.f;
-
-	// Taking out the close button if hover
-	graphics::setScale(hover[0], hover[0]);
-
-	// Setting the image brush for the close button
-	brush.texture = std::string(ASSET_PATH) + std::string(CLOSE);
-
-	// Drawing image for close button
-	graphics::drawRect(CANVAS_WIDTH - 30, 30, 40, 40, brush);
-
 	// Resseting hover
 	graphics::resetPose();
 
-	// Taking out the info button if hover
-	graphics::setScale(hover[1], hover[1]);
+	drawX();
 
-	// Setting the image brush for the info button
-	brush.texture = std::string(ASSET_PATH) + std::string(INFO);
+	drawI();
 
-	// Drawing image for info button
-	graphics::drawRect(CANVAS_WIDTH - 30, CANVAS_HEIGHT - 35, 40, 40, brush);
+	drawFullScreen();
+	
+	brush.fill_opacity = 1.f;
 
-	// Resetting hover
 	graphics::resetPose();
 
 	// Taking out the music button if hover
@@ -439,12 +795,6 @@ void Menu::drawModernScreen()
 	// Sound
 	graphics::drawText(563, CANVAS_HEIGHT - 61, 10.F, std::string(SOUND), brush);
 
-	// Info
-	graphics::drawText(957, CANVAS_HEIGHT - 58, 10.F, std::string(INFOT), brush);
-
-	// Closed
-	graphics::drawText(952, 62, 10.F, std::string(CLOSET), brush);
-
 	// Multiplayer
 	graphics::drawText(255, WINDOW_HEIGHT / 2 - 65, 10.F, std::string(SINGLET), brush);
 
@@ -496,13 +846,24 @@ void Menu::drawMenuScreen()
 	}
 }
 
-
-
 void Menu::draw()
 {
-	
-	drawMenuScreen();
-	
+	if (current_status == STATUS_START)
+	{
+		drawMenuScreen();
+	}
+	else if (current_status == STATUS_PLAYINGC)
+	{
+		drawGameC();
+	}
+	else if (current_status == STATUS_PLAYINGM)
+	{
+		drawGameM();
+	}
+	else if (current_status == STATUS_PLAYINGB)
+	{
+		drawGameB();
+	}
 
 	if (debug) {
 		brush.fill_color[0] = 1.f;
@@ -520,9 +881,40 @@ void Menu::draw()
 
 void Menu::init()
 {
+	
+	cacheImages();
 	// Checking music type and playing it if it should play
 	if (modern && music_on) graphics::playMusic(std::string(ASSET_PATH) + std::string(WELCOME_MUSICM), 1.0f, true, 4000);
 	else if (!modern && music_on) graphics::playMusic(std::string(ASSET_PATH) + std::string(WELCOME_MUSICC), 1.0F, true, 4000);
+	
+}
+
+void Menu::cacheImages()
+{
+	brush.texture = std::string(ASSET_PATH) + std::string(BACKGROUND_MENUM);
+	brush.texture = std::string(ASSET_PATH) + std::string(BACKGROUND_MENUC);
+	brush.texture = std::string(ASSET_PATH) + std::string(CLOSE);
+	brush.texture = std::string(ASSET_PATH) + std::string(INFO);
+	brush.texture = std::string(ASSET_PATH) + std::string(MUSIC_ON);
+	brush.texture = std::string(ASSET_PATH) + std::string(MUSIC_OFF);
+	brush.texture = std::string(ASSET_PATH) + std::string(SOUND_ON);
+	brush.texture = std::string(ASSET_PATH) + std::string(SOUND_OFF);
+	brush.texture = std::string(ASSET_PATH) + std::string(CLASSIC);
+	brush.texture = std::string(ASSET_PATH) + std::string(PAC0);
+	brush.texture = std::string(ASSET_PATH) + std::string(DF);
+	brush.texture = std::string(ASSET_PATH) + std::string(SINGLEPALYER);
+	brush.texture = std::string(ASSET_PATH) + std::string(MULTIPLAYER);
+	brush.texture = std::string(ASSET_PATH) + std::string(FULL);
+	brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_START);
+	brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_LEFT_1);
+	brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_LEFT_2);
+	brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_RIGHT_1);
+	brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_RIGHT_2);
+	brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_UP_2);
+	brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_UP_1);
+	brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DOWN_1);
+	brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DOWN_2);
+	brush.texture = ""; //TODO: Ask if caching should be done to every brush or only once and is for everyone
 }
 
 /*Menu::Menu(const Console& console)
@@ -540,7 +932,7 @@ float Menu::window2CanvasY(float y)
 {
 	if (window_width >= WINDOW_WIDTH)
 	{
-		std::cout << y * CANVAS_HEIGHT/ (float)window_height << std::endl;
+		
 		return y * CANVAS_HEIGHT / (float)window_height;
 		
 	}
@@ -557,7 +949,35 @@ Menu::Menu()
 Menu::~Menu()
 {
 	graphics::stopMusic();
+	if (pacman)
+	{
+		delete pacman;
+	}
 	delete score_ptr;
 	delete highscore_ptr;
 	graphics::destroyWindow();
+}
+
+void Menu::setWindowDimensions(unsigned short int w, unsigned short int h)
+{
+	window_height = h;
+	window_width = w;
+
+	if (((window_width /(float) window_height) == 2.f))
+	{
+		canvas_height = window_height;
+		canvas_width = window_width;
+		std::cout << "first: width " << canvas_width << " height " << canvas_height << "--------------------- width " << window_width << " height " << window_height << std::endl;
+	}
+	else if ((window_width == WINDOW_WIDTH && window_height > WINDOW_HEIGHT) || (window_width > WINDOW_WIDTH && window_height == WINDOW_HEIGHT))
+	{	
+		canvas_width = CANVAS_WIDTH;
+		canvas_height = CANVAS_HEIGHT;
+		std::cout << "second: width " << canvas_width << " height " << canvas_height << "--------------------- width " << window_width << " height " << window_height << std::endl;
+	}
+	else if ((window_width == WINDOW_WIDTH && window_height < WINDOW_HEIGHT) || (window_width < WINDOW_WIDTH && window_height == WINDOW_HEIGHT))
+	{
+		
+	}
+	
 }
