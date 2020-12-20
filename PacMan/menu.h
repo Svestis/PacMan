@@ -6,15 +6,17 @@
 
 class Menu
 {
-	typedef enum { STATUS_START, STATUS_PLAYINGM, STATUS_PLAYINGC, STATUS_PLAYINGB } status;
+	typedef enum { STATUS_START, STATUS_PLAYINGM, STATUS_PLAYINGM_INFO, STATUS_PLAYINGM_GAME, STATUS_PLAYINGC, STATUS_PLAYINGB } status;
+	typedef enum { PINKY, BLINKY, INKY, CLYDE} multiplayer_phantom;
 	status current_status = STATUS_START;
+	multiplayer_phantom phantom;
 	bool modern = true, 
 		 music_on = true, 
 		 sound_on = true, 
 		 debug = false,
 		 full_screen = false,
 		 place_holder = false;
-	float hover[9] = {1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f}; // Hovering for close button, info button, music button (or arcade), sound button (or pong), classic button (or back), bored button, single player, multiplayer & full screen
+	float hover[13] = { 1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }; // Hovering for close button, info button, music button (or arcade), sound button (or pong), classic button (or back), bored button, single player, multiplayer, full screen, blinky, pinky, inky, clyde
 	int score = 0, 
 		highscore = 0;
 	unsigned short int window_width = WINDOW_WIDTH, 
@@ -35,12 +37,13 @@ class Menu
 	void updateGameM(); // update function for multiplayr state
 	void updateGameB(); // update function for bored state
 	void updateX(); // update function for close button
-	void updateB(); // update function for back button
+	void updateB(status s = STATUS_START); // update function for back button
 	void updateI(); // update function for info button
 	void updateM(); // update function for music button
 	void updateS(); // update function for sound button
 	void updateFullScreen(); // update function for full screen
 	void updateGameMSelection();
+	void updateGameMInfo();
 	void drawMenuScreen(); // drawing menu screen
 	void drawModernScreen(); //drawing modern screen
 	void drawClassicScreen(); // drawing classic screen
@@ -50,6 +53,7 @@ class Menu
 	void drawM(); // drawing music button
 	void drawS(); //drawing sound button
 	void drawGameMSelection();
+	void drawGameMInfo();
 	void drawX(); // close button
 	void drawI(); // info button
 	void drawB(); // back button

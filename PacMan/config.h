@@ -68,6 +68,9 @@
 #define BLINKYTN "BLINKY"
 #define INKYTN "INKY"
 #define CLYDETN "CLYDE"
+#define P1 "PLAYER 1"
+#define P2 "PLAYER 2"
+#define PACMANINF "PACMAN"
 
 // MUSIC
 #define WELCOME_MUSICM "welcome_music_modern.mp3"
@@ -94,6 +97,8 @@
 #define MULTIPLAYER "single_player2.png"
 #define FULL "full.png"
 #define NOTFULL "notfull.png"
+#define LETSPLAY "letsplay_m.png"
+#define VERTICALLINE "verticalline.png"
 #define PACMAN_C_START "start_c.png"
 #define PACMAN_C_LEFT_1 "left_c_1.png"
 #define PACMAN_C_LEFT_2 "left_c_2.png"
@@ -182,6 +187,13 @@
 #define CLYDE_M_LEFT_2 "clyde_m_left_2.png"
 #define CLYDE_M_RIGHT_1 "clyde_m_right_1.png"
 #define CLYDE_M_RIGHT_2 "clyde_m_right_2.png"
+#define PACMANCHAR "pacman_char.png"
+#define BLINKYCHAR "blinky_char.png"
+#define PINKYCHAR "pinky_char.png"
+#define INKYCHAR "inky_char.png"
+#define CLYDECHAR "clyde_char.png"
+#define ARROWS "arrows.png"
+#define WASD "wasd.png"
 
 
 // SOUNDS

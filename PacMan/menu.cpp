@@ -3,6 +3,7 @@
 #include "config.h"
 #include <iostream>
 
+
 void Menu::updateM()
 {
 	graphics::getMouseState(mouse);
@@ -31,13 +32,13 @@ void Menu::updateS()
 	}
 }
 
-void Menu::updateB()
+void Menu::updateB(status s)
 {
 	graphics::getMouseState(mouse);
 
 	if (mouse.button_left_released)
 	{
-		current_status = STATUS_START;
+		current_status = s;
 	}
 	else
 	{
@@ -266,6 +267,64 @@ void Menu::updateGameMSelection()
 	}
 }
 
+void Menu::updateGameMInfo()
+{
+	graphics::getMouseState(mouse);
+	// Closing windw on close window click
+	if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 13) &&
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 13) && (window2CanvasY(mouse.cur_pos_y) >= 14) && (window2CanvasY(mouse.cur_pos_y) <= 43))
+	{
+		updateX();
+	}
+	// Openning info panel
+	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 15) &&
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 14) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 53 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 25 + 5))
+	{
+		updateI();
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 25) && (window2CanvasX(mouse.cur_pos_x) <= 55) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 45) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 20))
+	{
+		updateFullScreen();
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20))
+	{
+		updateB(STATUS_PLAYINGM);
+	}
+	// Music on/off
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 520 - 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
+	{
+		updateM();
+	}
+	// Sound on/off
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 + 83) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 520 + 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
+	{
+		updateS();
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH/2 - 120) &&
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH / 2 + 120) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT/2 + 110 - 40) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT/2 + 110 + 40))
+	{
+		if (mouse.button_left_released)
+		{
+			current_status = STATUS_PLAYINGM_GAME;
+		}
+		else
+		{
+			hover[7] = 1.2f;
+		}
+	}
+	else // TODO: SECOND PRIORITY add more info button
+	{
+		hover[0] = 1.f;
+		hover[8] = 1.f;
+		hover[4] = 1.f;
+		hover[2] = 1.f;
+		hover[3] = 1.f;
+		hover[7] = 1.f;
+	}
+}
+
 void Menu::updateGameM()
 {
 	graphics::getMouseState(mouse);
@@ -301,6 +360,58 @@ void Menu::updateGameM()
 	{
 		updateS();
 	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 250 - 15) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 700) && (window2CanvasY(mouse.cur_pos_y) >= 180 - 15) && (window2CanvasY(mouse.cur_pos_y) <= 180 + 15))
+	{
+		if (mouse.button_left_released)
+		{
+			phantom = BLINKY;
+			current_status = STATUS_PLAYINGM_INFO;
+		}
+		else
+		{
+			hover[9] = 1.5f;
+		}
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 250 - 15) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 700) && (window2CanvasY(mouse.cur_pos_y) >= 255 - 15) && (window2CanvasY(mouse.cur_pos_y) <= 255 + 15))
+	{
+		if (mouse.button_left_released)
+		{
+			phantom = PINKY;
+			current_status = STATUS_PLAYINGM_INFO;
+		}
+		else
+		{
+			hover[10] = 1.5f;
+		}
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 250 - 15) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 700) && (window2CanvasY(mouse.cur_pos_y) >= 330 - 15) && (window2CanvasY(mouse.cur_pos_y) <= 330 + 15))
+	{
+		if (mouse.button_left_released)
+		{
+			phantom = INKY;
+			current_status = STATUS_PLAYINGM_INFO;
+		}
+		else
+		{
+			hover[11] = 1.5f;
+		}
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 250 - 15) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 700) && (window2CanvasY(mouse.cur_pos_y) >= 405 - 15) && (window2CanvasY(mouse.cur_pos_y) <= 405 + 15))
+	{
+		if (mouse.button_left_released)
+		{
+			phantom = CLYDE;
+			current_status = STATUS_PLAYINGM_INFO;
+		}
+		else
+		{
+			hover[12] = 1.5f;
+		}
+	}
 	else
 	{
 		hover[0] = 1.f;
@@ -308,6 +419,10 @@ void Menu::updateGameM()
 		hover[4] = 1.f;
 		hover[2] = 1.f;
 		hover[3] = 1.f;
+		hover[9] = 1.f;
+		hover[10] = 1.f;
+		hover[11] = 1.f;
+		hover[12] = 1.f;
 	}
 	updateGameMSelection();
 }
@@ -408,6 +523,10 @@ void Menu::update()
 	else if (current_status == STATUS_PLAYINGM)
 	{
 		updateGameM();
+	}
+	else if (current_status == STATUS_PLAYINGM_INFO)
+	{
+		updateGameMInfo();
 	}
 	else if (current_status == STATUS_PLAYINGB)
 	{
@@ -804,7 +923,6 @@ void Menu::drawS()
 
 void Menu::drawGameMSelection()
 {
-	time_counter += graphics::getDeltaTime();
 
 	// Setting color to defaults for txt
 	brush.fill_color[0] = COLORPACKMAN_R;
@@ -824,50 +942,140 @@ void Menu::drawGameMSelection()
 	if (place_holder)
 	{
 		loc_brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_DOWN_1);
+		graphics::setScale(hover[9], hover[9]);
 		graphics::drawRect(250, 180, 30, 30, loc_brush);
+		graphics::resetPose();
 		loc_brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_DOWN_1);
+		graphics::setScale(hover[10], hover[10]);
 		graphics::drawRect(250, 255, 30, 30, loc_brush);
+		graphics::resetPose();
 		loc_brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_DOWN_1);
+		graphics::setScale(hover[11], hover[11]);
 		graphics::drawRect(250, 330, 30, 30, loc_brush);
+		graphics::resetPose();
 		loc_brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_DOWN_1);
+		graphics::setScale(hover[12], hover[12]);
 		graphics::drawRect(250, 405, 30, 30, loc_brush);
+		graphics::resetPose();
 	}
 	else
 	{
 		loc_brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_DOWN_2);
+		graphics::setScale(hover[9], hover[9]);
 		graphics::drawRect(250, 180, 30, 30, loc_brush);
+		graphics::resetPose();
 		loc_brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_DOWN_2);
+		graphics::setScale(hover[10], hover[10]);
 		graphics::drawRect(250, 255, 30, 30, loc_brush);
+		graphics::resetPose();
+		graphics::setScale(hover[11], hover[11]);
 		loc_brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_DOWN_2);
 		graphics::drawRect(250, 330, 30, 30, loc_brush);
+		graphics::resetPose();
+		graphics::setScale(hover[12], hover[12]);
 		loc_brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_DOWN_2);
 		graphics::drawRect(250, 405, 30, 30, loc_brush);
+		graphics::resetPose();
 	}
 	
 	brush.fill_color[0] = COLORBLINKY_R;
 	brush.fill_color[1] = COLORBLINKY_G;
 	brush.fill_color[2] = COLORBLINKY_B;
+	graphics::setScale(hover[9], hover[9]);
 	graphics::drawText(330, 185, 15.f, BLINKYT, brush);
 	graphics::drawText(605, 185, 15.f, BLINKYTN, brush);
+	graphics::resetPose();
 	brush.fill_color[0] = COLORPINKY_R;
 	brush.fill_color[1] = COLORPINKY_G;
 	brush.fill_color[2] = COLORPINKY_B;
+	graphics::setScale(hover[10], hover[10]);
 	graphics::drawText(335, 260, 15.f, PINCKYT, brush);
 	graphics::drawText(610, 260, 15.f, PINCKYTN, brush);
+	graphics::resetPose();
 	brush.fill_color[0] = COLORINKY_R;
 	brush.fill_color[1] = COLORINKY_G;
 	brush.fill_color[2] = COLORINKY_B;
+	graphics::setScale(hover[11], hover[11]);
 	graphics::drawText(330, 335, 15.f, INKYT, brush);
 	graphics::drawText(612, 335, 15.f, INKYTN, brush);
+	graphics::resetPose();
 	brush.fill_color[0] = COLORCLYDE_R;
 	brush.fill_color[1] = COLORCLYDE_G;
 	brush.fill_color[2] = COLORCLYDE_B;
+	graphics::setScale(hover[12], hover[12]);
 	graphics::drawText(340, 410, 15.f, CLYDET, brush);
 	graphics::drawText(610, 410, 15.f, CLYDETN, brush);
+	graphics::resetPose();
 	// Setting color to defaults for txt
 	brush.fill_color[0] = 1.f;
 	brush.fill_color[1] = 1.f;
 	brush.fill_color[2] = 1.f;
+}
+
+void Menu::drawGameMInfo()
+{
+	graphics::setScale(hover[7], hover[7]);
+	brush.texture = std::string(ASSET_PATH) + std::string(SINGLEPALYER);
+	graphics::drawRect(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 + 110, 240, 80, brush);
+	graphics::resetPose();
+	drawX();
+	drawB();
+	drawFullScreen();
+	drawS();
+	drawM();
+
+	brush.texture = std::string(ASSET_PATH) + std::string(VERTICALLINE);
+	graphics::drawRect(CANVAS_WIDTH / 2, CANVAS_HEIGHT/2 - 90, 1, 275, brush);
+
+
+	brush.texture = std::string(ASSET_PATH) + std::string(PACMANCHAR);
+	graphics::drawRect(217+52, CANVAS_HEIGHT / 2 - 50, 175, 175, brush);
+	
+	brush.fill_color[0] = COLORPACKMAN_R;
+	brush.fill_color[1] = COLORPACKMAN_G;
+	brush.fill_color[2] = COLORPACKMAN_B;
+
+	graphics::drawText(217, 50, 20.f, P1, brush);
+	graphics::drawText(WINDOW_WIDTH - 219 - 103, 50, 20.f, P2, brush);
+	graphics::drawText(217 + 12, 80, 15.f, PACMANINF, brush);
+
+	if (phantom == BLINKY)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(BLINKYCHAR);
+		graphics::drawText(WINDOW_WIDTH - 219 - 103 + 24, 80, 15.f, BLINKYTN, brush);
+	}
+	else if (phantom == PINKY)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(PINKYCHAR);
+		graphics::drawText(WINDOW_WIDTH - 219 - 103 + 24, 80, 15.f, PINCKYTN, brush);
+	}
+	else if (phantom == INKY)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(INKYCHAR);
+		graphics::drawText(WINDOW_WIDTH - 219 - 103 + 24, 80, 15.f, INKYTN, brush);
+	}
+	else if (phantom == CLYDE)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(CLYDECHAR);
+		graphics::drawText(WINDOW_WIDTH - 219 - 103 + 24, 80, 15.f, CLYDETN, brush);
+	}
+
+	brush.outline_opacity = 0.f;
+	brush.outline_width = 0.f;
+
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
+
+	graphics::drawRect(WINDOW_WIDTH - 219 - 52, CANVAS_HEIGHT / 2 - 50, 175, 175, brush);
+
+	brush.texture = std::string(ASSET_PATH) + std::string(WASD);
+	brush.outline_opacity = 0.5f; //TODO: 2ND PRIORITY CHANGE KEYBOARD SETTINGS (SWITCH PLAYERS FROM KEYS TO WASD)
+	graphics::drawRect(120, CANVAS_HEIGHT - 150, 150, 75, brush);
+	brush.texture = std::string(ASSET_PATH) + std::string(ARROWS);
+	graphics::drawRect(CANVAS_WIDTH - 120, CANVAS_HEIGHT - 150, 150, 75, brush);
+	brush.outline_opacity = 0.f;
+	
 }
 
 void Menu::drawModernScreen()
@@ -1036,6 +1244,10 @@ void Menu::draw()
 	else if (current_status == STATUS_PLAYINGM)
 	{
 		drawGameM();
+	}
+	else if (current_status == STATUS_PLAYINGM_INFO)
+	{
+		drawGameMInfo();
 	}
 	else if (current_status == STATUS_PLAYINGB)
 	{
