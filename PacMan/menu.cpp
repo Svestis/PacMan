@@ -243,8 +243,29 @@ void Menu::updateMenuScreen()
 	}
 }
 
-void Menu::updateGameC()
+void Menu::updateClassicWelcome()
 {
+	if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
+	{
+		delete this; // TODO: check this one
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_RETURN))
+	{
+		graphics::stopMusic(1000);
+		current_status = STATUS_PLAYINGCGAME;
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_B))
+	{
+		current_status = STATUS_START;
+	}
+}
+
+void Menu::updateClassicGame()
+{
+	if (graphics::getKeyState(graphics::SCANCODE_RETURN))
+	{
+		std::cout << "HI";
+	}
 	if (!pacman)
 	{
 		pacman = new PacMan();
@@ -253,6 +274,26 @@ void Menu::updateGameC()
 	if (pacman)
 	{
 		pacman->update();
+	}
+}
+
+
+void Menu::updateGameC()
+{
+	if (modern)
+	{
+		// TODO: update screen for moderng single player
+	}
+	else
+	{
+		if (current_status == STATUS_PLAYINGC)
+		{
+			updateClassicWelcome();
+		}
+		else if (current_status == STATUS_PLAYINGCGAME)
+		{
+			updateClassicGame();
+		}
 	}
 }
 
@@ -515,9 +556,8 @@ void Menu::update()
 	{
 		updateMenuScreen();
 	}
-	else if (current_status == STATUS_PLAYINGC)
+	else if (current_status == STATUS_PLAYINGC || current_status == STATUS_PLAYINGCGAME)
 	{
-		graphics::stopMusic(1000);
 		updateGameC();
 	}
 	else if (current_status == STATUS_PLAYINGM)
@@ -776,12 +816,150 @@ void Menu::drawB()
 	brush.fill_color[2] = 1.f;
 }
 
-void Menu::drawGameC()
+void Menu::drawClassicWelcome()
 {
-	// TODO: Seperate classic game from modern game for single player
+	time_counter += graphics::getDeltaTime();
+	if (time_counter > 500)
+	{
+		brush.fill_color[0] = 1.f;
+		brush.fill_color[1] = 1.f;
+		brush.fill_color[2] = 1.f;
+
+		graphics::drawText(CANVAS_WIDTH / 2 - 166, 50, 25.f, CLASSSTARTTITLE, brush);
+		graphics::drawText(CANVAS_WIDTH / 2 - 166 + 85, 70, 20.f, std::to_string(highscore), brush);
+
+		graphics::drawText(CANVAS_WIDTH / 2 - 188, 125, 20.f, CHARNICK, brush);
+		graphics::drawText(200, CANVAS_HEIGHT - 50, 15.f, CREDITS, brush);
+		graphics::drawText(300, CANVAS_HEIGHT - 50, 15.f, std::to_string(score), brush);
+	}
+	if (time_counter > 1000)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_RIGHT_1);
+		graphics::drawRect(280, 190-25, 30, 30, brush);
+		brush.fill_color[0] = COLORBLINKYC_R;
+		brush.fill_color[1] = COLORBLINKYC_G;
+		brush.fill_color[2] = COLORBLINKYC_B;
+	}
+	if (time_counter > 2000)
+	{
+		brush.texture = "";
+		graphics::drawText(330, 190 - 25 + 5, 15.f, BLINKYT, brush);
+	}
+	if (time_counter > 3000) 
+	{
+		brush.texture = "";
+		graphics::drawText(590, 190 - 25 + 5, 15.f, BLINKYTN, brush);
+	}
+	if (time_counter > 4000)
+	{
+		brush.fill_color[0] = 1.f;
+		brush.fill_color[1] = 1.f;
+		brush.fill_color[2] = 1.f;
+		brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_RIGHT_1);
+		graphics::drawRect(280, 230-25, 30, 30, brush);
+		brush.fill_color[0] = COLORPINKYC_R;
+		brush.fill_color[1] = COLORPINKYC_G;
+		brush.fill_color[2] = COLORPINKYC_B;
+	}
+	if (time_counter > 5000)
+	{
+		brush.texture = "";
+		graphics::drawText(330, 230 - 25 + 5, 15.f, PINCKYT, brush);
+	}
+	if (time_counter > 6000)
+	{
+		brush.texture = "";
+		graphics::drawText(590, 230 - 25 + 5, 15.f, PINCKYTN, brush);
+	}
+	if (time_counter > 7000)
+	{
+		brush.fill_color[0] = 1.f;
+		brush.fill_color[1] = 1.f;
+		brush.fill_color[2] = 1.f;
+		brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_RIGHT_1);
+		graphics::drawRect(280, 270-25, 30, 30, brush);
+		brush.fill_color[0] = COLORINKYC_R;
+		brush.fill_color[1] = COLORINKYC_G;
+		brush.fill_color[2] = COLORINKYC_B;
+	}
+	if (time_counter > 8000)
+	{
+		brush.texture = "";
+		graphics::drawText(330, 270 - 25 + 5, 15.f, INKYT, brush);
+	}
+	if (time_counter > 9000)
+	{
+		brush.texture = "";
+		graphics::drawText(590, 270 - 25 + 5, 15.f, INKYTN, brush);
+	}
+	if (time_counter > 10000)
+	{
+		brush.fill_color[0] = 1.f;
+		brush.fill_color[1] = 1.f;
+		brush.fill_color[2] = 1.f;
+		brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_RIGHT_1);
+		graphics::drawRect(280, 310-25, 30, 30, brush);
+		brush.fill_color[0] = COLORCLYDEC_R;
+		brush.fill_color[1] = COLORCLYDEC_G;
+		brush.fill_color[2] = COLORCLYDEC_B;
+	}
+	if (time_counter > 11000)
+	{
+		brush.texture = "";
+		graphics::drawText(330, 310 - 25 + 5, 15.f, CLYDET, brush);
+	}
+	if (time_counter > 12000)
+	{
+		brush.texture = "";
+		graphics::drawText(590, 310 - 25 + 5, 15.f, CLYDETN, brush);
+	}
+	if (time_counter > 13000)
+	{
+		brush.fill_color[0] = 1.f;
+		brush.fill_color[1] = 1.f;
+		brush.fill_color[2] = 1.f;
+		brush.texture = std::string(ASSET_PATH) + std::string(PACDOT_C);
+		graphics::drawRect(400, 350, 10, 10, brush);
+		graphics::drawRect(400, 380, 25, 25, brush);
+		graphics::drawText(520, 357, 13.f, "PTS", brush);
+		graphics::drawText(520, 389, 13.f, "PTS", brush);
+		graphics::drawText(490, 357, 17.f, "10", brush);
+		graphics::drawText(490, 389, 17.f, "50", brush);
+	}
+	if (time_counter > 15000)
+	{
+		time_counter = 0.f;
+	}
+}
+
+
+void Menu::drawClassicGame()
+{
 	if (pacman)
 	{
 		pacman->draw();
+	}
+}
+
+void Menu::drawGameC()
+{
+	if (modern)
+	{
+
+	}
+	// TODO: Seperate classic game from modern game for single player
+
+	else 
+	{
+		if (current_status == STATUS_PLAYINGC) 
+		{
+			drawClassicWelcome();
+		}
+		else if (current_status == STATUS_PLAYINGCGAME)
+		{
+			drawClassicGame();
+		}
+		
 	}
 }
 
@@ -1237,7 +1415,7 @@ void Menu::draw()
 	{
 		drawMenuScreen();
 	}
-	else if (current_status == STATUS_PLAYINGC)
+	else if (current_status == STATUS_PLAYINGC || current_status == STATUS_PLAYINGCGAME)
 	{
 		drawGameC();
 	}

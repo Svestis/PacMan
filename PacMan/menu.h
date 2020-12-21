@@ -6,7 +6,7 @@
 
 class Menu
 {
-	typedef enum { STATUS_START, STATUS_PLAYINGM, STATUS_PLAYINGM_INFO, STATUS_PLAYINGM_GAME, STATUS_PLAYINGC, STATUS_PLAYINGB } status;
+	typedef enum { STATUS_START, STATUS_PLAYINGM, STATUS_PLAYINGM_INFO, STATUS_PLAYINGM_GAME, STATUS_PLAYINGC, STATUS_PLAYINGCGAME, STATUS_PLAYINGB } status;
 	typedef enum { PINKY, BLINKY, INKY, CLYDE} multiplayer_phantom;
 	status current_status = STATUS_START;
 	multiplayer_phantom phantom;
@@ -44,6 +44,8 @@ class Menu
 	void updateFullScreen(); // update function for full screen
 	void updateGameMSelection();
 	void updateGameMInfo();
+	void updateClassicWelcome();
+	void updateClassicGame();
 	void drawMenuScreen(); // drawing menu screen
 	void drawModernScreen(); //drawing modern screen
 	void drawClassicScreen(); // drawing classic screen
@@ -52,8 +54,10 @@ class Menu
 	void drawGameB(); // drawing game for bored state
 	void drawM(); // drawing music button
 	void drawS(); //drawing sound button
-	void drawGameMSelection();
-	void drawGameMInfo();
+	void drawGameMSelection(); // Draw selection screen of multiplayer
+	void drawGameMInfo(); // Draw pre-game multiplayer screen
+	void drawClassicWelcome(); // Draws welcome screen of classic game mode
+	void drawClassicGame();
 	void drawX(); // close button
 	void drawI(); // info button
 	void drawB(); // back button

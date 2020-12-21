@@ -33,6 +33,18 @@
 #define COLORINKY_R .129f
 #define COLORINKY_G .529f
 #define COLORINKY_B .686f
+#define COLORCLYDEC_R 1.f
+#define COLORCLYDEC_G .808f
+#define COLORCLYDEC_B .192f
+#define COLORBLINKYC_R 1.f
+#define COLORBLINKYC_G .0f
+#define COLORBLINKYC_B .0f
+#define COLORPINKYC_R 1.f
+#define COLORPINKYC_G .612f
+#define COLORPINKYC_B .808f
+#define COLORINKYC_R .192f
+#define COLORINKYC_G 1.f
+#define COLORINKYC_B 1.f
 
 // TEXT
 #define TITLE "PAC - MAN"
@@ -71,6 +83,8 @@
 #define P1 "PLAYER 1"
 #define P2 "PLAYER 2"
 #define PACMANINF "PACMAN"
+#define CLASSSTARTTITLE "1UP          HIGH SCORE          2UP"
+#define CREDITS "CREDITS"
 
 // MUSIC
 #define WELCOME_MUSICM "welcome_music_modern.mp3"
@@ -194,6 +208,7 @@
 #define CLYDECHAR "clyde_char.png"
 #define ARROWS "arrows.png"
 #define WASD "wasd.png"
+#define PACDOT_C "pacdot_c.png"
 
 
 // SOUNDS
