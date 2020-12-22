@@ -85,6 +85,9 @@
 #define PACMANINF "PACMAN"
 #define CLASSSTARTTITLE "1UP          HIGH SCORE          2UP"
 #define CREDITS "CREDITS"
+#define PUSHSTART "PUSH START BUTTON"
+#define HISCORE  "HIGH SCORE"
+#define UPSONE "1UP"
 
 // MUSIC
 #define WELCOME_MUSICM "welcome_music_modern.mp3"
@@ -209,7 +212,13 @@
 #define ARROWS "arrows.png"
 #define WASD "wasd.png"
 #define PACDOT_C "pacdot_c.png"
-
+#define PACDOT_M "pacdot_m.png"
+#define BLUE_C_1 "blue_c_1.png"
+#define BLUE_C_2 "blue_c_2.png"
+#define WHITE_C_1 "white_c_1.png"
+#define WHITE_C_2 "white_c_2.png"
+#define BLUE_M_RIGHT_1 "blue_m_right_1.png"
+#define BLUE_M_RIGHT_2 "blue_m_right_2.png"
 
 // SOUNDS
 #define CHOMP "pacman_chomp.mp3"

@@ -101,14 +101,16 @@ void Menu::updateClassicScreen()
 		delete this; //TODO: Check this
 	}
 	// Music on/off
-	else if (graphics::getKeyState(graphics::SCANCODE_M))
+	else if (graphics::getKeyState(graphics::SCANCODE_M) && !key_down)
 	{
+		key_down = true;
 		music_on = !music_on;
 		updateMusic(modern);
 	}
 	// Sound on/off
-	else if (graphics::getKeyState(graphics::SCANCODE_N))
+	else if (graphics::getKeyState(graphics::SCANCODE_N) && !key_down)
 	{
+		key_down = true;
 		sound_on = !sound_on; //TODO: Add function to turn sound on off
 	}
 	// Back to classics
@@ -118,14 +120,89 @@ void Menu::updateClassicScreen()
 		updateMusic(modern);
 	}
 	// Single player
-	else if (graphics::getKeyState(graphics::SCANCODE_RETURN))
+	else if (graphics::getKeyState(graphics::SCANCODE_RETURN) && !key_down)
 	{
+		key_down = true;
 		current_status = STATUS_PLAYINGC;
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_RSHIFT))
+	else if (graphics::getKeyState(graphics::SCANCODE_RSHIFT) && !key_down)
 	{
+		key_down = true;
 		full_screen = !full_screen;
 		graphics::setFullScreen(full_screen);
+	}
+	else if (!graphics::getKeyState(graphics::SCANCODE_RETURN) && !graphics::getKeyState(graphics::SCANCODE_M) && !graphics::getKeyState(graphics::SCANCODE_N) && !graphics::getKeyState(graphics::SCANCODE_RSHIFT))
+	{
+		key_down = false;
+	}
+}
+
+void Menu::updateModernWelcome()
+{
+	graphics::getMouseState(mouse);
+	// Closing windw on close window click
+	if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 13) &&
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 13) && (window2CanvasY(mouse.cur_pos_y) >= 14) && (window2CanvasY(mouse.cur_pos_y) <= 43))
+	{
+		updateX();
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 25) && (window2CanvasX(mouse.cur_pos_x) <= 55) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 45) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 20))
+	{
+		updateFullScreen();
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20))
+	{
+		updateB(STATUS_START);
+	}
+	// Music on/off
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 520 - 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
+	{
+		updateM();
+	}
+	// Sound on/off
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 + 83) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 520 + 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
+	{
+		updateS();
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH / 2 - 105) &&
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH / 2 + 105) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT / 2 + 110 - 10) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT / 2 + 110 + 50))
+	{
+		if (mouse.button_left_released)
+		{
+			graphics::stopMusic(1000);
+			music_on = false;
+			current_status = STATUS_PLAYINGCGAME;
+		}
+		else
+		{
+			hover[6] = 1.1f;
+		}
+	}
+	else if ((graphics::getKeyState(graphics::SCANCODE_RETURN) && !key_down))
+	{
+		graphics::stopMusic(1000);
+		music_on = false;
+		key_down = true;
+		current_status = STATUS_PLAYINGCGAME;
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
+	{
+		delete this; // TODO: check this one
+	}
+	else if (!key_down) // TODO: SECOND PRIORITY add more info button
+	{
+		hover[0] = 1.f;
+		hover[8] = 1.f;
+		hover[4] = 1.f;
+		hover[2] = 1.f;
+		hover[6] = 1.f;
+		hover[3] = 1.f;
+	}
+	else if (!graphics::getKeyState(graphics::SCANCODE_RETURN) && key_down)
+	{
+		key_down = false;
 	}
 }
 
@@ -192,6 +269,7 @@ void Menu::updateModernScreen()
 		if (mouse.button_left_released)
 		{
 			current_status = STATUS_PLAYINGC;
+			hover[6] = 1.f;
 		}
 		else
 		{
@@ -249,24 +327,87 @@ void Menu::updateClassicWelcome()
 	{
 		delete this; // TODO: check this one
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_RETURN))
+	else if (graphics::getKeyState(graphics::SCANCODE_RETURN) && !key_down)
 	{
-		graphics::stopMusic(1000);
-		current_status = STATUS_PLAYINGCGAME;
+		key_down = true;
+		current_status = STATUS_PLAYINGC2;
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_B))
+	else if (graphics::getKeyState(graphics::SCANCODE_B) && !key_down)
 	{
+		key_down = true;
 		current_status = STATUS_START;
+	}
+	// Music on/off
+	else if (graphics::getKeyState(graphics::SCANCODE_M) && !key_down)
+	{
+		key_down = true;
+		music_on = !music_on;
+		updateMusic(modern);
+	}
+	// Sound on/off
+	else if (graphics::getKeyState(graphics::SCANCODE_N) && !key_down)
+	{
+		key_down = true;
+		sound_on = !sound_on; //TODO: Add function to turn sound on off
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_RSHIFT) && !key_down)
+	{
+		key_down = true;
+		full_screen = !full_screen;
+		graphics::setFullScreen(full_screen);
+	}
+	else if (!graphics::getKeyState(graphics::SCANCODE_RETURN) && !graphics::getKeyState(graphics::SCANCODE_B) && !graphics::getKeyState(graphics::SCANCODE_M) && !graphics::getKeyState(graphics::SCANCODE_N) && !graphics::getKeyState(graphics::SCANCODE_RSHIFT))
+	{
+		key_down = false;
 	}
 }
 
 void Menu::updateClassicGame()
 {
-	if (graphics::getKeyState(graphics::SCANCODE_RETURN))
+	if (modern)
 	{
-		std::cout << "HI";
+		graphics::getMouseState(mouse);
+		// Closing windw on close window click
+		if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 13) &&
+			(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 13) && (window2CanvasY(mouse.cur_pos_y) >= 14) && (window2CanvasY(mouse.cur_pos_y) <= 43))
+		{
+			updateX();
+		}
+		else if ((window2CanvasX(mouse.cur_pos_x) >= 25) && (window2CanvasX(mouse.cur_pos_x) <= 55) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 45) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 20))
+		{
+			updateFullScreen();
+		}
+		else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20))
+		{
+			updateB(STATUS_START);
+		}
+		// Music on/off
+		else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
+			(window2CanvasX(mouse.cur_pos_x) <= 520 - 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
+		{
+			updateM();
+		}
+		// Sound on/off
+		else if ((window2CanvasX(mouse.cur_pos_x) >= 485 + 83) &&
+			(window2CanvasX(mouse.cur_pos_x) <= 520 + 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
+		{
+			updateS();
+		}
+		else if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
+		{
+			delete this; // TODO: check this one
+		}
+		else // TODO: SECOND PRIORITY add more info button
+		{
+			hover[0] = 1.f;
+			hover[8] = 1.f;
+			hover[4] = 1.f;
+			hover[2] = 1.f;
+			hover[6] = 1.f;
+			hover[3] = 1.f;
+		}
 	}
-	if (!pacman)
+		if (!pacman)
 	{
 		pacman = new PacMan();
 	}
@@ -275,6 +416,34 @@ void Menu::updateClassicGame()
 	{
 		pacman->update();
 	}
+
+	if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
+	{
+		delete this; // TODO: check this one
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_B) && !key_down)
+	{
+		key_down = true;
+		music_on = true;
+		updateMusic(modern);
+		current_status = STATUS_START;
+	}
+	// Sound on/off
+	else if (graphics::getKeyState(graphics::SCANCODE_N) && !key_down)
+	{
+		key_down = true;
+		sound_on = !sound_on; //TODO: Add function to turn sound on off
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_RSHIFT) && !key_down)
+	{
+		key_down = true;
+		full_screen = !full_screen;
+		graphics::setFullScreen(full_screen);
+	}
+	else if (!graphics::getKeyState(graphics::SCANCODE_B) && !graphics::getKeyState(graphics::SCANCODE_N) && !graphics::getKeyState(graphics::SCANCODE_RSHIFT))
+	{
+		key_down = false;
+	}
 }
 
 
@@ -282,18 +451,11 @@ void Menu::updateGameC()
 {
 	if (modern)
 	{
-		// TODO: update screen for moderng single player
+		updateModernWelcome();
 	}
 	else
 	{
-		if (current_status == STATUS_PLAYINGC)
-		{
-			updateClassicWelcome();
-		}
-		else if (current_status == STATUS_PLAYINGCGAME)
-		{
-			updateClassicGame();
-		}
+		updateClassicWelcome();
 	}
 }
 
@@ -348,6 +510,8 @@ void Menu::updateGameMInfo()
 	{
 		if (mouse.button_left_released)
 		{
+			graphics::stopMusic(1000);
+			music_on = false;
 			current_status = STATUS_PLAYINGM_GAME;
 		}
 		else
@@ -550,15 +714,128 @@ void Menu::updateMusic(bool musictype)
 	}
 }
 
+void Menu::updateClassicWelcome2()
+{
+	if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
+	{
+		delete this; // TODO: check this one
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_RETURN) && !key_down)
+	{
+		key_down = true;
+		graphics::stopMusic(1000);
+		music_on = false;
+		current_status = STATUS_PLAYINGCGAME;
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_B) && !key_down)
+	{
+		key_down = true;
+		current_status = STATUS_START;
+	}
+	// Music on/off
+	else if (graphics::getKeyState(graphics::SCANCODE_M) && !key_down)
+	{
+		key_down = true;
+		music_on = !music_on;
+		updateMusic(modern);
+	}
+	// Sound on/off
+	else if (graphics::getKeyState(graphics::SCANCODE_N) && !key_down)
+	{
+		key_down = true;
+		sound_on = !sound_on; //TODO: Add function to turn sound on off
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_RSHIFT) && !key_down)
+	{
+		key_down = true;
+		full_screen = !full_screen;
+		graphics::setFullScreen(full_screen);
+	}
+	else if (!graphics::getKeyState(graphics::SCANCODE_RETURN) && !graphics::getKeyState(graphics::SCANCODE_B) && !graphics::getKeyState(graphics::SCANCODE_M) && !graphics::getKeyState(graphics::SCANCODE_N) && !graphics::getKeyState(graphics::SCANCODE_RSHIFT))
+	{
+		key_down = false;
+	}
+}
+
+void Menu::updateGameC2()
+{
+	if (modern)
+	{
+		// TODO: update screen for moderng single player
+	}
+	else
+	{
+		updateClassicWelcome2();
+	}
+}
+
+void Menu::updateGameMultiPlayer()
+{
+	graphics::getMouseState(mouse);
+	// Closing windw on close window click
+	if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 13) &&
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 13) && (window2CanvasY(mouse.cur_pos_y) >= 14) && (window2CanvasY(mouse.cur_pos_y) <= 43))
+	{
+		updateX();
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 25) && (window2CanvasX(mouse.cur_pos_x) <= 55) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 45) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 20))
+	{
+		updateFullScreen();
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20))
+	{
+		updateB(STATUS_START);
+	}
+	// Music on/off
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 520 - 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
+	{
+		updateM();
+	}
+	// Sound on/off
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 + 83) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 520 + 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
+	{
+		updateS();
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
+	{
+		delete this; // TODO: check this one
+	}
+	else // TODO: SECOND PRIORITY add more info button
+	{
+		hover[0] = 1.f;
+		hover[8] = 1.f;
+		hover[4] = 1.f;
+		hover[2] = 1.f;
+		hover[6] = 1.f;
+		hover[3] = 1.f;
+	}
+
+	if (!pacman)
+	{
+		pacman = new PacMan();
+	}
+
+	if (pacman)
+	{
+		pacman->update();
+	}
+}
+
 void Menu::update()
 {
 	if (current_status == STATUS_START) 
 	{
 		updateMenuScreen();
 	}
-	else if (current_status == STATUS_PLAYINGC || current_status == STATUS_PLAYINGCGAME)
+	else if (current_status == STATUS_PLAYINGC)
 	{
 		updateGameC();
+	}
+	else if (current_status == STATUS_PLAYINGC2)
+	{
+		updateGameC2();
 	}
 	else if (current_status == STATUS_PLAYINGM)
 	{
@@ -571,6 +848,14 @@ void Menu::update()
 	else if (current_status == STATUS_PLAYINGB)
 	{
 		updateGameB();
+	}
+	else if (current_status == STATUS_PLAYINGCGAME)
+	{
+		updateClassicGame();
+	}
+	else if (current_status == STATUS_PLAYINGM_GAME)
+	{
+		updateGameMultiPlayer();
 	}
 	
 }
@@ -818,6 +1103,7 @@ void Menu::drawB()
 
 void Menu::drawClassicWelcome()
 {
+	brush.outline_opacity = 0.f;
 	time_counter += graphics::getDeltaTime();
 	if (time_counter > 500)
 	{
@@ -834,8 +1120,266 @@ void Menu::drawClassicWelcome()
 	}
 	if (time_counter > 1000)
 	{
+		brush.outline_opacity = 0.f;
 		brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_RIGHT_1);
 		graphics::drawRect(280, 190-25, 30, 30, brush);
+		brush.fill_color[0] = COLORBLINKYC_R;
+		brush.fill_color[1] = COLORBLINKYC_G;
+		brush.fill_color[2] = COLORBLINKYC_B;
+	}
+	if (time_counter > 2000)
+	{
+		brush.outline_opacity = 0.f;
+		brush.texture = "";
+		graphics::drawText(330, 190 - 25 + 5, 15.f, BLINKYT, brush);
+	}
+	if (time_counter > 3000) 
+	{
+		brush.outline_opacity = 0.f;
+		brush.texture = "";
+		graphics::drawText(590, 190 - 25 + 5, 15.f, BLINKYTN, brush);
+	}
+	if (time_counter > 4000)
+	{
+		brush.outline_opacity = 0.f;
+		brush.fill_color[0] = 1.f;
+		brush.fill_color[1] = 1.f;
+		brush.fill_color[2] = 1.f;
+		brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_RIGHT_1);
+		graphics::drawRect(280, 230-25, 30, 30, brush);
+		brush.fill_color[0] = COLORPINKYC_R;
+		brush.fill_color[1] = COLORPINKYC_G;
+		brush.fill_color[2] = COLORPINKYC_B;
+	}
+	if (time_counter > 5000)
+	{
+		brush.outline_opacity = 0.f;
+		brush.texture = "";
+		graphics::drawText(330, 230 - 25 + 5, 15.f, PINCKYT, brush);
+	}
+	if (time_counter > 6000)
+	{
+		brush.outline_opacity = 0.f;
+		brush.texture = "";
+		graphics::drawText(590, 230 - 25 + 5, 15.f, PINCKYTN, brush);
+	}
+	if (time_counter > 7000)
+	{
+		brush.outline_opacity = 0.f;
+		brush.fill_color[0] = 1.f;
+		brush.fill_color[1] = 1.f;
+		brush.fill_color[2] = 1.f;
+		brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_RIGHT_1);
+		graphics::drawRect(280, 270-25, 30, 30, brush);
+		brush.fill_color[0] = COLORINKYC_R;
+		brush.fill_color[1] = COLORINKYC_G;
+		brush.fill_color[2] = COLORINKYC_B;
+	}
+	if (time_counter > 8000)
+	{
+		brush.outline_opacity = 0.f;
+		brush.texture = "";
+		graphics::drawText(330, 270 - 25 + 5, 15.f, INKYT, brush);
+	}
+	if (time_counter > 9000)
+	{
+		brush.outline_opacity = 0.f;
+		brush.texture = "";
+		graphics::drawText(590, 270 - 25 + 5, 15.f, INKYTN, brush);
+	}
+	if (time_counter > 10000)
+	{
+		brush.outline_opacity = 0.f;
+		brush.fill_color[0] = 1.f;
+		brush.fill_color[1] = 1.f;
+		brush.fill_color[2] = 1.f;
+		brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_RIGHT_1);
+		graphics::drawRect(280, 310-25, 30, 30, brush);
+		brush.fill_color[0] = COLORCLYDEC_R;
+		brush.fill_color[1] = COLORCLYDEC_G;
+		brush.fill_color[2] = COLORCLYDEC_B;
+	}
+	if (time_counter > 11000)
+	{
+		brush.outline_opacity = 0.f;
+		brush.texture = "";
+		graphics::drawText(330, 310 - 25 + 5, 15.f, CLYDET, brush);
+	}
+	if (time_counter > 12000)
+	{
+		brush.outline_opacity = 0.f;
+		brush.texture = "";
+		graphics::drawText(590, 310 - 25 + 5, 15.f, CLYDETN, brush);
+	}
+	if (time_counter > 13000)
+	{
+		brush.outline_opacity = 0.f;
+		brush.fill_color[0] = 1.f;
+		brush.fill_color[1] = 1.f;
+		brush.fill_color[2] = 1.f;
+		brush.texture = std::string(ASSET_PATH) + std::string(PACDOT_C);
+		graphics::drawRect(400, 360, 10, 10, brush);
+		graphics::drawRect(400, 390, 25, 25, brush);
+		graphics::drawText(520, 367, 13.f, "PTS", brush);
+		graphics::drawText(520, 399, 13.f, "PTS", brush);
+		graphics::drawText(490, 367, 17.f, "10", brush);
+		graphics::drawText(490, 399, 17.f, "50", brush);
+	}
+	if (time_counter > 14000 && counter<601)
+	{
+		brush.outline_opacity = 0.f;
+		time_counter_2 += graphics::getDeltaTime();
+		counter += 1;
+		if (time_counter_2 < 100 && CANVAS_WIDTH / 2 + 100 - counter >= CANVAS_WIDTH / 2 - 200)
+		{
+			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_LEFT_2);
+			graphics::drawRect(CANVAS_WIDTH/2 + 100 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 140 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 160 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 180 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 200 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(PACDOT_C);
+			graphics::drawRect(300, 330, 20, 20, brush);
+		}
+		else if (time_counter_2 < 200 && CANVAS_WIDTH / 2 + 100 - counter >= CANVAS_WIDTH / 2 - 200)
+		{
+			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH/2 + 100 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_LEFT_2);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 140 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_LEFT_2);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 160 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_LEFT_2);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 180 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_LEFT_2);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 200 - counter, 330, 20, 20, brush);
+		}
+		else if (time_counter_2 < 300 && CANVAS_WIDTH/2 + 100 - counter >= CANVAS_WIDTH/2 -200)
+		{
+			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_START);
+			graphics::drawRect(CANVAS_WIDTH/2 + 100 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 140 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 160 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 180 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 200 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(PACDOT_C);
+			graphics::drawRect(300, 330, 20, 20, brush);
+		}
+		else if (time_counter_2 < 100)
+		{
+			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_RIGHT_2);
+			graphics::drawRect(counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_1);
+			graphics::drawRect(counter + 40, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_1);
+			graphics::drawRect(counter+60, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_1);
+			graphics::drawRect(counter+80, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_1);
+			graphics::drawRect(counter+100, 330, 20, 20, brush);
+		}
+		else if (time_counter_2 < 200)
+		{
+			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_RIGHT_1);
+			graphics::drawRect(counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_2);
+			graphics::drawRect(counter + 40, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_2);
+			graphics::drawRect(counter + 60, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_2);
+			graphics::drawRect(counter + 80, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_2);
+			graphics::drawRect(counter + 100, 330, 20, 20, brush);
+		}
+		else if (time_counter_2 < 300)
+		{
+			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_START);
+			graphics::drawRect(counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_1);
+			graphics::drawRect(counter + 40, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_1);
+			graphics::drawRect(counter + 60, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_1);
+			graphics::drawRect(counter + 80, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_1);
+			graphics::drawRect(counter + 100, 330, 20, 20, brush);
+		}
+		else
+		{
+			time_counter_2 = 0.f;
+		}
+	}
+	if (counter > 600)
+	{
+		time_counter = 0.f;
+		counter = 0;
+	}
+}
+
+
+void Menu::drawClassicGame()
+{
+	if (modern) 
+	{
+		drawM();
+		drawS();
+		drawX();
+		drawB();
+		drawFullScreen();
+	}
+	brush.outline_opacity = 0.f;
+	if (pacman)
+	{
+		pacman->draw();
+	}
+
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
+
+	graphics::drawText(CANVAS_WIDTH / 2 - 67, 50, 25.f, HISCORE, brush);
+	graphics::drawText(CANVAS_WIDTH / 2 - 67, 70, 20.f, std::to_string(highscore), brush);
+	graphics::drawText(CANVAS_WIDTH / 2 - 200, 50, 25.f, UPSONE, brush);
+	graphics::drawText(CANVAS_WIDTH / 2 - 200, 70, 20.f, std::to_string(score), brush);
+
+	brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_LEFT_2);
+	graphics::drawRect(140, CANVAS_HEIGHT - 30, 20, 20, brush);
+	graphics::drawRect(160, CANVAS_HEIGHT - 30, 20, 20, brush);
+	graphics::drawRect(180, CANVAS_HEIGHT - 30, 20, 20, brush);
+	graphics::drawRect(200, CANVAS_HEIGHT - 30, 20, 20, brush);
+
+
+}
+
+void Menu::drawModernWelcome()
+{
+	brush.outline_opacity = 0.f;
+	time_counter += graphics::getDeltaTime();
+	if (time_counter > 500)
+	{
+		brush.fill_color[0] = 1.f;
+		brush.fill_color[1] = 1.f;
+		brush.fill_color[2] = 1.f;
+
+		graphics::drawText(CANVAS_WIDTH / 2 - 166, 50, 25.f, CLASSSTARTTITLE, brush);
+		graphics::drawText(CANVAS_WIDTH / 2 - 166 + 85, 70, 20.f, std::to_string(highscore), brush);
+
+		graphics::drawText(CANVAS_WIDTH / 2 - 188, 125, 20.f, CHARNICK, brush);
+		graphics::drawText(200, CANVAS_HEIGHT - 50, 15.f, CREDITS, brush);
+		graphics::drawText(300, CANVAS_HEIGHT - 50, 15.f, std::to_string(score), brush);
+	}
+	if (time_counter > 1000)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_RIGHT_1);
+		graphics::drawRect(280, 190 - 25, 30, 30, brush);
 		brush.fill_color[0] = COLORBLINKYC_R;
 		brush.fill_color[1] = COLORBLINKYC_G;
 		brush.fill_color[2] = COLORBLINKYC_B;
@@ -845,7 +1389,7 @@ void Menu::drawClassicWelcome()
 		brush.texture = "";
 		graphics::drawText(330, 190 - 25 + 5, 15.f, BLINKYT, brush);
 	}
-	if (time_counter > 3000) 
+	if (time_counter > 3000)
 	{
 		brush.texture = "";
 		graphics::drawText(590, 190 - 25 + 5, 15.f, BLINKYTN, brush);
@@ -855,8 +1399,8 @@ void Menu::drawClassicWelcome()
 		brush.fill_color[0] = 1.f;
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
-		brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_RIGHT_1);
-		graphics::drawRect(280, 230-25, 30, 30, brush);
+		brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_RIGHT_1);
+		graphics::drawRect(280, 230 - 25, 30, 30, brush);
 		brush.fill_color[0] = COLORPINKYC_R;
 		brush.fill_color[1] = COLORPINKYC_G;
 		brush.fill_color[2] = COLORPINKYC_B;
@@ -876,8 +1420,8 @@ void Menu::drawClassicWelcome()
 		brush.fill_color[0] = 1.f;
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
-		brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_RIGHT_1);
-		graphics::drawRect(280, 270-25, 30, 30, brush);
+		brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_RIGHT_1);
+		graphics::drawRect(280, 270 - 25, 30, 30, brush);
 		brush.fill_color[0] = COLORINKYC_R;
 		brush.fill_color[1] = COLORINKYC_G;
 		brush.fill_color[2] = COLORINKYC_B;
@@ -897,8 +1441,8 @@ void Menu::drawClassicWelcome()
 		brush.fill_color[0] = 1.f;
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
-		brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_RIGHT_1);
-		graphics::drawRect(280, 310-25, 30, 30, brush);
+		brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_RIGHT_1);
+		graphics::drawRect(280, 310 - 25, 30, 30, brush);
 		brush.fill_color[0] = COLORCLYDEC_R;
 		brush.fill_color[1] = COLORCLYDEC_G;
 		brush.fill_color[2] = COLORCLYDEC_B;
@@ -918,48 +1462,152 @@ void Menu::drawClassicWelcome()
 		brush.fill_color[0] = 1.f;
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
-		brush.texture = std::string(ASSET_PATH) + std::string(PACDOT_C);
-		graphics::drawRect(400, 350, 10, 10, brush);
-		graphics::drawRect(400, 380, 25, 25, brush);
-		graphics::drawText(520, 357, 13.f, "PTS", brush);
-		graphics::drawText(520, 389, 13.f, "PTS", brush);
-		graphics::drawText(490, 357, 17.f, "10", brush);
-		graphics::drawText(490, 389, 17.f, "50", brush);
+		brush.texture = std::string(ASSET_PATH) + std::string(PACDOT_M);
+		graphics::drawRect(200-120, 360-160, 10, 10, brush);
+		graphics::drawRect(200-120, 390-160, 25, 25, brush);
+		graphics::drawText(220-120, 367-160, 13.f, "PTS", brush);
+		graphics::drawText(220-120, 399-160, 13.f, "PTS", brush);
+		graphics::drawText(290-120, 367-160, 17.f, "10", brush);
+		graphics::drawText(290-120, 399-160, 17.f, "50", brush);
+
+		brush.texture = std::string(ASSET_PATH) + std::string(WASD);
+		brush.outline_opacity = 0.5f;
+		graphics::drawRect(CANVAS_WIDTH - 250 + 120, CANVAS_HEIGHT - 300, 150, 75, brush);
+		brush.texture = std::string(ASSET_PATH) + std::string(ARROWS);
+		graphics::drawRect(CANVAS_WIDTH - 250 + 120, CANVAS_HEIGHT - 200, 150, 75, brush);
+		brush.outline_opacity = 0.f;
 	}
-	if (time_counter > 15000)
+	if (time_counter > 14000 && counter < 601)
+	{
+		time_counter_2 += graphics::getDeltaTime();
+		counter += 1;
+		if (time_counter_2 < 100 && CANVAS_WIDTH / 2 + 100 - counter >= CANVAS_WIDTH / 2 - 200)
+		{
+			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 100 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 140 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 160 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 180 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 200 - counter, 330, 20, 20, brush);
+		}
+		else if (time_counter_2 < 200 && CANVAS_WIDTH / 2 + 100 - counter >= CANVAS_WIDTH / 2 - 200)
+		{
+			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_LEFT_2);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 100 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_LEFT_2);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 140 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_LEFT_2);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 160 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_LEFT_2);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 180 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_LEFT_2);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 200 - counter, 330, 20, 20, brush);
+		}
+		else if (time_counter_2 < 300 && CANVAS_WIDTH / 2 + 100 - counter >= CANVAS_WIDTH / 2 - 200)
+		{
+			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_LEFT_3);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 100 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 140 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 160 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 180 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_LEFT_1);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 200 - counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(PACDOT_M);
+			graphics::drawRect(300, 330, 20, 20, brush);
+		}
+		else if (time_counter_2 < 100)
+		{
+			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_RIGHT_2);
+			graphics::drawRect(counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
+			graphics::drawRect(counter + 40, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
+			graphics::drawRect(counter + 60, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
+			graphics::drawRect(counter + 80, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
+			graphics::drawRect(counter + 100, 330, 20, 20, brush);
+		}
+		else if (time_counter_2 < 200)
+		{
+			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_RIGHT_1);
+			graphics::drawRect(counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_2);
+			graphics::drawRect(counter + 40, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_2);
+			graphics::drawRect(counter + 60, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_2);
+			graphics::drawRect(counter + 80, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_2);
+			graphics::drawRect(counter + 100, 330, 20, 20, brush);
+		}
+		else if (time_counter_2 < 300)
+		{
+			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_RIGHT_2);
+			graphics::drawRect(counter, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
+			graphics::drawRect(counter + 40, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
+			graphics::drawRect(counter + 60, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
+			graphics::drawRect(counter + 80, 330, 20, 20, brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
+			graphics::drawRect(counter + 100, 330, 20, 20, brush);
+		}
+		else
+		{
+			time_counter_2 = 0.f;
+		}
+	}
+	if (counter > 600)
 	{
 		time_counter = 0.f;
+		counter = 0;
 	}
-}
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
 
 
-void Menu::drawClassicGame()
-{
-	if (pacman)
-	{
-		pacman->draw();
-	}
+	drawB();
+	drawX();
+	drawM();
+	drawS();
+	drawFullScreen();
+
+	brush.outline_opacity = 0.f;
+
+	// Taking out the signle player hover
+	graphics::setScale(hover[6], hover[6]);
+
+	// Setting the image brush for the single player
+	brush.texture = std::string(ASSET_PATH) + std::string(SINGLEPALYER);
+
+	// Drawing image for single player
+	graphics::drawRect(CANVAS_WIDTH/2, CANVAS_HEIGHT / 2 + 130, 210, 70, brush);
+
+	// Resetting hover
+	graphics::resetPose();
 }
 
 void Menu::drawGameC()
 {
 	if (modern)
 	{
-
+		drawModernWelcome();
 	}
 	// TODO: Seperate classic game from modern game for single player
 
 	else 
 	{
-		if (current_status == STATUS_PLAYINGC) 
-		{
-			drawClassicWelcome();
-		}
-		else if (current_status == STATUS_PLAYINGCGAME)
-		{
-			drawClassicGame();
-		}
-		
+		drawClassicWelcome();		
 	}
 }
 
@@ -1115,6 +1763,10 @@ void Menu::drawGameMSelection()
 	brush.fill_color[2] = 1.f;
 
 	brush.outline_opacity = 0.f;
+	loc_brush.fill_color[0] = 1.f;
+	loc_brush.fill_color[1] = 1.f;
+	loc_brush.fill_color[2] = 1.f;
+	loc_brush.fill_opacity = 1.f;
 	loc_brush.outline_opacity = 0.f;
 
 	if (place_holder)
@@ -1409,15 +2061,67 @@ void Menu::drawMenuScreen()
 	}
 }
 
+void Menu::drawClassicWelcome2()
+{
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
+
+	graphics::drawText(CANVAS_WIDTH / 2 - 166, 50, 25.f, CLASSSTARTTITLE, brush);
+	graphics::drawText(CANVAS_WIDTH / 2 - 166 + 85, 70, 20.f, std::to_string(highscore), brush);
+
+	graphics::drawText(200, CANVAS_HEIGHT - 50, 15.f, CREDITS, brush);
+	graphics::drawText(300, CANVAS_HEIGHT - 50, 15.f, std::to_string(score), brush);
+
+	brush.fill_color[0] = COLORCLYDEC_R;
+	brush.fill_color[1] = COLORCLYDEC_G;
+	brush.fill_color[2] = COLORCLYDEC_B;
+	graphics::drawText(CANVAS_WIDTH / 2 - 113, CANVAS_HEIGHT / 2, 20.f, PUSHSTART, brush);
+	
+}
+
+void Menu::drawGameC2()
+{
+	if (modern)
+	{
+
+	}
+	// TODO: Seperate classic game from modern game for single player
+
+	else
+	{
+		drawClassicWelcome2();
+	}
+}
+
+void Menu::drawGameMultiPlayer()
+{
+
+	drawM();
+	drawS();
+	drawX();
+	drawB();
+	drawFullScreen();
+	brush.outline_opacity = 0.f;
+	if (pacman)
+	{
+		pacman->draw();
+	}
+}
+
 void Menu::draw()
 {
 	if (current_status == STATUS_START)
 	{
 		drawMenuScreen();
 	}
-	else if (current_status == STATUS_PLAYINGC || current_status == STATUS_PLAYINGCGAME)
+	else if (current_status == STATUS_PLAYINGC)
 	{
 		drawGameC();
+	}
+	else if (current_status == STATUS_PLAYINGC2)
+	{
+		drawGameC2();
 	}
 	else if (current_status == STATUS_PLAYINGM)
 	{
@@ -1430,6 +2134,14 @@ void Menu::draw()
 	else if (current_status == STATUS_PLAYINGB)
 	{
 		drawGameB();
+	}
+	else if (current_status == STATUS_PLAYINGCGAME)
+	{
+		drawClassicGame();
+	}
+	else if (current_status == STATUS_PLAYINGM_GAME)
+	{
+		drawGameMultiPlayer();
 	}
 
 	if (debug) {

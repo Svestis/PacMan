@@ -6,24 +6,27 @@
 
 class Menu
 {
-	typedef enum { STATUS_START, STATUS_PLAYINGM, STATUS_PLAYINGM_INFO, STATUS_PLAYINGM_GAME, STATUS_PLAYINGC, STATUS_PLAYINGCGAME, STATUS_PLAYINGB } status;
+	typedef enum { STATUS_START, STATUS_PLAYINGM, STATUS_PLAYINGM_INFO, STATUS_PLAYINGM_GAME, STATUS_PLAYINGC, STATUS_PLAYINGCGAME, STATUS_PLAYINGC2, STATUS_PLAYINGB } status;
 	typedef enum { PINKY, BLINKY, INKY, CLYDE} multiplayer_phantom;
 	status current_status = STATUS_START;
 	multiplayer_phantom phantom;
-	bool modern = true, 
-		 music_on = true, 
-		 sound_on = true, 
+	bool modern = true,
+		 music_on = true,
+		 sound_on = true,
 		 debug = false,
 		 full_screen = false,
-		 place_holder = false;
+		 place_holder = false,
+		 key_down = false;
 	float hover[13] = { 1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }; // Hovering for close button, info button, music button (or arcade), sound button (or pong), classic button (or back), bored button, single player, multiplayer, full screen, blinky, pinky, inky, clyde
-	int score = 0, 
-		highscore = 0;
+	int score = 0,
+		highscore = 0,
+		counter = 0;
 	unsigned short int window_width = WINDOW_WIDTH, 
 					   window_height = WINDOW_HEIGHT,
 					   canvas_width = CANVAS_WIDTH,
 					   canvas_height = CANVAS_HEIGHT;
-	double time_counter = 0.f;
+	double time_counter = 0.f,
+		   time_counter_2 = 0.f;
 	int* score_ptr = &score;
 	int* highscore_ptr = &highscore;
 	graphics::Brush brush,
@@ -45,11 +48,18 @@ class Menu
 	void updateGameMSelection();
 	void updateGameMInfo();
 	void updateClassicWelcome();
+	void updateClassicWelcome2();
+	void updateGameC2();
+	void updateModernWelcome();
 	void updateClassicGame();
+	void updateGameMultiPlayer();
 	void drawMenuScreen(); // drawing menu screen
 	void drawModernScreen(); //drawing modern screen
 	void drawClassicScreen(); // drawing classic screen
 	void drawGameC(); // drawing game for single player state
+	void drawGameC2();
+	void drawClassicWelcome2();
+	void drawModernWelcome();
 	void drawGameM(); // drawing game for multiplayer state
 	void drawGameB(); // drawing game for bored state
 	void drawM(); // drawing music button
@@ -62,6 +72,7 @@ class Menu
 	void drawI(); // info button
 	void drawB(); // back button
 	void drawFullScreen(); // full screen button
+	void drawGameMultiPlayer();
 	void cacheImages(); // Caching images
 public:
 	void update();
