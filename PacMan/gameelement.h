@@ -21,7 +21,9 @@ public:
 
 class GameElement
 {
+	const class Menu& menu;
 public:
+	GameElement(const class Menu& ingame);
 	virtual void update() = 0;
 	virtual void draw() = 0;
 	virtual void init() = 0;

@@ -3,13 +3,13 @@
 #include "graphics.h"
 #include "config.h"
 #include "pacman.h"
+#include "phantom.h"
 
 class Menu
 {
-	typedef enum { STATUS_START, STATUS_PLAYINGM, STATUS_PLAYINGM_INFO, STATUS_PLAYINGM_GAME, STATUS_PLAYINGC, STATUS_PLAYINGCGAME, STATUS_PLAYINGC2, STATUS_PLAYINGB } status;
-	typedef enum { PINKY, BLINKY, INKY, CLYDE} multiplayer_phantom;
+	typedef enum { STATUS_START, STATUS_PLAYINGM, STATUS_PLAYINGM_INFO, STATUS_PLAYINGM_GAME, STATUS_PLAYINGC, STATUS_PLAYINGCGAME, STATUS_PLAYINGC2, STATUS_PLAYINGB, STATUS_PLAYINGPONG } status;
 	status current_status = STATUS_START;
-	multiplayer_phantom phantom;
+	character phantom;
 	bool modern = true,
 		 music_on = true,
 		 sound_on = true,
@@ -17,10 +17,12 @@ class Menu
 		 full_screen = false,
 		 place_holder = false,
 		 key_down = false;
-	float hover[13] = { 1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }; // Hovering for close button, info button, music button (or arcade), sound button (or pong), classic button (or back), bored button, single player, multiplayer, full screen, blinky, pinky, inky, clyde
+	float hover[13] = { 1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }; // Hovering for close button, info button, music button, sound button, classic button (or back), bored button (or pong), single player (or arcade), multiplayer, full screen, blinky, pinky, inky, clyde
 	int score = 0,
 		highscore = 0,
-		counter = 0;
+		counter = 0,
+		score_pong = 0,
+		highscore_pong = 0;
 	unsigned short int window_width = WINDOW_WIDTH, 
 					   window_height = WINDOW_HEIGHT,
 					   canvas_width = CANVAS_WIDTH,
@@ -33,6 +35,7 @@ class Menu
 					loc_brush;
 	graphics::MouseState mouse;
 	PacMan* pacman = nullptr;
+	Phantom* enemies[4] = { nullptr, nullptr, nullptr, nullptr };
 	void updateClassicScreen(); // update function for classic menu screen
 	void updateModernScreen(); // update function for classic modern screen
 	void updateMenuScreen(); // update function for menu in general
@@ -53,6 +56,7 @@ class Menu
 	void updateModernWelcome();
 	void updateClassicGame();
 	void updateGameMultiPlayer();
+	void updatePong();
 	void drawMenuScreen(); // drawing menu screen
 	void drawModernScreen(); //drawing modern screen
 	void drawClassicScreen(); // drawing classic screen
@@ -60,6 +64,7 @@ class Menu
 	void drawGameC2();
 	void drawClassicWelcome2();
 	void drawModernWelcome();
+	void drawPong();
 	void drawGameM(); // drawing game for multiplayer state
 	void drawGameB(); // drawing game for bored state
 	void drawM(); // drawing music button

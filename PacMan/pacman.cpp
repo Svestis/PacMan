@@ -1,5 +1,6 @@
 #include "pacman.h"
 #include "graphics.h"
+#include "menu.h"
 
 // updating images for left state
 void PacMan::updateLeftC()
@@ -423,7 +424,8 @@ void PacMan::init()
 {
 }
 
-PacMan::PacMan()
+PacMan::PacMan(const Menu& ingame)
+	:GameElement(ingame)
 {
 }
 

@@ -4,6 +4,8 @@
 
 float rand0to1();
 
+typedef enum { PINKY, BLINKY, INKY, CLYDE } character;
+
 struct Disk
 {
 	float cx, cy;

@@ -44,6 +44,7 @@ void Menu::updateB(status s)
 	{
 		hover[4] = 1.3f;
 	}
+	
 }
 
 void Menu::updateX()
@@ -151,7 +152,7 @@ void Menu::updateModernWelcome()
 		updateFullScreen();
 	}
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20))
-	{
+	{		
 		updateB(STATUS_START);
 	}
 	// Music on/off
@@ -336,6 +337,7 @@ void Menu::updateClassicWelcome()
 	{
 		key_down = true;
 		current_status = STATUS_START;
+
 	}
 	// Music on/off
 	else if (graphics::getKeyState(graphics::SCANCODE_M) && !key_down)
@@ -407,9 +409,19 @@ void Menu::updateClassicGame()
 			hover[3] = 1.f;
 		}
 	}
-		if (!pacman)
+	if (!pacman)
 	{
-		pacman = new PacMan();
+		pacman = new PacMan(*this);
+	}
+
+	if (!enemies[0])
+	{
+		enemies[0] = new Phantom(phantom, *this);
+	}
+
+	if (enemies[0])
+	{
+		enemies[0]->update();
 	}
 
 	if (pacman)
@@ -642,6 +654,17 @@ void Menu::updateGameB()
 	{
 		updateX();
 	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 520 - 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
+	{
+		updateM();
+	}
+	// Sound on/off
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 + 83) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 520 + 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
+	{
+		updateS();
+	}
 	// Openning info panel
 	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 15) &&
 		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 14) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 53 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 25 + 5))
@@ -658,7 +681,7 @@ void Menu::updateGameB()
 		}
 		else
 		{
-			hover[2] = 1.1f;
+			hover[5] = 1.1f;
 		}
 	}
 	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH / 4 - 100) && (window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH / 4 + 100)
@@ -666,12 +689,14 @@ void Menu::updateGameB()
 
 	{
 		if (mouse.button_left_released)
-		{
-			// TODO: Add pong game
+		{	
+			graphics::stopMusic(1000);
+			music_on = false;
+			current_status = STATUS_PLAYINGPONG;
 		}
 		else
 		{
-			hover[3] = 1.1f;
+			hover[6] = 1.1f;
 		}
 	}
 	// full screen
@@ -691,6 +716,8 @@ void Menu::updateGameB()
 		hover[2] = 1.f;
 		hover[3] = 1.f;
 		hover[4] = 1.f;
+		hover[5] = 1.f;
+		hover[6] = 1.f;
 		hover[8] = 1.f;
 	}
 }
@@ -784,6 +811,13 @@ void Menu::updateGameMultiPlayer()
 	}
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20))
 	{
+		
+		if (music_on)
+		{
+			updateMusic(modern);
+		}
+
+		
 		updateB(STATUS_START);
 	}
 	// Music on/off
@@ -812,9 +846,19 @@ void Menu::updateGameMultiPlayer()
 		hover[3] = 1.f;
 	}
 
+	if (!enemies[0])
+	{
+		enemies[0] = new Phantom(phantom, *this);
+	}
+
+	if (enemies[0])
+	{
+		enemies[0]->update();
+	}
+
 	if (!pacman)
 	{
-		pacman = new PacMan();
+		pacman = new PacMan(*this);
 	}
 
 	if (pacman)
@@ -823,26 +867,100 @@ void Menu::updateGameMultiPlayer()
 	}
 }
 
+void Menu::updatePong()
+{
+	graphics::getMouseState(mouse);
+	// Closing windw on close window click
+	if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 13) &&
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 13) && (window2CanvasY(mouse.cur_pos_y) >= 14) && (window2CanvasY(mouse.cur_pos_y) <= 43))
+	{
+		updateX();
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 25) && (window2CanvasX(mouse.cur_pos_x) <= 55) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 45) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 20))
+	{
+		updateFullScreen();
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20))
+	{
+		if (mouse.button_left_released){
+			music_on = true;
+		}
+		
+		updateMusic(modern);
+		updateB(STATUS_PLAYINGB);
+	}
+	// Music on/off
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 520 - 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
+	{
+		updateM();
+	}
+	// Sound on/off
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 + 83) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 520 + 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
+	{
+		updateS();
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
+	{
+		delete this; // TODO: check this one
+	}
+	else
+	{
+		hover[0] = 1.f;
+		hover[8] = 1.f;
+		hover[4] = 1.f;
+		hover[2] = 1.f;
+		hover[6] = 1.f;
+		hover[3] = 1.f;
+	}
+}
+
 void Menu::update()
 {
 	if (current_status == STATUS_START) 
 	{
+		if (pacman) 
+		{
+			delete pacman;
+			pacman = nullptr;
+		}
 		updateMenuScreen();
 	}
 	else if (current_status == STATUS_PLAYINGC)
 	{
+		if (pacman)
+		{
+			delete pacman;
+			pacman = nullptr;
+		}
 		updateGameC();
 	}
 	else if (current_status == STATUS_PLAYINGC2)
 	{
+		if (pacman)
+		{
+			delete pacman;
+			pacman = nullptr;
+		}
 		updateGameC2();
 	}
 	else if (current_status == STATUS_PLAYINGM)
 	{
+		if (pacman)
+		{
+			delete pacman;
+			pacman = nullptr;
+		}
 		updateGameM();
 	}
 	else if (current_status == STATUS_PLAYINGM_INFO)
 	{
+		if (pacman)
+		{
+			delete pacman;
+			pacman = nullptr;
+		}
 		updateGameMInfo();
 	}
 	else if (current_status == STATUS_PLAYINGB)
@@ -856,6 +974,10 @@ void Menu::update()
 	else if (current_status == STATUS_PLAYINGM_GAME)
 	{
 		updateGameMultiPlayer();
+	}
+	else if (current_status == STATUS_PLAYINGPONG)
+	{
+		updatePong();
 	}
 	
 }
@@ -1341,6 +1463,11 @@ void Menu::drawClassicGame()
 		pacman->draw();
 	}
 
+	if (enemies[0])
+	{
+		enemies[0]->draw();
+	}
+
 	brush.fill_color[0] = 1.f;
 	brush.fill_color[1] = 1.f;
 	brush.fill_color[2] = 1.f;
@@ -1628,7 +1755,7 @@ void Menu::drawGameB()
 
 	brush.outline_opacity = 1.f;
 
-	graphics::setScale(hover[2], hover[2]);
+	graphics::setScale(hover[5], hover[5]);
 
 	graphics::drawRect(CANVAS_WIDTH / 4 + CANVAS_WIDTH /2 , CANVAS_HEIGHT / 2, 200, 200, brush);
 
@@ -1638,7 +1765,7 @@ void Menu::drawGameB()
 
 	brush.outline_opacity = 1.f;
 
-	graphics::setScale(hover[3], hover[3]);
+	graphics::setScale(hover[6], hover[6]);
 
 	graphics::drawRect(CANVAS_WIDTH / 4 , CANVAS_HEIGHT / 2, 200, 200, brush);
 
@@ -1661,6 +1788,10 @@ void Menu::drawGameB()
 	drawX();
 
 	drawI();
+		
+	drawM();
+
+	drawS();
 
 	drawFullScreen();
 
@@ -2046,6 +2177,8 @@ void Menu::drawModernScreen()
 
 	// Resetting the opacity
 	brush.fill_opacity = 1.f;
+
+	time_counter = 0.f;
 }
 
 // General draw menu sceen function
@@ -2107,6 +2240,22 @@ void Menu::drawGameMultiPlayer()
 	{
 		pacman->draw();
 	}
+
+
+	if (enemies[0])
+	{
+		enemies[0]->draw();
+	}
+}
+
+void Menu::drawPong()
+{
+	drawX();
+	drawM();
+	drawB();
+	drawFullScreen();
+	drawS();
+
 }
 
 void Menu::draw()
@@ -2142,6 +2291,10 @@ void Menu::draw()
 	else if (current_status == STATUS_PLAYINGM_GAME)
 	{
 		drawGameMultiPlayer();
+	}
+	else if (current_status == STATUS_PLAYINGPONG)
+	{
+		drawPong();
 	}
 
 	if (debug) {

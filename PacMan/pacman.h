@@ -33,6 +33,6 @@ public:
 	void drawInitM() override;
 	void drawInitC() override;
 	void updateMulti();
-	PacMan();
+	PacMan(const class Menu& ingame);
 	~PacMan();
 };
