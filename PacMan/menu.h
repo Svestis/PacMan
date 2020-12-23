@@ -4,6 +4,7 @@
 #include "config.h"
 #include "pacman.h"
 #include "phantom.h"
+#include "pong.h"
 
 class Menu
 {
@@ -36,6 +37,8 @@ class Menu
 	graphics::MouseState mouse;
 	PacMan* pacman = nullptr;
 	Phantom* enemies[4] = { nullptr, nullptr, nullptr, nullptr };
+	Pong* pong_player = nullptr;
+	Pong* pong_ai = nullptr;
 	void updateClassicScreen(); // update function for classic menu screen
 	void updateModernScreen(); // update function for classic modern screen
 	void updateMenuScreen(); // update function for menu in general

@@ -45,6 +45,9 @@
     <ClCompile Include="gameelement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="pong.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="phantom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pong.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

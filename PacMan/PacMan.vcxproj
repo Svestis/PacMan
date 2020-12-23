@@ -157,6 +157,7 @@
     <ClCompile Include="pacman.cpp" />
     <ClCompile Include="phantom.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="pong.cpp" />
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +171,7 @@
     <ClInclude Include="pacman.h" />
     <ClInclude Include="phantom.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="pong.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

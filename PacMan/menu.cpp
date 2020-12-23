@@ -883,10 +883,13 @@ void Menu::updatePong()
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20))
 	{
 		if (mouse.button_left_released){
-			music_on = true;
+			if (music_on)
+			{
+				updateMusic(modern);
+			}
 		}
 		
-		updateMusic(modern);
+		
 		updateB(STATUS_PLAYINGB);
 	}
 	// Music on/off
@@ -914,6 +917,27 @@ void Menu::updatePong()
 		hover[6] = 1.f;
 		hover[3] = 1.f;
 	}
+
+	if (!pong_player)
+	{
+		pong_player = new Pong(*this, false);
+	}
+
+	if (!pong_ai)
+	{
+		pong_ai = new Pong(*this, true);
+	}
+
+	if (pong_player)
+	{
+		pong_player->update();
+	}
+
+	if (pong_ai)
+	{
+		pong_ai->update();
+	}
+
 }
 
 void Menu::update()
@@ -2250,11 +2274,40 @@ void Menu::drawGameMultiPlayer()
 
 void Menu::drawPong()
 {
+
 	drawX();
 	drawM();
 	drawB();
 	drawFullScreen();
 	drawS();
+
+	if (pong_player)
+	{
+		pong_player->draw();
+	}
+
+	if (pong_ai)
+	{
+		pong_ai->draw();
+	}
+
+	brush.outline_opacity = 1.f;
+	brush.fill_opacity = 0.f;
+
+	brush.fill_color[0] = 0.f;
+	brush.fill_color[1] = 0.f;
+	brush.fill_color[2] = 0.f;
+
+	graphics::drawRect(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, 2, CANVAS_HEIGHT / 2 + 100, brush);
+	brush.outline_opacity = 0.f;
+	brush.fill_opacity = 1.f;
+
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
+
+
+	
 
 }
 

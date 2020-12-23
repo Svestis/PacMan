@@ -219,6 +219,8 @@
 #define WHITE_C_2 "white_c_2.png"
 #define BLUE_M_RIGHT_1 "blue_m_right_1.png"
 #define BLUE_M_RIGHT_2 "blue_m_right_2.png"
+#define PONG_AI "pong_ai.png"
+#define PONG_P "pong_player.png"
 
 // SOUNDS
 #define CHOMP "pacman_chomp.mp3"
