@@ -1,7 +1,7 @@
 #include "player.h"
 #include "graphics.h"
 #include "game.h"
-
+#include <iostream>
 
 Player::Player(const Game& game)
 	:GameObject(game)
@@ -13,12 +13,16 @@ void Player::update()
 {
 	if (graphics::getKeyState(graphics::SCANCODE_A) /*|| graphics::getKeyState(graphics::SCANCODE_LEFT)*/)
 	{
-		pos_x -= speed * graphics::getDeltaTime() / 10.0f;
+		float xl = speed * graphics::getDeltaTime() / 100.0f;
+		pos_x -= xl;
+		std::cout << " left " << pos_x << " " << xl << std::endl;
 	}
 
 	if (graphics::getKeyState(graphics::SCANCODE_D) /*|| graphics::getKeyState(graphics::SCANCODE_RIGHT)*/)
 	{
-		pos_x += speed * graphics::getDeltaTime() / 10.0f;
+		float xl = speed * graphics::getDeltaTime() / 100.0f;
+		pos_x += xl;
+		std::cout << " right  " << pos_x << " " << xl << std::endl;
 	}
 
 	if (graphics::getKeyState(graphics::SCANCODE_W) /*|| graphics::getKeyState(graphics::SCANCODE_UP)*/)
@@ -106,7 +110,7 @@ void Player::init()
 {
 
 }
-
+/*
 Disk Player::getCollisionHull() const
 {
 	Disk disk;
@@ -114,4 +118,4 @@ Disk Player::getCollisionHull() const
 	disk.cy = pos_y;
 	disk.radius = 55.0f;
 	return disk;
-}
+}*/

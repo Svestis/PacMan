@@ -221,6 +221,7 @@
 #define BLUE_M_RIGHT_2 "blue_m_right_2.png"
 #define PONG_AI "pong_ai.png"
 #define PONG_P "pong_player.png"
+#define PONG_BALL "pong_ball.png"
 
 // SOUNDS
 #define CHOMP "pacman_chomp.mp3"

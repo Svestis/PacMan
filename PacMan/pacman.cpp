@@ -201,22 +201,22 @@ void PacMan::updateM()
 {
 	if (graphics::getKeyState(graphics::SCANCODE_W) || graphics::getKeyState(graphics::SCANCODE_UP))
 	{
-		pos.y -= speed * graphics::getDeltaTime() / 30.f;
+		pos.y -= speed * graphics::getDeltaTime() / 50.f;
 		updateUpM();
 	}
 	else if (graphics::getKeyState(graphics::SCANCODE_S) || graphics::getKeyState(graphics::SCANCODE_DOWN))
 	{
-		pos.y += speed * graphics::getDeltaTime() / 30.f;
+		pos.y += speed * graphics::getDeltaTime() / 50.f;
 		updateDownM();
 	}
 	else if (graphics::getKeyState(graphics::SCANCODE_A) || graphics::getKeyState(graphics::SCANCODE_LEFT))
 	{
-		pos.x -= speed * graphics::getDeltaTime() / 30.f;
+		pos.x -= speed * graphics::getDeltaTime() / 50.f;
 		updateLeftM();
 	}
 	else if (graphics::getKeyState(graphics::SCANCODE_D) || graphics::getKeyState(graphics::SCANCODE_RIGHT))
 	{
-		pos.x += speed * graphics::getDeltaTime() / 30.f;
+		pos.x += speed * graphics::getDeltaTime() / 50.f;
 		updateRightM();
 	}
 
@@ -230,22 +230,22 @@ void PacMan::updateC()
 {
 	if (graphics::getKeyState(graphics::SCANCODE_W) || graphics::getKeyState(graphics::SCANCODE_UP))
 	{
-		pos.y -= speed * graphics::getDeltaTime() / 30.f;
+		pos.y -= speed * graphics::getDeltaTime() / 50.f ;
 		updateUpC();
 	}
 	else if (graphics::getKeyState(graphics::SCANCODE_S) || graphics::getKeyState(graphics::SCANCODE_DOWN))
 	{
-		pos.y += speed * graphics::getDeltaTime() / 30.f;
+		pos.y += speed * graphics::getDeltaTime() / 50.f;
 		updateDownC();
 	}
 	else if (graphics::getKeyState(graphics::SCANCODE_A) || graphics::getKeyState(graphics::SCANCODE_LEFT))
 	{
-		pos.x -= speed * graphics::getDeltaTime() / 30.f;
+		pos.x -= speed * graphics::getDeltaTime() / 50.f;
 		updateLeftC();
 	}
 	else if (graphics::getKeyState(graphics::SCANCODE_D) || graphics::getKeyState(graphics::SCANCODE_RIGHT))
 	{
-		pos.x += speed * graphics::getDeltaTime() / 30.f;
+		pos.x += speed * graphics::getDeltaTime() / 50.f;
 		updateRightC();
 	}
 

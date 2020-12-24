@@ -27,19 +27,19 @@ bool Game::checkCollision()
 		return false;
 	}
 
-	Disk d1 = player->getCollisionHull();
-	Disk d2 = meteorite->getCollisionHull();
+	//Disk d1 = player->getCollisionHull();
+	//Disk d2 = meteorite->getCollisionHull();
 
-	float dx = d1.cx - d2.cx;
-	float dy = d1.cy - d2.cy;
+	//float dx = d1.cx - d2.cx;
+	//float dy = d1.cy - d2.cy;
 
-	if (sqrt(dx * dx + dy * dy) < d1.radius + d2.radius)
+	/*if (sqrt(dx * dx + dy * dy) < d1.radius + d2.radius)
 	{
 		player->drainLife(0.1f);
 		return true;
 	}
 	else
-		return false;
+		return false;*/
 }
 
 void Game::updateStartScreen()

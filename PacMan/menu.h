@@ -5,6 +5,7 @@
 #include "pacman.h"
 #include "phantom.h"
 #include "pong.h"
+#include "pongball.h"
 
 class Menu
 {
@@ -30,8 +31,6 @@ class Menu
 					   canvas_height = CANVAS_HEIGHT;
 	double time_counter = 0.f,
 		   time_counter_2 = 0.f;
-	int* score_ptr = &score;
-	int* highscore_ptr = &highscore;
 	graphics::Brush brush,
 					loc_brush;
 	graphics::MouseState mouse;
@@ -83,6 +82,7 @@ class Menu
 	void drawGameMultiPlayer();
 	void cacheImages(); // Caching images
 public:
+	PongBall* pong_ball = nullptr;
 	void update();
 	void draw();
 	void init();
@@ -93,7 +93,10 @@ public:
 	unsigned short int getWindowHeight() { return window_height; };
 	float window2CanvasX(float x);
 	float window2CanvasY(float y);
+	bool checkCollisionPong();
+	void checkBall();
 	//Menu(const class Console & console);
+	short int pong_level = 5;
 	Menu();
 	~Menu();
 };

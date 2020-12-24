@@ -1,11 +1,11 @@
 #pragma once
 #include "util.h"
 
-class Collidable
+/*class Collidable
 {
 public:
 	virtual Disk getCollisionHull() const = 0;
-};
+};*/
 
 class GameObject {
 protected:

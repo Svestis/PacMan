@@ -3,7 +3,7 @@
 #include "gameobject.h"
 #include "graphics.h"
 
-class Enemy : public GameObject, public Collidable
+class Enemy : public GameObject//, public Collidable
 {
 	float pos_x, pos_y;
 	float size;
@@ -19,5 +19,5 @@ public:
 	bool isActive() { return active; };
 	Enemy(const class Game& game);
 	~Enemy();
-	Disk getCollisionHull() const override;
+	//Disk getCollisionHull() const override;
 };

@@ -57,7 +57,7 @@ Enemy::~Enemy()
 {
 }
 
-Disk Enemy::getCollisionHull() const
+/*Disk Enemy::getCollisionHull() const
 {
 	Disk disk;
 	disk.cx = pos_x;
@@ -65,3 +65,4 @@ Disk Enemy::getCollisionHull() const
 	disk.radius = size*0.55;
 	return disk;
 }
+*/

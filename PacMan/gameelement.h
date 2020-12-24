@@ -2,22 +2,34 @@
 
 typedef enum { UP1, UP2, UP3, DOWN1, DOWN2, DOWN3, LEFT1, LEFT2, LEFT3, RIGHT1, RIGHT2, RIGHT3, CENTER } rotation;
 
-struct Rect
-{
-	float cx, cy, size;
-};
-
 struct Position
 {
-	int x, y;
+	float x, y;
 };
 
+struct Rectangle
+{
+	float cx, cy, w, h;
+};
 
-/*class Collidable
+struct Disk
+{
+	float cx, cy;
+	float radius;
+};
+
+class CollidableR
 {
 public:
-	virtual Rect getCollisionHull() const = 0;
-};*/
+	virtual Rectangle getCollisionHull() const = 0;
+};
+
+class CollidableD
+{
+public:
+	virtual Disk getCollisionHull() const = 0;
+};
+
 
 class GameElement
 {

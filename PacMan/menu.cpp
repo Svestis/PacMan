@@ -3,6 +3,14 @@
 #include "config.h"
 #include <iostream>
 
+void Menu::checkBall()
+{
+	if (pong_ball && !pong_ball->isActive())
+	{
+		delete pong_ball;
+		pong_ball = nullptr;
+	}
+}
 
 void Menu::updateM()
 {
@@ -928,6 +936,11 @@ void Menu::updatePong()
 		pong_ai = new Pong(*this, true);
 	}
 
+	if (!pong_ball)
+	{
+		pong_ball = new PongBall(*this);
+	}
+
 	if (pong_player)
 	{
 		pong_player->update();
@@ -938,6 +951,14 @@ void Menu::updatePong()
 		pong_ai->update();
 	}
 
+	if (pong_ball)
+	{
+		pong_ball->update();
+	}
+	if (checkCollisionPong() && pong_ball)
+	{
+		pong_ball->changeDirection();
+	}
 }
 
 void Menu::update()
@@ -949,6 +970,22 @@ void Menu::update()
 			delete pacman;
 			pacman = nullptr;
 		}
+		if (pong_ai)
+		{
+			delete pong_ai;
+			pong_ai = nullptr;
+		}
+		if (pong_player)
+		{
+			delete pong_player;
+			pong_player = nullptr;
+		}
+		if (pong_ball)
+		{
+			delete pong_ball;
+			pong_ball = nullptr;
+		}
+
 		updateMenuScreen();
 	}
 	else if (current_status == STATUS_PLAYINGC)
@@ -989,6 +1026,21 @@ void Menu::update()
 	}
 	else if (current_status == STATUS_PLAYINGB)
 	{
+		if (pong_ai)
+		{
+			delete pong_ai;
+			pong_ai = nullptr;
+		}
+		if (pong_player)
+		{
+			delete pong_player;
+			pong_player = nullptr;
+		}
+		if (pong_ball)
+		{
+			delete pong_ball;
+			pong_ball = nullptr;
+		}
 		updateGameB();
 	}
 	else if (current_status == STATUS_PLAYINGCGAME)
@@ -2291,6 +2343,11 @@ void Menu::drawPong()
 		pong_ai->draw();
 	}
 
+	if (pong_ball)
+	{
+		pong_ball->draw();
+	}
+
 	brush.outline_opacity = 1.f;
 	brush.fill_opacity = 0.f;
 
@@ -2427,6 +2484,7 @@ float Menu::window2CanvasY(float y)
 	}
 }
 
+
 Menu::Menu()
 {
 }
@@ -2438,8 +2496,6 @@ Menu::~Menu()
 	{
 		delete pacman;
 	}
-	delete score_ptr;
-	delete highscore_ptr;
 	graphics::destroyWindow();
 }
 
@@ -2464,5 +2520,69 @@ void Menu::setWindowDimensions(unsigned short int w, unsigned short int h)
 	{
 		
 	}
-	
+}
+
+bool Menu::checkCollisionPong()
+{
+	if (!pong_player || !pong_ai || !pong_ball)
+	{
+		return false;
+	}
+
+	Rectangle r1 = pong_player->getCollisionHull();
+	Rectangle r2 = pong_ai->getCollisionHull();
+	Disk d1 = pong_ball->getCollisionHull();
+
+	float distR1X = abs(d1.cx - r1.cx);
+	float distR1Y = abs(d1.cy - r1.cy);
+
+	float distR2X = abs(d1.cx - r2.cx);
+	float distR2Y = abs(d1.cy - r2.cy);
+
+	if (distR1X > (r1.w / 2 + d1.radius) && distR2X > (r2.w / 2 + d1.radius)) return false;
+	if (distR1Y > (r1.h / 2 + d1.radius) && distR2Y > (r2.h / 2 + d1.radius)) return false;
+
+	if (distR1X <= (r1.w / 2) && distR1Y <= (r1.h/2))
+	{
+		pong_ball->setAngle(&r1);
+		return true;
+	}
+
+	if (distR2X <= (r2.w / 2) && distR2Y <= (r2.h/2))
+	{
+		pong_ball->setAngle(&r2);
+		return true;
+	}
+
+	/*if (distR1Y <= (r1.h / 2))
+	{
+		pong_ball->setAngle(r1.cy);
+		return true;
+	}
+
+	if (distR2Y <= (r2.h / 2))
+	{
+		pong_ball->setAngle(r2.cy);
+		return true;
+	}*/
+
+	float cdR1 = pow(distR1X - r1.w / 2, 2) + pow(distR1Y - r1.h / 2, 2);
+
+	float cdR2 = pow(distR2X - r2.w / 2, 2) + pow(distR2Y - r2.h / 2, 2);
+
+	if (cdR1 <= pow(d1.radius, 2)) 
+	{
+		pong_ball->setAngle(&r1);
+		return true;
+	}
+
+	if (cdR2 <= pow(d1.radius, 2))
+	{
+		pong_ball->setAngle(&r2);
+		return true;
+	}
+
+	return false;
+
+
 }
