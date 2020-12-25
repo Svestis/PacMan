@@ -6,20 +6,22 @@
 
 #include "gameelement.h"
 #include <iostream>
+#include <random>
 
 
 class PongBall : public CollidableD
 {
+	Position pos{ CANVAS_WIDTH / 2, rand() % (CANVAS_HEIGHT - 10 - 10) + 10.f };
 	Disk disk;
-	float speed = 5.f;
-	short int level = 1;
 	bool active = true;
-	float dir = 1.f;
-	float angleY = 0.f;
+	float dir = 1.f,
+		  angleY = 1.f;
 	graphics::Brush brush;
 	const class Menu& menu;
 public:
-	Position pos{ CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 };
+	float getX() { return pos.x; };
+	float getY() { return pos.y; };
+	float getDir() { return dir; };
 	void update();
 	void draw();
 	void init();

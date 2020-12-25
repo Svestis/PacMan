@@ -1,18 +1,18 @@
 #include "pongball.h"
 #include "config.h"
 #include <iostream>
+#include "menu.h"
 
 void PongBall::update()
 {
-	pos.x -= dir * speed * graphics::getDeltaTime() / 20;
+	pos.x -= dir * menu.getPongSpeed() * graphics::getDeltaTime() / 20;
 
-	if (pos.y < 5 || pos.y > CANVAS_HEIGHT - 5)
+	if (pos.y < 0 || pos.y > CANVAS_HEIGHT)
 	{
 		angleY = -angleY;
 	}
 
-	pos.y += angleY;;
-
+	pos.y += angleY;
 }
 
 void PongBall::draw()
@@ -47,18 +47,16 @@ Disk PongBall::getCollisionHull() const
 
 void PongBall::setAngle(const Rectangle* rectangle)
 {
-	float relativeY = (rectangle->cy + (400 / level * 0.5) / 2) - pos.y;
+	float relativeY = (rectangle->cy + (400 / menu.getPongLevel() * 0.5) / 2) - pos.y;
 
-	float normY = (relativeY / ((rectangle->cy + (400 / level * 0.5) / 2)));
+	float normY = (relativeY / ((rectangle->cy + (400 / menu.getPongLevel() * 0.5) / 2)));
 
-	angleY = (sin(normY * (6 * 3.140081 / 12))*speed);
+	angleY = (sin(normY * (6 * 3.140081 / 12))*menu.getPongSpeed());
 
-	if (pos.y > rectangle->cy)
+	if (pos.y < rectangle->cy)
 	{
 		angleY = -angleY;
 	}
-
-	std::cout << angleY << std::endl;
 
 	
 }

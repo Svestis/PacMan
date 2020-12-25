@@ -86,6 +86,8 @@ void Phantom::drawInitC()
 		brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_LEFT_1);
 	}
 	start = false;
+	
+	graphics::drawRect(CANVAS_WIDTH / 2 - 100, CANVAS_HEIGHT / 2, 20, 20, brush);
 }
 
 void Phantom::update()
@@ -376,6 +378,9 @@ void Phantom::drawPhantomM()
 
 void Phantom::draw()
 {
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
 	brush.outline_opacity = 0.f;
 	if (start && !modern)
 	{

@@ -26,6 +26,19 @@ void Menu::updateM()
 	}
 }
 
+void Menu::updateP()
+{
+	graphics::getMouseState(mouse);
+	if (mouse.button_left_released)
+	{
+		paused = !paused;
+	}
+	else
+	{
+		hover[2] = 1.3f;
+	}
+}
+
 void Menu::updateS()
 {
 	graphics::getMouseState(mouse);
@@ -46,6 +59,13 @@ void Menu::updateB(status s)
 
 	if (mouse.button_left_released)
 	{
+		if (paused) paused = !paused;
+		score_pong = 0;
+		score = 0;
+		level = 1;
+		local_level = 1;
+		time_counter = 0;
+		pong_speed = 5.f;
 		current_status = s;
 	}
 	else
@@ -343,6 +363,7 @@ void Menu::updateClassicWelcome()
 	}
 	else if (graphics::getKeyState(graphics::SCANCODE_B) && !key_down)
 	{
+		if (paused) !paused;
 		key_down = true;
 		current_status = STATUS_START;
 
@@ -427,12 +448,12 @@ void Menu::updateClassicGame()
 		enemies[0] = new Phantom(phantom, *this);
 	}
 
-	if (enemies[0])
+	if (enemies[0] && !paused)
 	{
 		enemies[0]->update();
 	}
 
-	if (pacman)
+	if (pacman && !paused)
 	{
 		pacman->update();
 	}
@@ -445,6 +466,7 @@ void Menu::updateClassicGame()
 	{
 		key_down = true;
 		music_on = true;
+		if (paused) paused = !paused;
 		updateMusic(modern);
 		current_status = STATUS_START;
 	}
@@ -460,7 +482,12 @@ void Menu::updateClassicGame()
 		full_screen = !full_screen;
 		graphics::setFullScreen(full_screen);
 	}
-	else if (!graphics::getKeyState(graphics::SCANCODE_B) && !graphics::getKeyState(graphics::SCANCODE_N) && !graphics::getKeyState(graphics::SCANCODE_RSHIFT))
+	else if (graphics::getKeyState(graphics::SCANCODE_SPACE) && !key_down)
+	{
+		key_down = true;
+		paused = !paused;
+	}
+	else if (!graphics::getKeyState(graphics::SCANCODE_B) && !graphics::getKeyState(graphics::SCANCODE_N) && !graphics::getKeyState(graphics::SCANCODE_RSHIFT) && !graphics::getKeyState(graphics::SCANCODE_SPACE))
 	{
 		key_down = false;
 	}
@@ -875,7 +902,7 @@ void Menu::updateGameMultiPlayer()
 	}
 }
 
-void Menu::updatePong()
+void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
 {
 	graphics::getMouseState(mouse);
 	// Closing windw on close window click
@@ -896,8 +923,6 @@ void Menu::updatePong()
 				updateMusic(modern);
 			}
 		}
-		
-		
 		updateB(STATUS_PLAYINGB);
 	}
 	// Music on/off
@@ -916,6 +941,10 @@ void Menu::updatePong()
 	{
 		delete this; // TODO: check this one
 	}
+	else if (mouse.button_middle_down)
+	{
+		paused = !paused;
+	}
 	else
 	{
 		hover[0] = 1.f;
@@ -929,6 +958,7 @@ void Menu::updatePong()
 	if (!pong_player)
 	{
 		pong_player = new Pong(*this, false);
+		lost = false;
 	}
 
 	if (!pong_ai)
@@ -939,26 +969,54 @@ void Menu::updatePong()
 	if (!pong_ball)
 	{
 		pong_ball = new PongBall(*this);
+		time_counter = 0.f;
 	}
 
-	if (pong_player)
+	if (pong_player && !paused)
 	{
 		pong_player->update();
 	}
 
-	if (pong_ai)
+	if (pong_ai && !paused)
 	{
 		pong_ai->update();
 	}
 
-	if (pong_ball)
+	if (pong_ball && !paused)
 	{
 		pong_ball->update();
 	}
-	if (checkCollisionPong() && pong_ball)
+	if (checkCollisionPong(pong_ball->getDir()) && pong_ball && !paused)
 	{
 		pong_ball->changeDirection();
 	}
+	time_counter += graphics::getDeltaTime();
+
+	if (score % 10 == 0 && score!=0)
+	{
+		level += 1;
+		local_level += 1;
+	}
+
+	if (time_counter > 60000)
+	{
+		time_counter = 0.f;
+		pong_speed += 1;
+		local_level += 1;
+	}
+
+	if (pong_ball)
+	{
+		if (pong_ball->getX() < 0 || pong_ball->getX() > CANVAS_WIDTH)
+		{
+			delete pong_ball;
+			pong_ball = nullptr;
+			paused = true;
+			lost = true;
+		}
+	}
+
+	
 }
 
 void Menu::update()
@@ -1292,6 +1350,52 @@ void Menu::drawB()
 
 	// Closed
 	graphics::drawText(26, 62, 10.F, std::string(BACKT), brush);
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
+}
+
+void Menu::drawP()
+{
+	brush.outline_opacity = 0.f;
+
+	// Taking out the close button if hover
+	graphics::setScale(hover[13], hover[13]);
+
+	// Setting the image brush for the close button
+	if (!paused)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(PAUSEIMG);
+	}
+	else
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(PLAYIMG);
+	}
+	
+
+	// Drawing image for close button
+	graphics::drawRect(CANVAS_WIDTH-40, CANVAS_HEIGHT-40, 40, 40, brush);
+
+	brush.outline_opacity = 1.f;
+
+	graphics::resetPose();
+
+	// Setting color to defaults for txt
+	brush.fill_color[0] = COLORPACKMAN_R;
+	brush.fill_color[1] = COLORPACKMAN_G;
+	brush.fill_color[2] = COLORPACKMAN_B;
+
+	// Closed
+	if (paused)
+	{
+		graphics::drawText(CANVAS_WIDTH - 63, CANVAS_HEIGHT - 62, 10.F, std::string(RESUMET), brush);
+	}
+	else
+	{
+		graphics::drawText(CANVAS_WIDTH - 58, CANVAS_HEIGHT - 62, 10.F, std::string(PAUSET), brush);
+	}
 
 	// Setting color to defaults for txt
 	brush.fill_color[0] = 1.f;
@@ -2326,45 +2430,60 @@ void Menu::drawGameMultiPlayer()
 
 void Menu::drawPong()
 {
+	if (lost)
+	{
+		graphics::drawText(CANVAS_WIDTH / 2-167, CANVAS_HEIGHT / 2 - 100, 50.f, GAMEOVER, brush);
+
+		graphics::drawText(CANVAS_WIDTH / 2 - 146, CANVAS_HEIGHT / 2 - 25, 40.f, PLAYAGAIN, brush);
+	}
 
 	drawX();
 	drawM();
 	drawB();
 	drawFullScreen();
 	drawS();
+	drawP();
 
-	if (pong_player)
+	if (pong_player && !lost)
 	{
 		pong_player->draw();
 	}
 
-	if (pong_ai)
+	if (pong_ai && !lost)
 	{
 		pong_ai->draw();
 	}
 
-	if (pong_ball)
+	if (pong_ball && !lost)
 	{
 		pong_ball->draw();
 	}
 
-	brush.outline_opacity = 1.f;
-	brush.fill_opacity = 0.f;
-
-	brush.fill_color[0] = 0.f;
-	brush.fill_color[1] = 0.f;
-	brush.fill_color[2] = 0.f;
-
-	graphics::drawRect(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, 2, CANVAS_HEIGHT / 2 + 100, brush);
-	brush.outline_opacity = 0.f;
-	brush.fill_opacity = 1.f;
-
-	brush.fill_color[0] = 1.f;
-	brush.fill_color[1] = 1.f;
-	brush.fill_color[2] = 1.f;
-
-
 	
+	if (!lost)
+	{
+		brush.outline_opacity = 1.f;
+		brush.fill_opacity = 0.f;
+
+		brush.fill_color[0] = 0.f;
+		brush.fill_color[1] = 0.f;
+		brush.fill_color[2] = 0.f;
+
+		graphics::drawRect(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, 2, CANVAS_HEIGHT / 2 + 100, brush);
+		brush.outline_opacity = 0.f;
+		brush.fill_opacity = 1.f;
+
+		brush.fill_color[0] = 1.f;
+		brush.fill_color[1] = 1.f;
+		brush.fill_color[2] = 1.f;
+	}
+
+	graphics::drawText(200, 25, 20.f, SCORE, brush);
+	graphics::drawText(200, 50, 20.f, std::to_string(score_pong), brush);
+	graphics::drawText(CANVAS_WIDTH - 267, 25, 20.f, HISCORE, brush);
+	graphics::drawText(CANVAS_WIDTH - 267, 50, 20.f, std::to_string(highscore_pong), brush);
+	
+	graphics::drawText(CANVAS_WIDTH / 2 - 42, 30, 20.f, "LEVEL " + std::to_string(local_level), brush);
 
 }
 
@@ -2522,67 +2641,55 @@ void Menu::setWindowDimensions(unsigned short int w, unsigned short int h)
 	}
 }
 
-bool Menu::checkCollisionPong()
+bool Menu::checkCollisionPong(float dir)
 {
 	if (!pong_player || !pong_ai || !pong_ball)
 	{
 		return false;
 	}
-
-	Rectangle r1 = pong_player->getCollisionHull();
-	Rectangle r2 = pong_ai->getCollisionHull();
+	
+	Rectangle r1 = { 0,0,0,0 };
+	float distX = 0.f, distY = 0.f;
 	Disk d1 = pong_ball->getCollisionHull();
 
-	float distR1X = abs(d1.cx - r1.cx);
-	float distR1Y = abs(d1.cy - r1.cy);
-
-	float distR2X = abs(d1.cx - r2.cx);
-	float distR2Y = abs(d1.cy - r2.cy);
-
-	if (distR1X > (r1.w / 2 + d1.radius) && distR2X > (r2.w / 2 + d1.radius)) return false;
-	if (distR1Y > (r1.h / 2 + d1.radius) && distR2Y > (r2.h / 2 + d1.radius)) return false;
-
-	if (distR1X <= (r1.w / 2) && distR1Y <= (r1.h/2))
+	if (dir == 1.f)
 	{
-		pong_ball->setAngle(&r1);
-		return true;
+		Rectangle r1 = pong_player->getCollisionHull();
+		distX = d1.cx - r1.cx - d1.radius - r1.w / 2.f;
+		if (r1.cy > d1.cy)
+		{
+			distY = r1.cy - r1.h / 2.f - d1.cy - d1.radius;
+		}
+		else
+		{
+			distY = d1.cy - r1.cy - r1.h / 2.f - d1.radius;
+		}
+	}
+	else
+	{
+		Rectangle r1 = pong_ai->getCollisionHull();
+		distX = r1.cx - d1.cx - d1.radius - r1.w / 2.f;
+		if (r1.cy > d1.cy)
+		{
+			distY = r1.cy - r1.h / 2.f - d1.cy - d1.radius;
+		}
+		else
+		{
+			distY = d1.cy - r1.cy - r1.h / 2.f - d1.radius;
+		}
 	}
 
-	if (distR2X <= (r2.w / 2) && distR2Y <= (r2.h/2))
+	if (distX < 0 && distX > -(pong_speed) && distY < 0)
 	{
-		pong_ball->setAngle(&r2);
+		if (dir == 1.f)
+		{
+			score_pong += 1;
+			if (score_pong > highscore_pong)
+			{
+				highscore_pong = score_pong;
+			}
+		}
 		return true;
 	}
-
-	/*if (distR1Y <= (r1.h / 2))
-	{
-		pong_ball->setAngle(r1.cy);
-		return true;
-	}
-
-	if (distR2Y <= (r2.h / 2))
-	{
-		pong_ball->setAngle(r2.cy);
-		return true;
-	}*/
-
-	float cdR1 = pow(distR1X - r1.w / 2, 2) + pow(distR1Y - r1.h / 2, 2);
-
-	float cdR2 = pow(distR2X - r2.w / 2, 2) + pow(distR2Y - r2.h / 2, 2);
-
-	if (cdR1 <= pow(d1.radius, 2)) 
-	{
-		pong_ball->setAngle(&r1);
-		return true;
-	}
-
-	if (cdR2 <= pow(d1.radius, 2))
-	{
-		pong_ball->setAngle(&r2);
-		return true;
-	}
-
 	return false;
-
-
 }

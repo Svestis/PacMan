@@ -10,27 +10,31 @@
 class Menu
 {
 	typedef enum { STATUS_START, STATUS_PLAYINGM, STATUS_PLAYINGM_INFO, STATUS_PLAYINGM_GAME, STATUS_PLAYINGC, STATUS_PLAYINGCGAME, STATUS_PLAYINGC2, STATUS_PLAYINGB, STATUS_PLAYINGPONG } status;
+
 	status current_status = STATUS_START;
 	character phantom;
 	bool modern = true,
-		 music_on = true,
-		 sound_on = true,
-		 debug = false,
-		 full_screen = false,
-		 place_holder = false,
-		 key_down = false;
-	float hover[13] = { 1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }; // Hovering for close button, info button, music button, sound button, classic button (or back), bored button (or pong), single player (or arcade), multiplayer, full screen, blinky, pinky, inky, clyde
+		music_on = true,
+		sound_on = true,
+		debug = false,
+		full_screen = false,
+		place_holder = false,
+		key_down = false,
+		paused = false,
+		lost = false;
+	float hover[14] = { 1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }; // Hovering for close button, info button, music button, sound button, classic button (or back), bored button (or pong), single player (or arcade), multiplayer, full screen, blinky, pinky, inky, clyde, pause
 	int score = 0,
 		highscore = 0,
-		counter = 0,
-		score_pong = 0,
-		highscore_pong = 0;
+		counter = 0;
 	unsigned short int window_width = WINDOW_WIDTH, 
 					   window_height = WINDOW_HEIGHT,
 					   canvas_width = CANVAS_WIDTH,
-					   canvas_height = CANVAS_HEIGHT;
+					   canvas_height = CANVAS_HEIGHT,
+					   level = 1,
+					   local_level = 1;
 	double time_counter = 0.f,
-		   time_counter_2 = 0.f;
+		   time_counter_2 = 0.f,
+		   pong_speed = 5.f;
 	graphics::Brush brush,
 					loc_brush;
 	graphics::MouseState mouse;
@@ -46,6 +50,7 @@ class Menu
 	void updateGameB(); // update function for bored state
 	void updateX(); // update function for close button
 	void updateB(status s = STATUS_START); // update function for back button
+	void updateP();
 	void updateI(); // update function for info button
 	void updateM(); // update function for music button
 	void updateS(); // update function for sound button
@@ -75,6 +80,7 @@ class Menu
 	void drawGameMInfo(); // Draw pre-game multiplayer screen
 	void drawClassicWelcome(); // Draws welcome screen of classic game mode
 	void drawClassicGame();
+	void drawP();
 	void drawX(); // close button
 	void drawI(); // info button
 	void drawB(); // back button
@@ -86,6 +92,7 @@ public:
 	void update();
 	void draw();
 	void init();
+	
 	void updateMusic(bool musictype);
 	bool getFullScreen() { return full_screen; };
 	void setWindowDimensions(unsigned short int w, unsigned short int h);
@@ -93,10 +100,14 @@ public:
 	unsigned short int getWindowHeight() { return window_height; };
 	float window2CanvasX(float x);
 	float window2CanvasY(float y);
-	bool checkCollisionPong();
+	bool checkCollisionPong(float dir);
 	void checkBall();
 	//Menu(const class Console & console);
-	short int pong_level = 5;
+	unsigned short int score_pong = 0,
+					   highscore_pong = 0;
+
+	unsigned short int getPongLevel() const { return level; };
+	double getPongSpeed() const { return pong_speed; };
 	Menu();
 	~Menu();
 };

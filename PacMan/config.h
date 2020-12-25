@@ -88,6 +88,10 @@
 #define PUSHSTART "PUSH START BUTTON"
 #define HISCORE  "HIGH SCORE"
 #define UPSONE "1UP"
+#define GAMEOVER "GAME OVER"
+#define PLAYAGAIN "PLAY AGAIN?"
+#define PAUSET "PAUSE"
+#define RESUMET "RESUME"
 
 // MUSIC
 #define WELCOME_MUSICM "welcome_music_modern.mp3"
@@ -97,6 +101,7 @@
 #define FONTM "cheapmot.ttf"
 #define FONTC "arcade.ttf"
 #define FONTPACMAN "pacman.ttf"
+#define FONTPONG "pong.ttf"
 
 // IMAGES
 #define BACKGROUND_MENUM "back2.png"
@@ -222,6 +227,8 @@
 #define PONG_AI "pong_ai.png"
 #define PONG_P "pong_player.png"
 #define PONG_BALL "pong_ball.png"
+#define PAUSEIMG "pause.png"
+#define PLAYIMG "play.png"
 
 // SOUNDS
 #define CHOMP "pacman_chomp.mp3"
