@@ -5,14 +5,17 @@
 
 void PongBall::update()
 {
-	pos.x -= dir * menu.getPongSpeed() * graphics::getDeltaTime() / 20;
+	pos.x -= dir * menu.getPongSpeed() * angleX * graphics::getDeltaTime() / 20;
 
 	if (pos.y < 0 || pos.y > CANVAS_HEIGHT)
 	{
 		angleY = -angleY;
+		if (menu.playSound())
+		{
+			graphics::playSound(std::string(ASSET_PATH) + std::string(PONGHITWALL), 1.f, false);
+		}
 	}
-
-	pos.y += angleY;
+	pos.y -= angleY;
 }
 
 void PongBall::draw()
@@ -45,20 +48,24 @@ Disk PongBall::getCollisionHull() const
 	return disk;
 }
 
-void PongBall::setAngle(const Rectangle* rectangle)
+void PongBall::wallSound()
 {
-	float relativeY = (rectangle->cy + (400 / menu.getPongLevel() * 0.5) / 2) - pos.y;
+	graphics::playSound(std::string(ASSET_PATH) + std::string(PONGHITWALL), 1.f, false);
+}
 
-	float normY = (relativeY / ((rectangle->cy + (400 / menu.getPongLevel() * 0.5) / 2)));
+void PongBall::changeDirection()
+{
+	dir = -dir; 
+	if (menu.playSound())graphics::playSound(std::string(ASSET_PATH) + std::string(PONGHIT), 1.f, false);
+}
 
-	angleY = (sin(normY * (6 * 3.140081 / 12))*menu.getPongSpeed());
+void PongBall::setAngle(Rectangle& rect)
+{
+	float relativeY = rect.cy - pos.y;
 
-	if (pos.y < rectangle->cy)
-	{
-		angleY = -angleY;
-	}
-
-	
+	float normY = (rect.cy - pos.y) / rect.h / 2.f;
+	angleY = 10*sin(normY);
+	angleX = cos(normY);
 }
 
 PongBall::PongBall(const Menu& ingame)

@@ -6,13 +6,16 @@
 
 #include "gameelement.h"
 #include "pongball.h"
+#include <random>
 
 class Pong: public CollidableR
 {
 	Position pos{100, CANVAS_HEIGHT / 2 };
 	Rectangle rectangle;
 	bool ai;
-	float move = 0.f;
+	float move = 0.f,
+		time_counter = 0.f;
+	int error = std::rand() % (5 + 1) ;
 	graphics::Brush brush;
 	const class Menu& menu;
 public:

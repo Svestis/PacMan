@@ -11,11 +11,12 @@
 
 class PongBall : public CollidableD
 {
-	Position pos{ CANVAS_WIDTH / 2, rand() % (CANVAS_HEIGHT - 10 - 10) + 10.f };
+	Position pos{ CANVAS_WIDTH / 2, 10.f + (std::rand() % (CANVAS_HEIGHT -10 + 1)) };
 	Disk disk;
 	bool active = true;
 	float dir = 1.f,
-		  angleY = 1.f;
+		angleY = 1.f,
+		angleX = 1.f;
 	graphics::Brush brush;
 	const class Menu& menu;
 public:
@@ -26,9 +27,10 @@ public:
 	void draw();
 	void init();
 	Disk getCollisionHull() const override;
+	void wallSound();
 	bool isActive() { return active; };
-	void changeDirection() { dir = -dir; };
-	void setAngle(const Rectangle* rectangle);
+	void changeDirection();
+	void setAngle(Rectangle& rect);
 	PongBall(const class Menu& ingame);
 	~PongBall();
 };

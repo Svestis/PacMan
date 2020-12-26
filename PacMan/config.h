@@ -229,7 +229,12 @@
 #define PONG_BALL "pong_ball.png"
 #define PAUSEIMG "pause.png"
 #define PLAYIMG "play.png"
+#define NO "no.png"
+#define YES "yes.png"
 
 // SOUNDS
 #define CHOMP "pacman_chomp.mp3"
+#define PONGHIT "pong_hit.mp3"
+#define PONGHITWALL "pong_wall.mp3"
+#define GAMEOVERPONG "game_over_pong.wav"
 

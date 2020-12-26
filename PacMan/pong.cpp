@@ -7,7 +7,22 @@ void Pong::update()
 {
 	if (ai)
 	{
-		pos.y = menu.pong_ball->getY() + rand0to1();
+		if (menu.pong_ball->getDir() < 0)
+		{
+			if (menu.pong_ball->getY() > pos.y + error)
+			{
+				pos.y += menu.getPongSpeed() * graphics::getDeltaTime() / 30.f;
+			}
+			else if (menu.pong_ball->getY() < pos.y + error)
+			{
+				pos.y -= menu.getPongSpeed() * graphics::getDeltaTime() / 30.f;
+			}
+		}
+		else
+		{
+			error = std::rand() %(int)( ((400 / menu.getPongLevel() * 0.5) / 4 + 1) + (400 / menu.getPongLevel() * 0.5) / 4);
+		}
+
 	}
 	else
 	{

@@ -12,6 +12,23 @@ void Menu::checkBall()
 	}
 }
 
+void Menu::updateY()
+{
+	graphics::getMouseState(mouse);
+
+	if (mouse.button_left_released)
+	{
+		score_pong = 0;
+		paused = false;
+		lost = false;
+		hover[5] = 1.f;
+	}
+	else
+	{
+		hover[5] = 1.2f;
+	}
+}
+
 void Menu::updateM()
 {
 	graphics::getMouseState(mouse);
@@ -22,7 +39,7 @@ void Menu::updateM()
 	}
 	else
 	{
-		hover[2] = 1.3f;
+		hover[2] = 1.2f;
 	}
 }
 
@@ -35,7 +52,7 @@ void Menu::updateP()
 	}
 	else
 	{
-		hover[2] = 1.3f;
+		hover[13] = 1.3f;
 	}
 }
 
@@ -53,6 +70,29 @@ void Menu::updateS()
 	}
 }
 
+void Menu::updateN(status s)
+{
+	graphics::getMouseState(mouse);
+
+	if (mouse.button_left_released)
+	{
+		if (paused) paused = !paused;
+		score_pong = 0;
+		score = 0;
+		level = 1;
+		lost = false;
+		local_level = 1;
+		time_counter = 0;
+		pong_speed = 5.f;
+		current_status = s;
+		hover[6] = 1.f;
+ 	}
+	else
+	{
+		hover[6] = 1.2f;
+	}
+}
+
 void Menu::updateB(status s)
 {
 	graphics::getMouseState(mouse);
@@ -63,6 +103,7 @@ void Menu::updateB(status s)
 		score_pong = 0;
 		score = 0;
 		level = 1;
+		lost = false;
 		local_level = 1;
 		time_counter = 0;
 		pong_speed = 5.f;
@@ -937,13 +978,29 @@ void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
 	{
 		updateS();
 	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 40-20) &&
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH-20) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 40-15) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 15))
+	{
+		if (!lost)
+		{
+			updateP();
+		}
+	}
 	else if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
 	{
 		delete this; // TODO: check this one
 	}
-	else if (mouse.button_middle_down)
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 128) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 372) && (window2CanvasY(mouse.cur_pos_y) >= 259) && (window2CanvasY(mouse.cur_pos_y) <= 391 ))
 	{
-		paused = !paused;
+		updateY();
+		//graphics::drawRect(CANVAS_WIDTH / 2 + CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 75, 244, 133, brush);
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 128+500) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 372+500) && (window2CanvasY(mouse.cur_pos_y) >= 259) && (window2CanvasY(mouse.cur_pos_y) <= 391))
+	{
+		updateN(STATUS_PLAYINGB);
+		//graphics::drawRect(CANVAS_WIDTH / 2 + CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 75, 244, 133, brush);
 	}
 	else
 	{
@@ -953,12 +1010,13 @@ void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
 		hover[2] = 1.f;
 		hover[6] = 1.f;
 		hover[3] = 1.f;
+		hover[13] = 1.f;
+		hover[5] = 1.f;
 	}
 
 	if (!pong_player)
 	{
 		pong_player = new Pong(*this, false);
-		lost = false;
 	}
 
 	if (!pong_ai)
@@ -992,7 +1050,7 @@ void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
 	}
 	time_counter += graphics::getDeltaTime();
 
-	if (score % 10 == 0 && score!=0)
+	if (score % 15 == 0 && score!=0)
 	{
 		level += 1;
 		local_level += 1;
@@ -1009,14 +1067,17 @@ void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
 	{
 		if (pong_ball->getX() < 0 || pong_ball->getX() > CANVAS_WIDTH)
 		{
-			delete pong_ball;
-			pong_ball = nullptr;
+			graphics::playSound(std::string(ASSET_PATH) + std::string(GAMEOVERPONG), 1.f, false);
 			paused = true;
 			lost = true;
+			delete pong_ball;
+			pong_ball = nullptr;
+			delete pong_ai;
+			pong_ai = nullptr;
+			delete pong_player;
+			pong_player = nullptr;
 		}
-	}
-
-	
+	}	
 }
 
 void Menu::update()
@@ -1376,7 +1437,7 @@ void Menu::drawP()
 	
 
 	// Drawing image for close button
-	graphics::drawRect(CANVAS_WIDTH-40, CANVAS_HEIGHT-40, 40, 40, brush);
+	graphics::drawRect(CANVAS_WIDTH-40, CANVAS_HEIGHT-35, 40, 40, brush);
 
 	brush.outline_opacity = 1.f;
 
@@ -2428,13 +2489,37 @@ void Menu::drawGameMultiPlayer()
 	}
 }
 
+void Menu::drawYN()
+{
+	graphics::drawText(CANVAS_WIDTH / 2 - 167, CANVAS_HEIGHT / 2 - 100, 50.f, GAMEOVER, brush);
+
+	graphics::drawText(CANVAS_WIDTH / 2 - 146, CANVAS_HEIGHT / 2 - 25, 40.f, PLAYAGAIN, brush);
+
+	brush.outline_opacity = 0.f;
+
+	brush.texture = std::string(ASSET_PATH) + std::string(YES);
+
+	graphics::setScale(hover[5], hover[5]);
+
+	graphics::drawRect(CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 75, 244, 133, brush);
+
+	graphics::resetPose();
+
+	brush.texture = std::string(ASSET_PATH) + std::string(NO);
+
+	graphics::setScale(hover[6], hover[6]);
+
+	graphics::drawRect(CANVAS_WIDTH / 2 + CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 75, 244, 133, brush);
+
+	graphics::resetPose();
+}
+
+
 void Menu::drawPong()
 {
 	if (lost)
 	{
-		graphics::drawText(CANVAS_WIDTH / 2-167, CANVAS_HEIGHT / 2 - 100, 50.f, GAMEOVER, brush);
-
-		graphics::drawText(CANVAS_WIDTH / 2 - 146, CANVAS_HEIGHT / 2 - 25, 40.f, PLAYAGAIN, brush);
+		drawYN();
 	}
 
 	drawX();
@@ -2526,7 +2611,8 @@ void Menu::draw()
 		drawPong();
 	}
 
-	if (debug) {
+	if (debug) 
+	{
 		brush.fill_color[0] = 1.f;
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
@@ -2648,13 +2734,13 @@ bool Menu::checkCollisionPong(float dir)
 		return false;
 	}
 	
-	Rectangle r1 = { 0,0,0,0 };
+	Rectangle r1;
 	float distX = 0.f, distY = 0.f;
 	Disk d1 = pong_ball->getCollisionHull();
 
 	if (dir == 1.f)
 	{
-		Rectangle r1 = pong_player->getCollisionHull();
+		r1 = pong_player->getCollisionHull();
 		distX = d1.cx - r1.cx - d1.radius - r1.w / 2.f;
 		if (r1.cy > d1.cy)
 		{
@@ -2667,7 +2753,7 @@ bool Menu::checkCollisionPong(float dir)
 	}
 	else
 	{
-		Rectangle r1 = pong_ai->getCollisionHull();
+		r1 = pong_ai->getCollisionHull();
 		distX = r1.cx - d1.cx - d1.radius - r1.w / 2.f;
 		if (r1.cy > d1.cy)
 		{
@@ -2689,6 +2775,9 @@ bool Menu::checkCollisionPong(float dir)
 				highscore_pong = score_pong;
 			}
 		}
+		graphics::playSound(WELCOME_MUSICC, 1.f, false);
+		graphics::playSound(CHOMP, 1.f, false);
+		pong_ball->setAngle(r1);
 		return true;
 	}
 	return false;

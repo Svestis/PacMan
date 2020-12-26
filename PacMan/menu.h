@@ -21,8 +21,9 @@ class Menu
 		place_holder = false,
 		key_down = false,
 		paused = false,
-		lost = false;
-	float hover[14] = { 1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }; // Hovering for close button, info button, music button, sound button, classic button (or back), bored button (or pong), single player (or arcade), multiplayer, full screen, blinky, pinky, inky, clyde, pause
+		lost = false,
+		music_wasplaying = true;
+	float hover[14] = { 1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }; // Hovering for close button, info button, music button, sound button, classic button (or back), bored button (or pong or play again), single player (or arcade or dont play again), multiplayer, full screen, blinky, pinky, inky, clyde, pause
 	int score = 0,
 		highscore = 0,
 		counter = 0;
@@ -64,6 +65,8 @@ class Menu
 	void updateClassicGame();
 	void updateGameMultiPlayer();
 	void updatePong();
+	void updateY();
+	void updateN(status s);
 	void drawMenuScreen(); // drawing menu screen
 	void drawModernScreen(); //drawing modern screen
 	void drawClassicScreen(); // drawing classic screen
@@ -72,6 +75,7 @@ class Menu
 	void drawClassicWelcome2();
 	void drawModernWelcome();
 	void drawPong();
+	void drawYN();
 	void drawGameM(); // drawing game for multiplayer state
 	void drawGameB(); // drawing game for bored state
 	void drawM(); // drawing music button
@@ -92,7 +96,7 @@ public:
 	void update();
 	void draw();
 	void init();
-	
+	bool playSound() const { return sound_on; };
 	void updateMusic(bool musictype);
 	bool getFullScreen() { return full_screen; };
 	void setWindowDimensions(unsigned short int w, unsigned short int h);
