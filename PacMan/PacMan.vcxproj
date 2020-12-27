@@ -153,6 +153,7 @@
     <ClCompile Include="gameelement.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="maze.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="pacman.cpp" />
     <ClCompile Include="phantom.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="pong.h" />
     <ClInclude Include="pongball.h" />
     <ClInclude Include="util.h" />
+    <ClInclude Include="maze.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

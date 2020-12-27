@@ -231,6 +231,17 @@
 #define PLAYIMG "play.png"
 #define NO "no.png"
 #define YES "yes.png"
+#define PACMAN_C_DEATH_1 "death_c_1.png"
+#define PACMAN_C_DEATH_2 "death_c_2.png"
+#define PACMAN_C_DEATH_3 "death_c_3.png"
+#define PACMAN_C_DEATH_4 "death_c_4.png"
+#define PACMAN_C_DEATH_5 "death_c_5.png"
+#define PACMAN_C_DEATH_6 "death_c_6.png"
+#define PACMAN_C_DEATH_7 "death_c_7.png"
+#define PACMAN_C_DEATH_8 "death_c_8.png"
+#define PACMAN_C_DEATH_9 "death_c_9.png"
+#define PACMAN_C_DEATH_10 "death_c_10.png"
+#define PACMAN_C_DEATH_11 "death_c_11.png"
 
 // SOUNDS
 #define CHOMP "pacman_chomp.mp3"

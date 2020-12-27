@@ -4,34 +4,35 @@
 #include "config.h"
 #include "graphics.h"
 
-class PacMan : public GameElement
+class PacMan : public GameElement, public CollidableD
 {
 	rotation rot = CENTER;
+	Disk disk;
 	double timer = 0;
-	bool modern = false,
-		 start = true,
-		 multi = false; // Take it from game
+	bool start = true;
 	Position pos{ CANVAS_WIDTH/2, CANVAS_HEIGHT/2 };
-	float speed = 10.f;
+	float speed = 7.f;
 	graphics::Brush brush;
 public:
 	void update() override;
 	void draw() override;
 	void init() override;
-	void drawPacmanC();
-	void drawPacmanM();
-	void updateLeftC() override;
-	void updateRightC() override;
-	void updateUpC() override;
-	void updateDownC() override;
-	void updateLeftM() override;
-	void updateRightM() override;
-	void updateUpM() override;
-	void updateDownM() override;
-	void updateC() override;
-	void updateM() override;
-	void drawInitM() override;
-	void drawInitC() override;
+	void drawDeath();
+	void drawPacmanC(); // Spawn
+	void drawPacmanM(); // Spawn
+	Disk getCollisionHull() const override;
+	void updateLeftC() override; // Move left
+	void updateRightC() override; // Move right
+	void updateUpC() override; // Move Up
+	void updateDownC() override; // Move down
+	void updateLeftM() override; // Move left
+	void updateRightM() override; // Move right
+	void updateUpM() override; // Move up
+	void updateDownM() override; //Move down
+	void updateC() override; // Moving
+	void updateM() override; // Moving
+	void drawInitM() override; // Init
+	void drawInitC() override; // Init
 	void updateMulti();
 	PacMan(const class Menu& ingame);
 	~PacMan();

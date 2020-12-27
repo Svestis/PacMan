@@ -10,7 +10,6 @@
 class Menu
 {
 	typedef enum { STATUS_START, STATUS_PLAYINGM, STATUS_PLAYINGM_INFO, STATUS_PLAYINGM_GAME, STATUS_PLAYINGC, STATUS_PLAYINGCGAME, STATUS_PLAYINGC2, STATUS_PLAYINGB, STATUS_PLAYINGPONG } status;
-
 	status current_status = STATUS_START;
 	character phantom;
 	bool modern = true,
@@ -22,7 +21,10 @@ class Menu
 		key_down = false,
 		paused = false,
 		lost = false,
-		music_wasplaying = true;
+		music_wasplaying = true,
+		multi = false;
+	unsigned short int score_pong = 0,
+		highscore_pong = 0;
 	float hover[14] = { 1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }; // Hovering for close button, info button, music button, sound button, classic button (or back), bored button (or pong or play again), single player (or arcade or dont play again), multiplayer, full screen, blinky, pinky, inky, clyde, pause
 	int score = 0,
 		highscore = 0,
@@ -107,11 +109,11 @@ public:
 	bool checkCollisionPong(float dir);
 	void checkBall();
 	//Menu(const class Console & console);
-	unsigned short int score_pong = 0,
-					   highscore_pong = 0;
-
 	unsigned short int getPongLevel() const { return level; };
 	double getPongSpeed() const { return pong_speed; };
+	bool getModern() const { return modern; };
+	bool getMulti() const { return multi; };
+	character getPhantom() const { return phantom; };
 	Menu();
 	~Menu();
 };

@@ -5,16 +5,17 @@
 #include "config.h"
 #include "util.h"
 
-class Phantom : public GameElement
+class Phantom : public GameElement, public CollidableD
 {
 	Position pos{ CANVAS_WIDTH / 2 + 50, CANVAS_HEIGHT / 2 + 50 };
 	rotation rot = LEFT1;
-	character enemy;
+	character phantom;
+	Disk disk;
 	double timer = 0;
-	bool modern = true,
-		start = true,
-		multi = true; // Take it from game
-	float speed = 10.f;
+	bool start = true,
+		 modern,
+		multi;
+	float speed = 7.f;
 	graphics::Brush brush;
 public:
 	void update() override;
@@ -22,6 +23,7 @@ public:
 	void init() override;
 	void drawPhantomC();
 	void drawPhantomM();
+	Disk getCollisionHull() const override;
 	void updateLeftC() override;
 	void updateRightC() override;
 	void updateUpC() override;
@@ -35,6 +37,6 @@ public:
 	void updateMulti();
 	void drawInitM() override;
 	void drawInitC() override;
-	Phantom(character c, const class Menu& ingame);
+	Phantom(const class Menu& ingame);
 	~Phantom();
 };

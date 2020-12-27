@@ -33,6 +33,7 @@ public:
 
 class GameElement
 {
+protected:
 	const class Menu& menu;
 public:
 	GameElement(const class Menu& ingame);

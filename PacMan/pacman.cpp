@@ -6,15 +6,15 @@
 void PacMan::updateLeftC()
 {
 	timer += graphics::getDeltaTime();
-	if (timer < 1000/speed)
+	if (timer < 750/speed)
 	{
 		rot = CENTER;
 	}
-	else if (timer < 2000/speed)
+	else if (timer < 1500/speed)
 	{
 		rot = LEFT1;
 	}
-	else if (timer < 3000/speed)
+	else if (timer < 2250/speed)
 	{
 		rot = LEFT2;
 	}
@@ -26,15 +26,15 @@ void PacMan::updateLeftC()
 
 void PacMan::updateRightC()
 {	timer += graphics::getDeltaTime();
-	if (timer < 1000/speed)
+	if (timer < 750/speed)
 	{
 		rot = CENTER;
 	}
-	else if (timer < 2000/speed)
+	else if (timer < 1500/speed)
 	{
 		rot = RIGHT1;
 	}
-	else if (timer < 3000/speed)
+	else if (timer < 2250/speed)
 	{
 		rot = RIGHT2;
 	}
@@ -47,15 +47,15 @@ void PacMan::updateRightC()
 void PacMan::updateUpC()
 {
 	timer += graphics::getDeltaTime();
-	if (timer < 1000 / speed)
+	if (timer < 750 / speed)
 	{
 		rot = CENTER;
 	}
-	else if (timer < 2000 / speed)
+	else if (timer < 1500 / speed)
 	{
 		rot = UP1;
 	}
-	else if (timer < 3000 / speed)
+	else if (timer < 2250 / speed)
 	{
 		rot = UP2;
 	}
@@ -68,15 +68,15 @@ void PacMan::updateUpC()
 void PacMan::updateDownC()
 {
 	timer += graphics::getDeltaTime();
-	if (timer < 1000 / speed)
+	if (timer < 750 / speed)
 	{
 		rot = CENTER;
 	}
-	else if (timer < 2000 / speed)
+	else if (timer < 1500 / speed)
 	{
 		rot = DOWN1;
 	}
-	else if (timer < 3000 / speed)
+	else if (timer < 2250 / speed)
 	{
 		rot = DOWN2;
 	}
@@ -89,15 +89,15 @@ void PacMan::updateDownC()
 void PacMan::updateLeftM()
 {
 	timer += graphics::getDeltaTime();
-	if (timer < 1000 / speed)
+	if (timer < 750 / speed)
 	{
 		rot = LEFT1;
 	}
-	else if (timer < 2000 / speed)
+	else if (timer < 1500 / speed)
 	{
 		rot = LEFT2;
 	}
-	else if (timer < 3000 / speed)
+	else if (timer < 2250 / speed)
 	{
 		rot = LEFT3;
 	}
@@ -110,15 +110,15 @@ void PacMan::updateLeftM()
 void PacMan::updateRightM()
 {
 	timer += graphics::getDeltaTime();
-	if (timer < 1000 / speed)
+	if (timer < 750 / speed)
 	{
 		rot = RIGHT1;
 	}
-	else if (timer < 2000 / speed)
+	else if (timer < 1500 / speed)
 	{
 		rot = RIGHT2;
 	}
-	else if (timer < 3000 / speed)
+	else if (timer < 2250 / speed)
 	{
 		rot = RIGHT3;
 	}
@@ -131,15 +131,15 @@ void PacMan::updateRightM()
 void PacMan::updateUpM()
 {
 	timer += graphics::getDeltaTime();
-	if (timer < 1000 / speed)
+	if (timer < 750 / speed)
 	{
 		rot = UP1;
 	}
-	else if (timer < 2000 / speed)
+	else if (timer < 1500 / speed)
 	{
 		rot = UP2;
 	}
-	else if (timer < 3000 / speed)
+	else if (timer < 2250 / speed)
 	{
 		rot = UP3;
 	}
@@ -152,17 +152,70 @@ void PacMan::updateUpM()
 void PacMan::updateDownM()
 {
 	timer += graphics::getDeltaTime();
-	if (timer < 1000 / speed)
+	if (timer < 750 / speed)
 	{
 		rot = DOWN1;
 	}
-	else if (timer < 2000 / speed)
+	else if (timer < 1500 / speed)
 	{
 		rot = DOWN2;
 	}
-	else if (timer < 3000 / speed)
+	else if (timer < 2250 / speed)
 	{
 		rot = DOWN3;
+	}
+	else
+	{
+		timer = 0;
+	}
+}
+
+void PacMan::drawDeath()
+{
+	timer += graphics::getDeltaTime();
+	if (timer < 75)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_1);
+	}
+	else if (timer < 150)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_2);
+	}
+	else if (timer < 225)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_3);
+	}
+	else if (timer < 300)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_4);
+	}
+	else if (timer < 375)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_5);
+	}
+	else if (timer < 450)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_6);
+	}
+	else if (timer < 525)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_7);
+	}
+	else if (timer < 600)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_8);
+	}
+	else if (timer < 675)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_9);
+	}
+	else if (timer < 750)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_10);
+	}
+	else if (timer < 825)
+	{
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_11);
 	}
 	else
 	{
@@ -173,7 +226,7 @@ void PacMan::updateDownM()
 void PacMan::drawInitM()
 {
 	if (start) timer += graphics::getDeltaTime();
-	if (timer < 200 && start)
+	if (timer < 200)
 	{
 		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_LEFT_1);
 		rot = LEFT1;
@@ -257,9 +310,9 @@ void PacMan::updateC()
 
 void PacMan::update()
 {
-	if (!multi)
+	if (!menu.getMulti() && !start)
 	{
-		if (modern)
+		if (menu.getModern())
 		{
 			updateM();
 		}
@@ -268,7 +321,7 @@ void PacMan::update()
 			updateC();
 		}
 	}
-	else
+	else if (menu.getMulti() && !start)
 	{
 		updateMulti();
 	}
@@ -278,7 +331,7 @@ void PacMan::update()
 void PacMan::drawInitC()
 {
 	if (start) timer += graphics::getDeltaTime();
-	if (timer < 200 && start)
+	if (timer < 200)
 	{
 		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_START);
 		rot = CENTER;
@@ -304,6 +357,31 @@ void PacMan::drawInitC()
 
 void PacMan::updateMulti()
 {
+	if (graphics::getKeyState(graphics::SCANCODE_W))
+	{
+		pos.y -= speed * graphics::getDeltaTime() / 50.f;
+		updateUpM();
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_S))
+	{
+		pos.y += speed * graphics::getDeltaTime() / 50.f;
+		updateDownM();
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_A))
+	{
+		pos.x -= speed * graphics::getDeltaTime() / 50.f;
+		updateLeftM();
+	}
+	else if (graphics::getKeyState(graphics::SCANCODE_D))
+	{
+		pos.x += speed * graphics::getDeltaTime() / 50.f;
+		updateRightM();
+	}
+
+	if (pos.x < 0) pos.x = 0;
+	if (pos.x > CANVAS_WIDTH) pos.x = CANVAS_WIDTH;
+	if (pos.y < 0) pos.y = 0;
+	if (pos.y > CANVAS_HEIGHT) pos.y = CANVAS_HEIGHT;
 }
 
 void PacMan::drawPacmanC()
@@ -398,24 +476,43 @@ void PacMan::drawPacmanM()
 	}
 }
 
+Disk PacMan::getCollisionHull() const
+{
+	Disk disk;
+	disk.cx = pos.x;
+	disk.cy = pos.y;
+	disk.radius = 15.5f;
+	return disk;
+}
+
 void PacMan::draw()
 {
-	if (start && !modern)
+	if (start && !menu.getModern())
 	{
 		drawInitC();
 	}
-	else if (!start && !modern)
+	else if (!start && !menu.getModern())
 	{
 		drawPacmanC();
 	}
-	else if (start && modern)
+	else if (start && menu.getModern())
 	{
 		drawInitM();
 	}
-	else if (!start && modern)
+	else if (!start && menu.getModern())
 	{
 		drawPacmanM();
 	}
+
+	graphics::Brush br;
+	brush.outline_opacity = 0.f;
+	br.fill_color[0] = 0.5f;
+	br.fill_color[1] = 1.f;
+	br.fill_color[2] = 0.f;
+	br.fill_opacity = 0.5f;
+	br.gradient = false;
+	disk = getCollisionHull();
+	graphics::drawDisk(disk.cx, disk.cy, disk.radius, br);
 
 	graphics::drawRect(pos.x, pos.y, 30, 30, brush);
 }

@@ -486,7 +486,7 @@ void Menu::updateClassicGame()
 
 	if (!enemies[0])
 	{
-		enemies[0] = new Phantom(phantom, *this);
+		enemies[0] = new Phantom(*this);
 	}
 
 	if (enemies[0] && !paused)
@@ -600,6 +600,7 @@ void Menu::updateGameMInfo()
 		{
 			graphics::stopMusic(1000);
 			music_on = false;
+			modern = true;
 			current_status = STATUS_PLAYINGM_GAME;
 		}
 		else
@@ -924,7 +925,7 @@ void Menu::updateGameMultiPlayer()
 
 	if (!enemies[0])
 	{
-		enemies[0] = new Phantom(phantom, *this);
+		enemies[0] = new Phantom(*this);
 	}
 
 	if (enemies[0])
@@ -1104,7 +1105,12 @@ void Menu::update()
 			delete pong_ball;
 			pong_ball = nullptr;
 		}
-
+		if (enemies[0])
+		{
+			delete enemies[0];
+			enemies[0] = nullptr;
+		}
+		multi = false;
 		updateMenuScreen();
 	}
 	else if (current_status == STATUS_PLAYINGC)
@@ -1114,6 +1120,7 @@ void Menu::update()
 			delete pacman;
 			pacman = nullptr;
 		}
+		multi = false;
 		updateGameC();
 	}
 	else if (current_status == STATUS_PLAYINGC2)
@@ -1123,6 +1130,7 @@ void Menu::update()
 			delete pacman;
 			pacman = nullptr;
 		}
+		multi = false;
 		updateGameC2();
 	}
 	else if (current_status == STATUS_PLAYINGM)
@@ -1132,6 +1140,7 @@ void Menu::update()
 			delete pacman;
 			pacman = nullptr;
 		}
+		multi = false;
 		updateGameM();
 	}
 	else if (current_status == STATUS_PLAYINGM_INFO)
@@ -1141,6 +1150,7 @@ void Menu::update()
 			delete pacman;
 			pacman = nullptr;
 		}
+		multi = false;
 		updateGameMInfo();
 	}
 	else if (current_status == STATUS_PLAYINGB)
@@ -1160,18 +1170,23 @@ void Menu::update()
 			delete pong_ball;
 			pong_ball = nullptr;
 		}
+		multi = false;
 		updateGameB();
 	}
 	else if (current_status == STATUS_PLAYINGCGAME)
 	{
+		multi = false;
 		updateClassicGame();
 	}
 	else if (current_status == STATUS_PLAYINGM_GAME)
 	{
+		multi = true;
+		modern = true;
 		updateGameMultiPlayer();
 	}
 	else if (current_status == STATUS_PLAYINGPONG)
 	{
+		multi = false;
 		updatePong();
 	}
 	
