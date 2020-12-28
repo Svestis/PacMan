@@ -310,9 +310,9 @@ void PacMan::updateC()
 
 void PacMan::update()
 {
-	if (!menu.getMulti() && !start)
+	if (!multi && !start)
 	{
-		if (menu.getModern())
+		if (modern)
 		{
 			updateM();
 		}
@@ -321,7 +321,7 @@ void PacMan::update()
 			updateC();
 		}
 	}
-	else if (menu.getMulti() && !start)
+	else if (modern && !start)
 	{
 		updateMulti();
 	}
@@ -487,19 +487,19 @@ Disk PacMan::getCollisionHull() const
 
 void PacMan::draw()
 {
-	if (start && !menu.getModern())
+	if (start && !modern)
 	{
 		drawInitC();
 	}
-	else if (!start && !menu.getModern())
+	else if (!start && !modern)
 	{
 		drawPacmanC();
 	}
-	else if (start && menu.getModern())
+	else if (start && modern)
 	{
 		drawInitM();
 	}
-	else if (!start && menu.getModern())
+	else if (!start && modern)
 	{
 		drawPacmanM();
 	}
@@ -524,6 +524,8 @@ void PacMan::init()
 PacMan::PacMan(const Menu& ingame)
 	:GameElement(ingame)
 {
+	modern = menu.getModern();
+	multi = menu.getMulti();
 }
 
 PacMan::~PacMan()

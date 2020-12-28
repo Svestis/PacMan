@@ -529,7 +529,6 @@ void Phantom::init()
 	phantom = menu.getPhantom();
 	modern = menu.getModern();
 	multi = menu.getMulti();
-	std::cout << std::to_string(phantom) << std::endl;
 }
 
 Phantom::Phantom(const Menu& ingame)

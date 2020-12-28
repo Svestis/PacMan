@@ -9,7 +9,8 @@ class PacMan : public GameElement, public CollidableD
 	rotation rot = CENTER;
 	Disk disk;
 	double timer = 0;
-	bool start = true;
+	bool start = true,
+		modern, multi, collid = false;
 	Position pos{ CANVAS_WIDTH/2, CANVAS_HEIGHT/2 };
 	float speed = 7.f;
 	graphics::Brush brush;
@@ -34,6 +35,8 @@ public:
 	void drawInitM() override; // Init
 	void drawInitC() override; // Init
 	void updateMulti();
+	bool getCollidable() { return collid; };
+	void setCollidable(bool c) { collid = c; };	
 	PacMan(const class Menu& ingame);
 	~PacMan();
 };

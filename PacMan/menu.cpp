@@ -2,15 +2,7 @@
 #include "graphics.h"
 #include "config.h"
 #include <iostream>
-
-void Menu::checkBall()
-{
-	if (pong_ball && !pong_ball->isActive())
-	{
-		delete pong_ball;
-		pong_ball = nullptr;
-	}
-}
+#include "util.h"
 
 void Menu::updateY()
 {
@@ -23,51 +15,35 @@ void Menu::updateY()
 		lost = false;
 		hover[5] = 1.f;
 	}
-	else
-	{
-		hover[5] = 1.2f;
-	}
+	else hover[5] = 1.2f;
 }
 
 void Menu::updateM()
 {
 	graphics::getMouseState(mouse);
+
 	if (mouse.button_left_released)
 	{
 		music_on = !music_on;
 		updateMusic(modern);
 	}
-	else
-	{
-		hover[2] = 1.2f;
-	}
+	else hover[2] = 1.2f;
 }
 
 void Menu::updateP()
 {
 	graphics::getMouseState(mouse);
-	if (mouse.button_left_released)
-	{
-		paused = !paused;
-	}
-	else
-	{
-		hover[13] = 1.3f;
-	}
+
+	if (mouse.button_left_released)	paused = !paused;
+	else hover[13] = 1.3f;
 }
 
 void Menu::updateS()
 {
 	graphics::getMouseState(mouse);
 
-	if (mouse.button_left_released)
-	{
-		sound_on = !sound_on; //TODO: Add function to turn sound on off
-	}
-	else
-	{
-		hover[3] = 1.3f;
-	}
+	if (mouse.button_left_released)	sound_on = !sound_on; //TODO: Add function to turn sound on off
+	else hover[3] = 1.3f;
 }
 
 void Menu::updateN(status s)
@@ -87,10 +63,7 @@ void Menu::updateN(status s)
 		current_status = s;
 		hover[6] = 1.f;
  	}
-	else
-	{
-		hover[6] = 1.2f;
-	}
+	else hover[6] = 1.2f;
 }
 
 void Menu::updateB(status s)
@@ -109,11 +82,7 @@ void Menu::updateB(status s)
 		pong_speed = 5.f;
 		current_status = s;
 	}
-	else
-	{
-		hover[4] = 1.3f;
-	}
-	
+	else hover[4] = 1.3f;
 }
 
 void Menu::updateX()
@@ -121,15 +90,8 @@ void Menu::updateX()
 	// Checking the mouse state
 	graphics::getMouseState(mouse);
 
-	if (mouse.button_left_released)
-	{
-		delete this;
-	}
-	else
-	{
-	
-		hover[0] = 1.3f;
-	}
+	if (mouse.button_left_released)	delete this;
+	else hover[0] = 1.2f;
 }
 
 void Menu::updateI()
@@ -137,14 +99,8 @@ void Menu::updateI()
 	// Checking the mouse state
 	graphics::getMouseState(mouse);
 
-	if (mouse.button_left_released)
-	{
-		system(std::string(WEBPAGE).c_str());
-	}
-	else
-	{
-		hover[1] = 1.3f;
-	}
+	if (mouse.button_left_released) system(std::string(WEBPAGE).c_str());
+	else hover[1] = 1.2f;
 }
 
 void Menu::updateFullScreen()
@@ -157,19 +113,13 @@ void Menu::updateFullScreen()
 		full_screen = !full_screen;
 		graphics::setFullScreen(full_screen);
 	}
-	else
-	{
-		hover[8] = 1.2f;
-	}
+	else hover[8] = 1.2f;
 }
 
 void Menu::updateClassicScreen()
 {
 	// Closing windw on escape
-	if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
-	{
-		delete this; //TODO: Check this
-	}
+	if (graphics::getKeyState(graphics::SCANCODE_ESCAPE)) delete this; //TODO: Check this
 	// Music on/off
 	else if (graphics::getKeyState(graphics::SCANCODE_M) && !key_down)
 	{
@@ -201,10 +151,7 @@ void Menu::updateClassicScreen()
 		full_screen = !full_screen;
 		graphics::setFullScreen(full_screen);
 	}
-	else if (!graphics::getKeyState(graphics::SCANCODE_RETURN) && !graphics::getKeyState(graphics::SCANCODE_M) && !graphics::getKeyState(graphics::SCANCODE_N) && !graphics::getKeyState(graphics::SCANCODE_RSHIFT))
-	{
-		key_down = false;
-	}
+	else if (!graphics::getKeyState(graphics::SCANCODE_RETURN) && !graphics::getKeyState(graphics::SCANCODE_M) && !graphics::getKeyState(graphics::SCANCODE_N) && !graphics::getKeyState(graphics::SCANCODE_RSHIFT)) key_down = false;
 }
 
 void Menu::updateModernWelcome()
@@ -212,30 +159,18 @@ void Menu::updateModernWelcome()
 	graphics::getMouseState(mouse);
 	// Closing windw on close window click
 	if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 13) &&
-		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 13) && (window2CanvasY(mouse.cur_pos_y) >= 14) && (window2CanvasY(mouse.cur_pos_y) <= 43))
-	{
-		updateX();
-	}
-	else if ((window2CanvasX(mouse.cur_pos_x) >= 25) && (window2CanvasX(mouse.cur_pos_x) <= 55) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 45) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 20))
-	{
-		updateFullScreen();
-	}
-	else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20))
-	{		
-		updateB(STATUS_START);
-	}
-	// Music on/off
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 13) && (window2CanvasY(mouse.cur_pos_y) >= 14) && (window2CanvasY(mouse.cur_pos_y) <= 43)) updateX();
+
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 25) && (window2CanvasX(mouse.cur_pos_x) <= 55) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 45) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 20))	updateFullScreen();
+
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20)) updateB(STATUS_START);
+
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
-		(window2CanvasX(mouse.cur_pos_x) <= 520 - 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
-	{
-		updateM();
-	}
-	// Sound on/off
+		(window2CanvasX(mouse.cur_pos_x) <= 520 - 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5)) updateM();
+
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 + 83) &&
-		(window2CanvasX(mouse.cur_pos_x) <= 520 + 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
-	{
-		updateS();
-	}
+		(window2CanvasX(mouse.cur_pos_x) <= 520 + 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5)) updateS();
+
 	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH / 2 - 105) &&
 		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH / 2 + 105) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT / 2 + 110 - 10) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT / 2 + 110 + 50))
 	{
@@ -245,10 +180,7 @@ void Menu::updateModernWelcome()
 			music_on = false;
 			current_status = STATUS_PLAYINGCGAME;
 		}
-		else
-		{
-			hover[6] = 1.1f;
-		}
+		else hover[6] = 1.1f;
 	}
 	else if ((graphics::getKeyState(graphics::SCANCODE_RETURN) && !key_down))
 	{
@@ -257,10 +189,8 @@ void Menu::updateModernWelcome()
 		key_down = true;
 		current_status = STATUS_PLAYINGCGAME;
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
-	{
-		delete this; // TODO: check this one
-	}
+	else if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))	delete this; // TODO: check this one
+
 	else if (!key_down) // TODO: SECOND PRIORITY add more info button
 	{
 		hover[0] = 1.f;
@@ -270,10 +200,7 @@ void Menu::updateModernWelcome()
 		hover[6] = 1.f;
 		hover[3] = 1.f;
 	}
-	else if (!graphics::getKeyState(graphics::SCANCODE_RETURN) && key_down)
-	{
-		key_down = false;
-	}
+	else if (!graphics::getKeyState(graphics::SCANCODE_RETURN) && key_down)	key_down = false;
 }
 
 void Menu::updateModernScreen()
@@ -283,29 +210,17 @@ void Menu::updateModernScreen()
 
 	// Closing windw on close window click
 	if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 13) &&
-		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 13) && (window2CanvasY(mouse.cur_pos_y) >= 14) && (window2CanvasY(mouse.cur_pos_y) <= 43))
-	{
-		updateX();
-	}
-	// Openning info panel
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 13) && (window2CanvasY(mouse.cur_pos_y) >= 14) && (window2CanvasY(mouse.cur_pos_y) <= 43)) updateX();
+
 	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 30 - 15) &&
-		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 14) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 53 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 25 + 5))
-	{
-		updateI();
-	}	
-	// Music on/off
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 30 + 14) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 53 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 25 + 5)) updateI();
+
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
-		(window2CanvasX(mouse.cur_pos_x) <= 520 - 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
-	{
-		updateM();
-	}
-	// Sound on/off
+		(window2CanvasX(mouse.cur_pos_x) <= 520 - 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5)) updateM();
+
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 + 83) &&
-		(window2CanvasX(mouse.cur_pos_x) <= 520 + 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5))
-	{
-		updateS();
-	}
-	// Back to classics
+		(window2CanvasX(mouse.cur_pos_x) <= 520 + 83) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 50 + 5) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 30 + 5)) updateS();
+
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 700 - 105) &&
 		(window2CanvasX(mouse.cur_pos_x) <= 700 + 105) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 150 - 30) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 150 + 30))
 	{
@@ -314,23 +229,13 @@ void Menu::updateModernScreen()
 			modern = !modern;
 			updateMusic(modern);
 		}
-		else
-		{
-			hover[4] = 1.3f;
-		}
+		else hover[4] = 1.3f;
 	}
-	// Bored
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 300 - 105) &&
 		(window2CanvasX(mouse.cur_pos_x) <= 300 + 105) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 150 - 30) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 150 + 30))
 	{
-		if (mouse.button_left_released)
-		{
-			current_status = STATUS_PLAYINGB;
-		}
-		else
-		{
-			hover[5] = 1.1f;
-		}
+		if (mouse.button_left_released)	current_status = STATUS_PLAYINGB;
+		else hover[5] = 1.1f;
 	}
 	// Single player
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 300 - 120) &&
@@ -341,29 +246,17 @@ void Menu::updateModernScreen()
 			current_status = STATUS_PLAYINGC;
 			hover[6] = 1.f;
 		}
-		else
-		{
-			hover[6] = 1.1f;
-		}
+		else hover[6] = 1.1f;
 	}
 	// Multi player
 	else if (window2CanvasX(mouse.cur_pos_x) >= 580 &&
 		window2CanvasX(mouse.cur_pos_x) <= 815 && window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT / 2 - 58 && window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT / 2 + 15)
 	{
-		if (mouse.button_left_released)
-		{
-			current_status = STATUS_PLAYINGM;
-		}
-		else
-		{
-			hover[7] = 1.1f;
-		}
+		if (mouse.button_left_released)	current_status = STATUS_PLAYINGM;
+		else hover[7] = 1.1f;
 	}
 	// full screen
-	else if ((window2CanvasX(mouse.cur_pos_x) >= 25) && (window2CanvasX(mouse.cur_pos_x) <= 55) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 45) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 20))
-	{
-		updateFullScreen();
-	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 25) && (window2CanvasX(mouse.cur_pos_x) <= 55) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 45) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 20)) updateFullScreen();
 	else
 	{
 		hover[0] = 1.f;
@@ -381,22 +274,13 @@ void Menu::updateModernScreen()
 // General menu screen update function
 void Menu::updateMenuScreen()
 {
-	if (modern)
-	{
-		updateModernScreen();
-	}
-	else
-	{
-		updateClassicScreen();
-	}
+	if (modern)	updateModernScreen();
+	else updateClassicScreen();
 }
 
 void Menu::updateClassicWelcome()
 {
-	if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
-	{
-		delete this; // TODO: check this one
-	}
+	if (graphics::getKeyState(graphics::SCANCODE_ESCAPE)) delete this;
 	else if (graphics::getKeyState(graphics::SCANCODE_RETURN) && !key_down)
 	{
 		key_down = true;
@@ -407,7 +291,6 @@ void Menu::updateClassicWelcome()
 		if (paused) !paused;
 		key_down = true;
 		current_status = STATUS_START;
-
 	}
 	// Music on/off
 	else if (graphics::getKeyState(graphics::SCANCODE_M) && !key_down)
@@ -942,6 +825,18 @@ void Menu::updateGameMultiPlayer()
 	{
 		pacman->update();
 	}
+
+	if (checkCollisionPacMan() && pacman->getCollidable())
+	{
+		delete pacman;
+		pacman = nullptr;
+	}
+
+	if (checkCollisionPacMan() && enemies[0]->getCollidable())
+	{
+		delete enemies[0];
+		enemies[0] = nullptr;
+	}
 }
 
 void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
@@ -1211,7 +1106,7 @@ void Menu::drawClassicScreen()
 	brush.fill_color[2] = 0.f;
 
 	// Drawing black background
-	graphics::drawRect(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, 600, CANVAS_HEIGHT, brush);
+	graphics::drawRect(width_to_x(canvas_width, 50.f), height_to_y(canvas_height, 50.f), 600, canvas_height, brush);
 
 	// ----- Title -----
 
@@ -1227,7 +1122,7 @@ void Menu::drawClassicScreen()
 	brush.fill_color[2] = COLORPACKMAN_B;
 
 	// Drawing text for title
-	graphics::drawText(CANVAS_WIDTH / 2 - 135, 150, 50.F, std::string(TITLE), brush);
+	graphics::drawText(width_to_x(canvas_width, 39.f), height_to_y(canvas_height, 25.f), 50.F, std::string(TITLE), brush);
 
 	// ----- High Score & Score -----
 
@@ -1241,12 +1136,12 @@ void Menu::drawClassicScreen()
 	// TODO: Check why font is not working on change
 
 	// Drawing text
-	graphics::drawText(250, 50, 30.F, std::string(SCORE), brush);
-	graphics::drawText(250, 80, 25.F, std::to_string(score), brush);
+	graphics::drawText(width_to_x(canvas_width, 28.f), height_to_y(canvas_height, 7.f), 30.F, std::string(SCORE), brush);
+	graphics::drawText(width_to_x(canvas_width, 28.f), height_to_y(canvas_height, 12.f), 25.F, std::to_string(score), brush);
 
 	// Drawing text
-	graphics::drawText(CANVAS_WIDTH - 250 - 104, 50, 30.f, std::string(HSCORE), brush);
-	graphics::drawText(CANVAS_WIDTH - 250 - 104, 80, 25.f, std::to_string(highscore), brush);
+	graphics::drawText(width_to_x(canvas_width, 65.f), height_to_y(canvas_height, 7.f), 30.f, std::string(HSCORE), brush);
+	graphics::drawText(width_to_x(canvas_width, 65.f), height_to_y(canvas_height, 12.f), 25.f, std::to_string(highscore), brush);
 
 	// ----- KEY HANDLING TEXT -----
 
@@ -1311,7 +1206,7 @@ void Menu::drawX()
 	brush.texture = std::string(ASSET_PATH) + std::string(CLOSE);
 
 	// Drawing image for close button
-	graphics::drawRect(CANVAS_WIDTH - 30, 30, 40, 40, brush);
+	graphics::drawRect(width_to_x(canvas_width, 95.f), height_to_y(canvas_height, 5.f), 40, 40, brush);
 
 	brush.outline_opacity = 1.f;
 
@@ -1323,12 +1218,9 @@ void Menu::drawX()
 	brush.fill_color[2] = COLORPACKMAN_B;
 
 	// Closed
-	graphics::drawText(952, 62, 10.F, std::string(CLOSET), brush);
+	graphics::drawText(width_to_x(canvas_width, 93.5f), height_to_y(canvas_height, 11.f), 10.F, std::string(CLOSET), brush);
 
-	// Setting color to defaults for txt
-	brush.fill_color[0] = 1.f;
-	brush.fill_color[1] = 1.f;
-	brush.fill_color[2] = 1.f;
+	resetBrush();
 }
 
 void Menu::drawI()
@@ -1342,7 +1234,7 @@ void Menu::drawI()
 	brush.texture = std::string(ASSET_PATH) + std::string(INFO);
 
 	// Drawing image for info button
-	graphics::drawRect(CANVAS_WIDTH - 30, CANVAS_HEIGHT - 35, 40, 40, brush);
+	graphics::drawRect(width_to_x(canvas_width, 95.f), height_to_y(canvas_height, 95.f), 40, 40, brush);
 
 	// Resetting hover
 	graphics::resetPose();
@@ -1353,14 +1245,9 @@ void Menu::drawI()
 	brush.fill_color[2] = COLORPACKMAN_B;
 
 	// Info
-	graphics::drawText(957, CANVAS_HEIGHT - 58, 10.F, std::string(INFOT), brush);
+	graphics::drawText(width_to_x(canvas_width, 93.83f), height_to_y(canvas_height, 90.f), 10.F, std::string(INFOT), brush);
 
-	// Setting color to defaults for txt
-	brush.fill_color[0] = 1.f;
-	brush.fill_color[1] = 1.f;
-	brush.fill_color[2] = 1.f;
-
-	brush.outline_opacity = 1.f;
+	resetBrush();
 }
 
 void Menu::drawFullScreen()
@@ -1381,7 +1268,7 @@ void Menu::drawFullScreen()
 	}
 
 	// Drawing image for multi player
-	graphics::drawRect(40, CANVAS_HEIGHT - 32, 38, 38, brush);
+	graphics::drawRect(width_to_x(canvas_width, 5.f), height_to_y(canvas_height, 95.f), 40, 40, brush);
 
 	// Resetting hover
 	graphics::resetPose();
@@ -1392,14 +1279,9 @@ void Menu::drawFullScreen()
 	brush.fill_color[2] = COLORPACKMAN_B;
 
 	// Full screen
-	graphics::drawText(7, WINDOW_HEIGHT - 55, 10.F, std::string(FULLT), brush);
+	graphics::drawText(width_to_x(canvas_width, 2.17f), height_to_y(canvas_height, 90.f), 10.F, std::string(FULLT), brush);
 
-	// Setting color to defaults for txt
-	brush.fill_color[0] = 1.f;
-	brush.fill_color[1] = 1.f;
-	brush.fill_color[2] = 1.f;
-
-	brush.outline_opacity = 1.f;
+	resetBrush();
 }
 
 void Menu::drawB()
@@ -1413,7 +1295,7 @@ void Menu::drawB()
 	brush.texture = std::string(ASSET_PATH) + std::string(BACK);
 
 	// Drawing image for close button
-	graphics::drawRect(40, 30, 40, 40, brush);
+	graphics::drawRect(width_to_x(canvas_width, 5.f), height_to_y(canvas_height, 5.f), 40, 40, brush);
 
 	brush.outline_opacity = 1.f;
 
@@ -1425,12 +1307,9 @@ void Menu::drawB()
 	brush.fill_color[2] = COLORPACKMAN_B;
 
 	// Closed
-	graphics::drawText(26, 62, 10.F, std::string(BACKT), brush);
+	graphics::drawText(width_to_x(canvas_width, 3.65f), height_to_y(canvas_height, 11.f), 10.F, std::string(BACKT), brush);
 
-	// Setting color to defaults for txt
-	brush.fill_color[0] = 1.f;
-	brush.fill_color[1] = 1.f;
-	brush.fill_color[2] = 1.f;
+	resetBrush();
 }
 
 void Menu::drawP()
@@ -2073,7 +1952,7 @@ void Menu::drawM()
 	}
 
 	// Drawing image for sound button
-	graphics::drawRect(500 - 83, CANVAS_HEIGHT - 35, 40, 40, brush);
+	graphics::drawRect(width_to_x(canvas_width, 40.f), height_to_y(canvas_height, 94.f), 40, 40, brush);
 
 	// Resseting hover
 	graphics::resetPose();
@@ -2084,12 +1963,9 @@ void Menu::drawM()
 	brush.fill_color[2] = COLORPACKMAN_B;
 
 	// Music
-	graphics::drawText(398, CANVAS_HEIGHT - 61, 10.F, std::string(MUSIC), brush);
+	graphics::drawText(width_to_x(canvas_width, 38.3f), height_to_y(canvas_height, 90.f), 10.F, std::string(MUSIC), brush);
 
-	// Setting color to defaults for txt
-	brush.fill_color[0] = 1.f;
-	brush.fill_color[1] = 1.f;
-	brush.fill_color[2] = 1.f;
+	resetBrush();
 }
 
 void Menu::drawS()
@@ -2115,7 +1991,7 @@ void Menu::drawS()
 	}
 
 	// Drawing image for sound button
-	graphics::drawRect(500 + 83, CANVAS_HEIGHT - 35, 40, 40, brush);
+	graphics::drawRect(width_to_x(canvas_width, 60.f), height_to_y(canvas_height, 94.5f), 40, 40, brush);
 
 	// Resetting hover
 	graphics::resetPose();
@@ -2126,12 +2002,9 @@ void Menu::drawS()
 	brush.fill_color[2] = COLORPACKMAN_B;
 
 	// Sound
-	graphics::drawText(563, CANVAS_HEIGHT - 61, 10.F, std::string(SOUND), brush);
+	graphics::drawText(width_to_x(canvas_width, 58.3f), height_to_y(canvas_height, 90.f), 10.F, std::string(SOUND), brush);
 
-	// Setting color to defaults for txt
-	brush.fill_color[0] = 1.f;
-	brush.fill_color[1] = 1.f;
-	brush.fill_color[2] = 1.f;
+	resetBrush();
 }
 
 void Menu::drawGameMSelection()
@@ -2308,7 +2181,7 @@ void Menu::drawModernScreen()
 	brush.fill_opacity = 0.1f;
 
 	// Drawing image for background
-	graphics::drawRect(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, 600, CANVAS_HEIGHT, brush);
+	graphics::drawRect(width_to_x(canvas_width, 50.f), height_to_y(canvas_height, 50.f), canvas_width, canvas_height, brush);
 
 	// Resseting hover
 	graphics::resetPose();
@@ -2332,7 +2205,7 @@ void Menu::drawModernScreen()
 	brush.texture = std::string(ASSET_PATH) + std::string(CLASSIC);
 
 	// Drawing image for banner button
-	graphics::drawRect(700, CANVAS_HEIGHT - 150, 180, 60, brush);
+	graphics::drawRect(width_to_x(canvas_width, 67.f), height_to_y(canvas_height, 73.f), 180, 60, brush);
 
 	// Resetting hover
 	graphics::resetPose();
@@ -2344,7 +2217,7 @@ void Menu::drawModernScreen()
 	brush.texture = std::string(ASSET_PATH) + std::string(DF);
 
 	// Drawing image for single player button
-	graphics::drawRect(300, CANVAS_HEIGHT - 150, 210, 70, brush);
+	graphics::drawRect(width_to_x(canvas_width, 33.f), height_to_y(canvas_height, 73.f), 210, 70, brush);
 
 	// Resetting hover
 	graphics::resetPose();
@@ -2356,7 +2229,7 @@ void Menu::drawModernScreen()
 	brush.texture = std::string(ASSET_PATH) + std::string(SINGLEPALYER);
 
 	// Drawing image for single player
-	graphics::drawRect(300, CANVAS_HEIGHT / 2 - 25, 240, 80, brush);
+	graphics::drawRect(width_to_x(canvas_width, 33.f), height_to_y(canvas_height, 45.f), 240, 80, brush);
 
 	// Resetting hover
 	graphics::resetPose();
@@ -2368,7 +2241,7 @@ void Menu::drawModernScreen()
 	brush.texture = std::string(ASSET_PATH) + std::string(MULTIPLAYER);
 
 	// Drawing image for multi player
-	graphics::drawRect(700, CANVAS_HEIGHT / 2 - 25, 240, 80, brush);
+	graphics::drawRect(width_to_x(canvas_width, 67.f), height_to_y(canvas_height, 45.f), 240, 80, brush);
 
 	// Resetting hover
 	graphics::resetPose();
@@ -2387,21 +2260,21 @@ void Menu::drawModernScreen()
 	brush.fill_color[2] = COLORPACKMAN_B;
 
 	// Drawing text for title
-	graphics::drawText(CANVAS_WIDTH / 2 - 145, 150, 50.F, std::string(TITLE), brush);
+	graphics::drawText(width_to_x(canvas_width, 38.f), height_to_y(canvas_height, 25.f), 50.F, std::string(TITLE), brush);
 
 	// ----- Text over button -----
 
 	// Back to clasic
-	graphics::drawText(635, CANVAS_HEIGHT - 195, 12.F, std::string(BC), brush);
+	graphics::drawText(width_to_x(canvas_width, 61.3f), height_to_y(canvas_height, 65.f), 12.F, std::string(BC), brush);
 
 	// Bored
-	graphics::drawText(245, CANVAS_HEIGHT - 195, 12.F, std::string(BR), brush);
+	graphics::drawText(width_to_x(canvas_width, 28.5f), height_to_y(canvas_height, 65.f), 12.F, std::string(BR), brush);
 
 	// Multiplayer
-	graphics::drawText(255, WINDOW_HEIGHT / 2 - 65, 10.F, std::string(SINGLET), brush);
+	graphics::drawText(width_to_x(canvas_width, 28.5f), height_to_y(canvas_height, 36.5f), 12.F, std::string(SINGLET), brush);
 
 	// Singleplayer
-	graphics::drawText(650, WINDOW_HEIGHT / 2 - 65, 10.F, std::string(MULTIT), brush);
+	graphics::drawText(width_to_x(canvas_width, 63.f), height_to_y(canvas_height, 36.5f), 12.F, std::string(MULTIT), brush);
 
 	// ----- High Score & Score -----
 
@@ -2411,28 +2284,14 @@ void Menu::drawModernScreen()
 	brush.fill_color[2] = COLORRED_B;
 
 	// Drawing text for score & var
-	graphics::drawText(250, 50, 30.F, std::string(SCORE), brush);
-	graphics::drawText(250, 80, 25.F, std::to_string(score), brush);
+	graphics::drawText(width_to_x(canvas_width, 26.f), height_to_y(canvas_height, 7.f), 30.F, std::string(SCORE), brush);
+	graphics::drawText(width_to_x(canvas_width, 26.f), height_to_y(canvas_height, 12.f), 25.F, std::to_string(score), brush);
 
 	// Drawing text for high score & var
-	graphics::drawText(CANVAS_WIDTH - 250 - 117, 50, 30.F, std::string(HSCORE), brush);
-	graphics::drawText(CANVAS_WIDTH - 250 - 117, 80, 25.F, std::to_string(highscore), brush);
+	graphics::drawText(width_to_x(canvas_width, 65.f), height_to_y(canvas_height, 7.f), 30.F, std::string(HSCORE), brush);
+	graphics::drawText(width_to_x(canvas_width, 65.f), height_to_y(canvas_height, 12.f), 25.F, std::to_string(highscore), brush);
 
-	// Creating the info box
-
-	// Resetting the box image
-	brush.texture = "";
-
-	// Setting opacity
-	brush.fill_opacity = 0.9f;
-
-	// Resetting the box color
-	brush.fill_color[0] = 0.f;
-	brush.fill_color[1] = 0.f;
-	brush.fill_color[2] = 0.f;
-
-	// Resetting the opacity
-	brush.fill_opacity = 1.f;
+	resetBrush();
 
 	time_counter = 0.f;
 }
@@ -2728,13 +2587,11 @@ void Menu::setWindowDimensions(unsigned short int w, unsigned short int h)
 	{
 		canvas_height = window_height;
 		canvas_width = window_width;
-		std::cout << "first: width " << canvas_width << " height " << canvas_height << "--------------------- width " << window_width << " height " << window_height << std::endl;
 	}
 	else if ((window_width == WINDOW_WIDTH && window_height > WINDOW_HEIGHT) || (window_width > WINDOW_WIDTH && window_height == WINDOW_HEIGHT))
 	{	
 		canvas_width = CANVAS_WIDTH;
 		canvas_height = CANVAS_HEIGHT;
-		std::cout << "second: width " << canvas_width << " height " << canvas_height << "--------------------- width " << window_width << " height " << window_height << std::endl;
 	}
 	else if ((window_width == WINDOW_WIDTH && window_height < WINDOW_HEIGHT) || (window_width < WINDOW_WIDTH && window_height == WINDOW_HEIGHT))
 	{
@@ -2796,4 +2653,40 @@ bool Menu::checkCollisionPong(float dir)
 		return true;
 	}
 	return false;
+}
+
+bool Menu::checkCollisionPacMan()
+{
+	float dx, dy, d;
+	Disk pacmanD, en1D, en2D, en3D, en4D;
+
+	if (!pacman || !enemies[0])
+	{
+		return false;
+	}
+
+	if (multi)
+	{
+		
+		pacmanD = pacman->getCollisionHull();
+		en1D = enemies[0]->getCollisionHull();
+
+		d = sqrt(pow(pacmanD.cx - en1D.cx, 2) + pow(pacmanD.cy - en1D.cy, 2));
+
+		if (d <= pacmanD.radius + en1D.radius)
+		{
+			return true;
+		}	
+	}
+	return false;
+}
+
+void Menu::resetBrush()
+{
+	brush.texture = "";
+	brush.outline_opacity = 0.f;
+	brush.fill_opacity = 1.f;
+	brush.fill_color[0] = 1.f;
+	brush.fill_color[1] = 1.f;
+	brush.fill_color[2] = 1.f;
 }

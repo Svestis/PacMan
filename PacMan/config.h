@@ -4,10 +4,10 @@
 #define ASSET_PATH "assets\\"
 
 // SIZES
-#define WINDOW_WIDTH 1000
-#define WINDOW_HEIGHT 500
-#define CANVAS_WIDTH 1000
-#define CANVAS_HEIGHT 500
+#define WINDOW_WIDTH 1200
+#define WINDOW_HEIGHT 600
+#define CANVAS_WIDTH 1200
+#define CANVAS_HEIGHT 600
 #define PLAYER_POSITION_X
 #define PLAYER_POSITION_Y
 
@@ -21,6 +21,7 @@
 #define COLORBLUE_R .286f
 #define COLORBLUE_G .969f
 #define COLORBLUE_B .965f
+#define COLORCLYDE_R .725f
 #define COLORCLYDE_R .725f
 #define COLORCLYDE_G .380f
 #define COLORCLYDE_B .129f

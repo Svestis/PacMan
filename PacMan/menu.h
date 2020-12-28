@@ -93,6 +93,8 @@ class Menu
 	void drawFullScreen(); // full screen button
 	void drawGameMultiPlayer();
 	void cacheImages(); // Caching images
+	bool checkCollisionPacMan();
+	void resetBrush();
 public:
 	PongBall* pong_ball = nullptr;
 	void update();
@@ -107,8 +109,6 @@ public:
 	float window2CanvasX(float x);
 	float window2CanvasY(float y);
 	bool checkCollisionPong(float dir);
-	void checkBall();
-	//Menu(const class Console & console);
 	unsigned short int getPongLevel() const { return level; };
 	double getPongSpeed() const { return pong_speed; };
 	bool getModern() const { return modern; };
