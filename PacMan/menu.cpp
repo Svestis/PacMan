@@ -4,6 +4,7 @@
 #include <iostream>
 #include "util.h"
 
+
 void Menu::updateY()
 {
 	graphics::getMouseState(mouse);
@@ -946,13 +947,13 @@ void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
 	}
 	time_counter += graphics::getDeltaTime();
 
-	if (score % 15 == 0 && score!=0)
+	if (score % 15 == 0 && score!=0 && !lost)
 	{
 		level += 1;
 		local_level += 1;
 	}
 
-	if (time_counter > 60000)
+	if (time_counter > 60000 && !lost)
 	{
 		time_counter = 0.f;
 		pong_speed += 1;
@@ -1136,8 +1137,8 @@ void Menu::drawClassicScreen()
 	// TODO: Check why font is not working on change
 
 	// Drawing text
-	graphics::drawText(width_to_x(canvas_width, 28.f), height_to_y(canvas_height, 7.f), 30.F, std::string(SCORE), brush);
-	graphics::drawText(width_to_x(canvas_width, 28.f), height_to_y(canvas_height, 12.f), 25.F, std::to_string(score), brush);
+	graphics::drawText(width_to_x(canvas_width, 26.25f), height_to_y(canvas_height, 7.f), 30.F, std::string(SCORE), brush);
+	graphics::drawText(width_to_x(canvas_width, 26.25f), height_to_y(canvas_height, 12.f), 25.F, std::to_string(score), brush);
 
 	// Drawing text
 	graphics::drawText(width_to_x(canvas_width, 65.f), height_to_y(canvas_height, 7.f), 30.f, std::string(HSCORE), brush);
@@ -1167,20 +1168,20 @@ void Menu::drawClassicScreen()
 	}
 
 	// Drawing text
-	graphics::drawText(CANVAS_WIDTH / 2 - 146, CANVAS_HEIGHT / 2, 25.f, std::string(PLAY), loc_brush);
+	graphics::drawText(width_to_x(canvas_width, 37.5f), height_to_y(canvas_height, 50.f), 25.f, std::string(PLAY), loc_brush);
 
 	brush.fill_opacity = .5f;
 	// Drawing text
-	graphics::drawText(CANVAS_WIDTH / 4 - 177, CANVAS_HEIGHT / 2 + 90, 25.f, std::string(MUSICT), brush);
+	graphics::drawText(width_to_x(canvas_width, 10.f), height_to_y(canvas_height, 64.f), 25.f, std::string(MUSICT), brush);
 
 	// Drawing text
-	graphics::drawText(CANVAS_WIDTH / 4 * 3 - 179, CANVAS_HEIGHT / 2 + 90, 25.f, std::string(SOUNDT), brush);
+	graphics::drawText(width_to_x(canvas_width, 60.f), height_to_y(canvas_height, 64.f), 25.f, std::string(SOUNDT), brush);
 
 	// Drawing text
-	graphics::drawText(25, CANVAS_HEIGHT / 2 + 140, 25.f, std::string(SWITCH), brush);
+	graphics::drawText(width_to_x(canvas_width, 8.f), height_to_y(canvas_height, 78.f), 25.f, std::string(SWITCH), brush);
 
 	// Drawing text
-	graphics::drawText(CANVAS_WIDTH / 2 + 45, CANVAS_HEIGHT / 2 + 140, 25.f, std::string(FULLSCREEN), brush);
+	graphics::drawText(width_to_x(canvas_width, 56.f), height_to_y(canvas_height, 78.f), 25.f, std::string(FULLSCREEN), brush);
 
 	// Setting color for text for classic game mode
 	brush.fill_color[0] = COLORRED_R;
@@ -1188,7 +1189,7 @@ void Menu::drawClassicScreen()
 	brush.fill_color[2] = COLORRED_B;
 
 	// Drawing text
-	graphics::drawText(CANVAS_WIDTH / 2 - 138, CANVAS_HEIGHT / 2 + 190, 25.f, std::string(ESCA), brush);
+	graphics::drawText(width_to_x(canvas_width, 38.2f), height_to_y(canvas_height, 90.f), 25.f, std::string(ESCA), brush);
 
 	// Resetting opacity
 	brush.fill_opacity = 1.f;
@@ -1328,10 +1329,9 @@ void Menu::drawP()
 	{
 		brush.texture = std::string(ASSET_PATH) + std::string(PLAYIMG);
 	}
-	
 
 	// Drawing image for close button
-	graphics::drawRect(CANVAS_WIDTH-40, CANVAS_HEIGHT-35, 40, 40, brush);
+	graphics::drawRect(width_to_x(canvas_width, 95.f), height_to_y(canvas_height, 95.f), 40, 40, brush);
 
 	brush.outline_opacity = 1.f;
 
@@ -1345,17 +1345,14 @@ void Menu::drawP()
 	// Closed
 	if (paused)
 	{
-		graphics::drawText(CANVAS_WIDTH - 63, CANVAS_HEIGHT - 62, 10.F, std::string(RESUMET), brush);
+		graphics::drawText(width_to_x(canvas_width, 93.05f), height_to_y(canvas_height, 90.f), 10.F, std::string(RESUMET), brush);
 	}
 	else
 	{
-		graphics::drawText(CANVAS_WIDTH - 58, CANVAS_HEIGHT - 62, 10.F, std::string(PAUSET), brush);
+		graphics::drawText(width_to_x(canvas_width, 93.36f), height_to_y(canvas_height, 90.f), 10.f, std::string(PAUSET), brush);
 	}
 
-	// Setting color to defaults for txt
-	brush.fill_color[0] = 1.f;
-	brush.fill_color[1] = 1.f;
-	brush.fill_color[2] = 1.f;
+	resetBrush();
 }
 
 void Menu::drawClassicWelcome()
@@ -1368,18 +1365,18 @@ void Menu::drawClassicWelcome()
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
 
-		graphics::drawText(CANVAS_WIDTH / 2 - 166, 50, 25.f, CLASSSTARTTITLE, brush);
-		graphics::drawText(CANVAS_WIDTH / 2 - 166 + 85, 70, 20.f, std::to_string(highscore), brush);
+		graphics::drawText(width_to_x(canvas_width, 36.f), height_to_y(canvas_height, 5.f), 25.f, CLASSSTARTTITLE, brush);
+		graphics::drawText(width_to_x(canvas_width, 45.f), height_to_y(canvas_height, 10.f), 20.f, std::to_string(highscore), brush);
 
-		graphics::drawText(CANVAS_WIDTH / 2 - 188, 125, 20.f, CHARNICK, brush);
-		graphics::drawText(200, CANVAS_HEIGHT - 50, 15.f, CREDITS, brush);
-		graphics::drawText(300, CANVAS_HEIGHT - 50, 15.f, std::to_string(score), brush);
+		graphics::drawText(width_to_x(canvas_width, 34.5f), height_to_y(canvas_height, 20.f), 20.f, CHARNICK, brush);
+		graphics::drawText(width_to_x(canvas_width, 10.f),height_to_y(canvas_height, 95.f), 15.f, CREDITS, brush);
+		graphics::drawText(width_to_x(canvas_width, 17.5f), height_to_y(canvas_height, 95.f), 15.f, std::to_string(score), brush);
 	}
 	if (time_counter > 1000)
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_RIGHT_1);
-		graphics::drawRect(280, 190-25, 30, 30, brush);
+		graphics::drawRect(width_to_x(canvas_width, 30.f), height_to_y(canvas_height, 35.f), 30, 30, brush);
 		brush.fill_color[0] = COLORBLINKYC_R;
 		brush.fill_color[1] = COLORBLINKYC_G;
 		brush.fill_color[2] = COLORBLINKYC_B;
@@ -1388,13 +1385,13 @@ void Menu::drawClassicWelcome()
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(330, 190 - 25 + 5, 15.f, BLINKYT, brush);
+		graphics::drawText(width_to_x(canvas_width, 34.5f), height_to_y(canvas_height, 36.f), 15.f, BLINKYT, brush);
 	}
 	if (time_counter > 3000) 
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(590, 190 - 25 + 5, 15.f, BLINKYTN, brush);
+		graphics::drawText(width_to_x(canvas_width, 60.f), height_to_y(canvas_height, 36.f), 15.f, BLINKYTN, brush);
 	}
 	if (time_counter > 4000)
 	{
@@ -1403,7 +1400,7 @@ void Menu::drawClassicWelcome()
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
 		brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_RIGHT_1);
-		graphics::drawRect(280, 230-25, 30, 30, brush);
+		graphics::drawRect(width_to_x(canvas_width, 30.f), height_to_y(canvas_height, 45.f), 30, 30, brush);
 		brush.fill_color[0] = COLORPINKYC_R;
 		brush.fill_color[1] = COLORPINKYC_G;
 		brush.fill_color[2] = COLORPINKYC_B;
@@ -1412,13 +1409,13 @@ void Menu::drawClassicWelcome()
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(330, 230 - 25 + 5, 15.f, PINCKYT, brush);
+		graphics::drawText(width_to_x(canvas_width, 34.5f), height_to_y(canvas_height, 46.f), 15.f, PINCKYT, brush);
 	}
 	if (time_counter > 6000)
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(590, 230 - 25 + 5, 15.f, PINCKYTN, brush);
+		graphics::drawText(590, height_to_y(canvas_height, 46.f), 15.f, PINCKYTN, brush);
 	}
 	if (time_counter > 7000)
 	{
@@ -1427,7 +1424,7 @@ void Menu::drawClassicWelcome()
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
 		brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_RIGHT_1);
-		graphics::drawRect(280, 270-25, 30, 30, brush);
+		graphics::drawRect(width_to_x(canvas_width, 30.f), height_to_y(canvas_height, 55.f), 30, 30, brush);
 		brush.fill_color[0] = COLORINKYC_R;
 		brush.fill_color[1] = COLORINKYC_G;
 		brush.fill_color[2] = COLORINKYC_B;
@@ -1436,13 +1433,13 @@ void Menu::drawClassicWelcome()
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(330, 270 - 25 + 5, 15.f, INKYT, brush);
+		graphics::drawText(width_to_x(canvas_width, 34.5f), height_to_y(canvas_height, 56.f), 15.f, INKYT, brush);
 	}
 	if (time_counter > 9000)
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(590, 270 - 25 + 5, 15.f, INKYTN, brush);
+		graphics::drawText(590, height_to_y(canvas_height, 56.f), 15.f, INKYTN, brush);
 	}
 	if (time_counter > 10000)
 	{
@@ -1451,7 +1448,7 @@ void Menu::drawClassicWelcome()
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
 		brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_RIGHT_1);
-		graphics::drawRect(280, 310-25, 30, 30, brush);
+		graphics::drawRect(width_to_x(canvas_width, 30.f), height_to_y(canvas_height, 65.f), 30, 30, brush);
 		brush.fill_color[0] = COLORCLYDEC_R;
 		brush.fill_color[1] = COLORCLYDEC_G;
 		brush.fill_color[2] = COLORCLYDEC_B;
@@ -1460,13 +1457,13 @@ void Menu::drawClassicWelcome()
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(330, 310 - 25 + 5, 15.f, CLYDET, brush);
+		graphics::drawText(width_to_x(canvas_width, 34.5f), height_to_y(canvas_height, 66.f), 15.f, CLYDET, brush);
 	}
 	if (time_counter > 12000)
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(590, 310 - 25 + 5, 15.f, CLYDETN, brush);
+		graphics::drawText(590, height_to_y(canvas_height, 66.f), 15.f, CLYDETN, brush);
 	}
 	if (time_counter > 13000)
 	{
@@ -1892,7 +1889,7 @@ void Menu::drawGameB()
 
 	graphics::setScale(hover[5], hover[5]);
 
-	graphics::drawRect(CANVAS_WIDTH / 4 + CANVAS_WIDTH /2 , CANVAS_HEIGHT / 2, 200, 200, brush);
+	graphics::drawRect(width_to_x(canvas_width, 75.f), height_to_y(canvas_height, 50.f), 200, 200, brush);
 
 	graphics::resetPose();
 
@@ -1902,7 +1899,7 @@ void Menu::drawGameB()
 
 	graphics::setScale(hover[6], hover[6]);
 
-	graphics::drawRect(CANVAS_WIDTH / 4 , CANVAS_HEIGHT / 2, 200, 200, brush);
+	graphics::drawRect(width_to_x(canvas_width, 25.f) , height_to_y(canvas_height, 50.f), 200, 200, brush);
 
 	graphics::resetPose();
 
@@ -1911,9 +1908,9 @@ void Menu::drawGameB()
 	brush.fill_color[1] = COLORPACKMAN_G;
 	brush.fill_color[2] = COLORPACKMAN_B;
 
-	graphics::drawText(CANVAS_WIDTH / 4 + CANVAS_WIDTH/2 - 65, CANVAS_HEIGHT / 2 - 115, 10.f, BOREDT, brush);
+	graphics::drawText(width_to_x(canvas_width, 69.5f), height_to_y(canvas_height, 30.5f), 10.f, BOREDT, brush);
 
-	graphics::drawText(CANVAS_WIDTH / 4 - 100 + 104 - 15, CANVAS_HEIGHT / 2 - 115, 10.f, PONG, brush);
+	graphics::drawText(width_to_x(canvas_width, 24.f), height_to_y(canvas_height, 30.5f), 10.f, PONG, brush);
 
 	// Setting color to defaults for txt
 	brush.fill_color[0] = 1.f;
@@ -2284,8 +2281,8 @@ void Menu::drawModernScreen()
 	brush.fill_color[2] = COLORRED_B;
 
 	// Drawing text for score & var
-	graphics::drawText(width_to_x(canvas_width, 26.f), height_to_y(canvas_height, 7.f), 30.F, std::string(SCORE), brush);
-	graphics::drawText(width_to_x(canvas_width, 26.f), height_to_y(canvas_height, 12.f), 25.F, std::to_string(score), brush);
+	graphics::drawText(width_to_x(canvas_width, 25.5f), height_to_y(canvas_height, 7.f), 30.F, std::string(SCORE), brush);
+	graphics::drawText(width_to_x(canvas_width, 25.5f), height_to_y(canvas_height, 12.f), 25.F, std::to_string(score), brush);
 
 	// Drawing text for high score & var
 	graphics::drawText(width_to_x(canvas_width, 65.f), height_to_y(canvas_height, 7.f), 30.F, std::string(HSCORE), brush);
@@ -2365,9 +2362,9 @@ void Menu::drawGameMultiPlayer()
 
 void Menu::drawYN()
 {
-	graphics::drawText(CANVAS_WIDTH / 2 - 167, CANVAS_HEIGHT / 2 - 100, 50.f, GAMEOVER, brush);
+	graphics::drawText(width_to_x(canvas_width, 36.f), height_to_y(canvas_height, 30.f), 50.f, GAMEOVER, brush);
 
-	graphics::drawText(CANVAS_WIDTH / 2 - 146, CANVAS_HEIGHT / 2 - 25, 40.f, PLAYAGAIN, brush);
+	graphics::drawText(width_to_x(canvas_width, 37.5f), height_to_y(canvas_height, 45.f), 40.f, PLAYAGAIN, brush);
 
 	brush.outline_opacity = 0.f;
 
@@ -2375,7 +2372,7 @@ void Menu::drawYN()
 
 	graphics::setScale(hover[5], hover[5]);
 
-	graphics::drawRect(CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 75, 244, 133, brush);
+	graphics::drawRect(width_to_x(canvas_width, 25.f), height_to_y(canvas_height, 65.f), 244, 133, brush);
 
 	graphics::resetPose();
 
@@ -2383,7 +2380,7 @@ void Menu::drawYN()
 
 	graphics::setScale(hover[6], hover[6]);
 
-	graphics::drawRect(CANVAS_WIDTH / 2 + CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 75, 244, 133, brush);
+	graphics::drawRect(width_to_x(canvas_width, 75.f), height_to_y(canvas_height, 65.f), 244, 133, brush);
 
 	graphics::resetPose();
 }
@@ -2428,7 +2425,7 @@ void Menu::drawPong()
 		brush.fill_color[1] = 0.f;
 		brush.fill_color[2] = 0.f;
 
-		graphics::drawRect(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, 2, CANVAS_HEIGHT / 2 + 100, brush);
+		graphics::drawRect(width_to_x(canvas_width, 50.f),height_to_y(canvas_height, 50.f), 2, CANVAS_HEIGHT / 2 + 100, brush);
 		brush.outline_opacity = 0.f;
 		brush.fill_opacity = 1.f;
 
@@ -2437,12 +2434,12 @@ void Menu::drawPong()
 		brush.fill_color[2] = 1.f;
 	}
 
-	graphics::drawText(200, 25, 20.f, SCORE, brush);
-	graphics::drawText(200, 50, 20.f, std::to_string(score_pong), brush);
-	graphics::drawText(CANVAS_WIDTH - 267, 25, 20.f, HISCORE, brush);
-	graphics::drawText(CANVAS_WIDTH - 267, 50, 20.f, std::to_string(highscore_pong), brush);
+	graphics::drawText(width_to_x(canvas_width, 15.f), height_to_y(canvas_height, 5.f), 20.f, SCORE, brush);
+	graphics::drawText(width_to_x(canvas_width, 15.f), height_to_y(canvas_height, 10.f), 20.f, std::to_string(score_pong), brush);
+	graphics::drawText(width_to_x(canvas_width, 77.f), height_to_y(canvas_height, 5.f), 20.f, HISCORE, brush);
+	graphics::drawText(width_to_x(canvas_width, 77.f), height_to_y(canvas_height, 10.f), 20.f, std::to_string(highscore_pong), brush);
 	
-	graphics::drawText(CANVAS_WIDTH / 2 - 42, 30, 20.f, "LEVEL " + std::to_string(local_level), brush);
+	graphics::drawText(width_to_x(canvas_width, 46.5f), height_to_y(canvas_height, 7.5f), 20.f, "LEVEL " + std::to_string(local_level), brush);
 
 }
 
