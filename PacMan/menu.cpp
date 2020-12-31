@@ -3,6 +3,8 @@
 #include "config.h"
 #include <iostream>
 #include "util.h"
+#include <fstream>
+#include <iostream>
 
 
 void Menu::updateY()
@@ -11,7 +13,6 @@ void Menu::updateY()
 
 	if (mouse.button_left_released)
 	{
-		score_pong = 0;
 		paused = false;
 		lost = false;
 		hover[5] = 1.f;
@@ -55,6 +56,7 @@ void Menu::updateN(status s)
 	{
 		if (paused) paused = !paused;
 		score_pong = 0;
+		local_score = 0;
 		score = 0;
 		level = 1;
 		lost = false;
@@ -75,6 +77,7 @@ void Menu::updateB(status s)
 	{
 		if (paused) paused = !paused;
 		score_pong = 0;
+		local_score = 0;
 		score = 0;
 		level = 1;
 		lost = false;
@@ -363,6 +366,12 @@ void Menu::updateClassicGame()
 			hover[3] = 1.f;
 		}
 	}
+
+	if (!maze)
+	{
+		maze = new Maze(*this);
+	}
+
 	if (!pacman)
 	{
 		pacman = new PacMan(*this);
@@ -371,6 +380,11 @@ void Menu::updateClassicGame()
 	if (!enemies[0])
 	{
 		enemies[0] = new Phantom(*this);
+	}
+
+	if (maze)
+	{
+		maze->update();
 	}
 
 	if (enemies[0] && !paused)
@@ -807,6 +821,16 @@ void Menu::updateGameMultiPlayer()
 		hover[3] = 1.f;
 	}
 
+	if (!maze)
+	{
+		maze = new Maze(*this);
+	}
+
+	if (maze)
+	{
+		maze->update();
+	}
+
 	if (!enemies[0])
 	{
 		enemies[0] = new Phantom(*this);
@@ -947,13 +971,15 @@ void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
 	}
 	time_counter += graphics::getDeltaTime();
 
-	if (score % 15 == 0 && score!=0 && !lost)
+	if (local_score % 150 == 0 && local_score!=0 && !lost)
 	{
+		local_score = 0;
+		std::cout << pong_player->getCollisionHull().h;
 		level += 1;
 		local_level += 1;
 	}
 
-	if (time_counter > 60000 && !lost)
+	if (time_counter > 60000 && !lost && !paused)
 	{
 		time_counter = 0.f;
 		pong_speed += 1;
@@ -973,6 +999,10 @@ void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
 			pong_ai = nullptr;
 			delete pong_player;
 			pong_player = nullptr;
+			score_pong = 0;
+			local_score = 0;
+			level = 1;
+			local_level = 1;
 		}
 	}	
 }
@@ -1385,13 +1415,13 @@ void Menu::drawClassicWelcome()
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(width_to_x(canvas_width, 34.5f), height_to_y(canvas_height, 36.f), 15.f, BLINKYT, brush);
+		graphics::drawText(width_to_x(canvas_width, 35.5f), height_to_y(canvas_height, 36.f), 15.f, BLINKYT, brush);
 	}
 	if (time_counter > 3000) 
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(width_to_x(canvas_width, 60.f), height_to_y(canvas_height, 36.f), 15.f, BLINKYTN, brush);
+		graphics::drawText(width_to_x(canvas_width, 57.f), height_to_y(canvas_height, 36.f), 15.f, BLINKYTN, brush);
 	}
 	if (time_counter > 4000)
 	{
@@ -1409,13 +1439,13 @@ void Menu::drawClassicWelcome()
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(width_to_x(canvas_width, 34.5f), height_to_y(canvas_height, 46.f), 15.f, PINCKYT, brush);
+		graphics::drawText(width_to_x(canvas_width, 35.5f), height_to_y(canvas_height, 46.f), 15.f, PINCKYT, brush);
 	}
 	if (time_counter > 6000)
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(590, height_to_y(canvas_height, 46.f), 15.f, PINCKYTN, brush);
+		graphics::drawText(width_to_x(canvas_width, 57.f), height_to_y(canvas_height, 46.f), 15.f, PINCKYTN, brush);
 	}
 	if (time_counter > 7000)
 	{
@@ -1433,13 +1463,13 @@ void Menu::drawClassicWelcome()
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(width_to_x(canvas_width, 34.5f), height_to_y(canvas_height, 56.f), 15.f, INKYT, brush);
+		graphics::drawText(width_to_x(canvas_width, 35.5f), height_to_y(canvas_height, 56.f), 15.f, INKYT, brush);
 	}
 	if (time_counter > 9000)
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(590, height_to_y(canvas_height, 56.f), 15.f, INKYTN, brush);
+		graphics::drawText(width_to_x(canvas_width, 57.f), height_to_y(canvas_height, 56.f), 15.f, INKYTN, brush);
 	}
 	if (time_counter > 10000)
 	{
@@ -1457,13 +1487,13 @@ void Menu::drawClassicWelcome()
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(width_to_x(canvas_width, 34.5f), height_to_y(canvas_height, 66.f), 15.f, CLYDET, brush);
+		graphics::drawText(width_to_x(canvas_width, 35.5f), height_to_y(canvas_height, 66.f), 15.f, CLYDET, brush);
 	}
 	if (time_counter > 12000)
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = "";
-		graphics::drawText(590, height_to_y(canvas_height, 66.f), 15.f, CLYDETN, brush);
+		graphics::drawText(width_to_x(canvas_width, 57.f), height_to_y(canvas_height, 66.f), 15.f, CLYDETN, brush);
 	}
 	if (time_counter > 13000)
 	{
@@ -1472,24 +1502,24 @@ void Menu::drawClassicWelcome()
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
 		brush.texture = std::string(ASSET_PATH) + std::string(PACDOT_C);
-		graphics::drawRect(400, 360, 10, 10, brush);
-		graphics::drawRect(400, 390, 25, 25, brush);
-		graphics::drawText(520, 367, 13.f, "PTS", brush);
-		graphics::drawText(520, 399, 13.f, "PTS", brush);
-		graphics::drawText(490, 367, 17.f, "10", brush);
-		graphics::drawText(490, 399, 17.f, "50", brush);
+		graphics::drawRect(width_to_x(canvas_width, 44.f), height_to_y(canvas_height, 85.f), 10, 10, brush);
+		graphics::drawRect(width_to_x(canvas_width, 44.f), height_to_y(canvas_height, 90.f), 25, 25, brush);
+		graphics::drawText(width_to_x(canvas_width, 54.f), height_to_y(canvas_height, 86.f), 13.f, "PTS", brush);
+		graphics::drawText(width_to_x(canvas_width, 54.f), height_to_y(canvas_height, 91.f), 13.f, "PTS", brush);
+		graphics::drawText(width_to_x(canvas_width, 49.f), height_to_y(canvas_height, 86.f), 17.f, "10", brush);
+		graphics::drawText(width_to_x(canvas_width, 49.f), height_to_y(canvas_height, 91.f), 17.f, "50", brush);
 	}
 	if (time_counter > 14000 && counter<601)
 	{
 		brush.outline_opacity = 0.f;
 		time_counter_2 += graphics::getDeltaTime();
 		counter += 1;
-		if (time_counter_2 < 100 && CANVAS_WIDTH / 2 + 100 - counter >= CANVAS_WIDTH / 2 - 200)
+		if (time_counter_2 < 100 && canvas_width / 2 + 100 - counter >= canvas_width / 2 - 200)
 		{
 			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_LEFT_2);
-			graphics::drawRect(CANVAS_WIDTH/2 + 100 - counter, 330, 20, 20, brush);
+			graphics::drawRect(canvas_width/2 + 100 - counter, 330, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_LEFT_1);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 140 - counter, 330, 20, 20, brush);
+			graphics::drawRect(canvas_width / 2 + 140 - counter, 330, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_LEFT_1);
 			graphics::drawRect(CANVAS_WIDTH / 2 + 160 - counter, 330, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_LEFT_1);
@@ -1497,7 +1527,7 @@ void Menu::drawClassicWelcome()
 			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_LEFT_1);
 			graphics::drawRect(CANVAS_WIDTH / 2 + 200 - counter, 330, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(PACDOT_C);
-			graphics::drawRect(300, 330, 20, 20, brush);
+			graphics::drawRect(width_to_x(canvas_width, 30.f), height_to_y(canvas_height, 76.f), 20, 20, brush);
 		}
 		else if (time_counter_2 < 200 && CANVAS_WIDTH / 2 + 100 - counter >= CANVAS_WIDTH / 2 - 200)
 		{
@@ -1525,7 +1555,7 @@ void Menu::drawClassicWelcome()
 			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_LEFT_1);
 			graphics::drawRect(CANVAS_WIDTH / 2 + 200 - counter, 330, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(PACDOT_C);
-			graphics::drawRect(300, 330, 20, 20, brush);
+			graphics::drawRect(width_to_x(canvas_width, 30.f), height_to_y(canvas_height, 76.f), 20, 20, brush);
 		}
 		else if (time_counter_2 < 100)
 		{
@@ -1590,6 +1620,12 @@ void Menu::drawClassicGame()
 		drawFullScreen();
 	}
 	brush.outline_opacity = 0.f;
+
+	if (maze)
+	{
+		maze->draw();
+	}
+
 	if (pacman)
 	{
 		pacman->draw();
@@ -2348,6 +2384,13 @@ void Menu::drawGameMultiPlayer()
 	drawB();
 	drawFullScreen();
 	brush.outline_opacity = 0.f;
+
+
+	if (maze)
+	{
+		maze->draw();
+	}
+
 	if (pacman)
 	{
 		pacman->draw();
@@ -2358,6 +2401,7 @@ void Menu::drawGameMultiPlayer()
 	{
 		enemies[0]->draw();
 	}
+
 }
 
 void Menu::drawYN()
@@ -2482,7 +2526,7 @@ void Menu::draw()
 		drawPong();
 	}
 
-	if (debug) 
+	if (false) 
 	{
 		brush.fill_color[0] = 1.f;
 		brush.fill_color[1] = 1.f;
@@ -2563,10 +2607,36 @@ float Menu::window2CanvasY(float y)
 
 Menu::Menu()
 {
+	std::ifstream settings;
+	settings.open(std::string(ASSET_PATH) + "settings.txt");
+	if (settings)
+	{
+		std::cout << "all ok";
+	}
+
+	std::string word;
+
+	while (settings >> word)
+	{
+		if ()
+	}
+
+	settings.close();
+
 }
 
 Menu::~Menu()
 {
+	std::ofstream settings(std::string(ASSET_PATH) + "settings.txt");
+
+	settings << "MusicOn: " << music_on << std::endl;
+	settings << "SoundOn: " << sound_on << std::endl;
+	settings << "FullScreen: " << full_screen << std::endl;
+	settings << "PongHighScore: " << highscore_pong << std::endl;
+	settings << "PacManHighScore: " << highscore << std::endl;
+
+	settings.close();
+	
 	graphics::stopMusic();
 	if (pacman)
 	{
@@ -2639,6 +2709,7 @@ bool Menu::checkCollisionPong(float dir)
 		if (dir == 1.f)
 		{
 			score_pong += 1;
+			local_score += 1;
 			if (score_pong > highscore_pong)
 			{
 				highscore_pong = score_pong;

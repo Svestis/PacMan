@@ -486,7 +486,7 @@ Disk Phantom::getCollisionHull() const
 	Disk disk;
 	disk.cx = pos.x;
 	disk.cy = pos.y;
-	disk.radius = 15.5f;
+	disk.radius = 12.5f;
 	return disk;
 }
 
@@ -521,7 +521,7 @@ void Phantom::draw()
 	disk = getCollisionHull();
 	graphics::drawDisk(disk.cx, disk.cy, disk.radius, br);
 
-	graphics::drawRect(pos.x, pos.y, 30, 30, brush);
+	graphics::drawRect(pos.x, pos.y, 25, 25, brush);
 }
 
 void Phantom::init()

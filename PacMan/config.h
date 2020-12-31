@@ -1,5 +1,24 @@
 #pragma once
 
+/**
+* FILE: config.h
+* TITLE: configureation file
+*
+* PURPOSE:
+*
+* Defining all the constants to be used across the programme. It includes, including but not limited to floder paths, universal sizes, colors, etc.
+*
+* FUNCTIONS:
+*
+* None
+*
+* INCLUDED FILES:
+*
+* None
+*
+* @file config.h
+**/
+
 // PATHS
 #define ASSET_PATH "assets\\"
 
@@ -243,10 +262,11 @@
 #define PACMAN_C_DEATH_9 "death_c_9.png"
 #define PACMAN_C_DEATH_10 "death_c_10.png"
 #define PACMAN_C_DEATH_11 "death_c_11.png"
+#define MAZE1 "modern_maze_1.png"
+#define MAZE2 "classic_maze_1.png"
 
 // SOUNDS
 #define CHOMP "pacman_chomp.mp3"
 #define PONGHIT "pong_hit.mp3"
 #define PONGHITWALL "pong_wall.mp3"
 #define GAMEOVERPONG "game_over_pong.wav"
-

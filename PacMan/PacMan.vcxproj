@@ -148,31 +148,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="enemy.cpp" />
-    <ClCompile Include="game.cpp" />
     <ClCompile Include="gameelement.cpp" />
-    <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="maze.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="pacman.cpp" />
     <ClCompile Include="phantom.cpp" />
-    <ClCompile Include="player.cpp" />
     <ClCompile Include="pong.cpp" />
     <ClCompile Include="pongball.cpp" />
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
-    <ClInclude Include="enemy.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="gameobject.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="gameelement.h" />
     <ClInclude Include="pacdot.h" />
     <ClInclude Include="pacman.h" />
     <ClInclude Include="phantom.h" />
-    <ClInclude Include="player.h" />
     <ClInclude Include="pong.h" />
     <ClInclude Include="pongball.h" />
     <ClInclude Include="util.h" />

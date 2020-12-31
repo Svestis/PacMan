@@ -274,6 +274,7 @@ void PacMan::updateM()
 	}
 
 	if (pos.x < 0) pos.x = 0;
+	//if (pos.x < )
 	if (pos.x > CANVAS_WIDTH) pos.x = CANVAS_WIDTH;
 	if (pos.y < 0) pos.y = 0;
 	if (pos.y > CANVAS_HEIGHT) pos.y = CANVAS_HEIGHT;
@@ -481,7 +482,7 @@ Disk PacMan::getCollisionHull() const
 	Disk disk;
 	disk.cx = pos.x;
 	disk.cy = pos.y;
-	disk.radius = 15.5f;
+	disk.radius = 12.5f;
 	return disk;
 }
 
@@ -514,7 +515,7 @@ void PacMan::draw()
 	disk = getCollisionHull();
 	graphics::drawDisk(disk.cx, disk.cy, disk.radius, br);
 
-	graphics::drawRect(pos.x, pos.y, 30, 30, brush);
+	graphics::drawRect(pos.x, pos.y, 25, 25, brush);
 }
 
 void PacMan::init()
@@ -524,8 +525,8 @@ void PacMan::init()
 PacMan::PacMan(const Menu& ingame)
 	:GameElement(ingame)
 {
-	modern = menu.getModern();
-	multi = menu.getMulti();
+	modern = menu.getModern(); // Getter in order not to do back to back calls (initialized and then remainds unchanged
+	multi = menu.getMulti(); //  Getter in order not to do back to back calls (initialized and then remainds unchanged
 }
 
 PacMan::~PacMan()

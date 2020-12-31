@@ -6,6 +6,7 @@
 #include "phantom.h"
 #include "pong.h"
 #include "pongball.h"
+#include "maze.h"
 
 class Menu
 {
@@ -15,7 +16,6 @@ class Menu
 	bool modern = true,
 		music_on = true,
 		sound_on = true,
-		debug = false,
 		full_screen = false,
 		place_holder = false,
 		key_down = false,
@@ -27,6 +27,7 @@ class Menu
 		highscore_pong = 0;
 	float hover[14] = { 1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }; // Hovering for close button, info button, music button, sound button, classic button (or back), bored button (or pong or play again), single player (or arcade or dont play again), multiplayer, full screen, blinky, pinky, inky, clyde, pause
 	int score = 0,
+		local_score = 0,
 		highscore = 0,
 		counter = 0;
 	unsigned short int window_width = WINDOW_WIDTH, 
@@ -45,6 +46,7 @@ class Menu
 	Phantom* enemies[4] = { nullptr, nullptr, nullptr, nullptr };
 	Pong* pong_player = nullptr;
 	Pong* pong_ai = nullptr;
+	Maze* maze = nullptr;
 	void updateClassicScreen(); // update function for classic menu screen
 	void updateModernScreen(); // update function for classic modern screen
 	void updateMenuScreen(); // update function for menu in general
