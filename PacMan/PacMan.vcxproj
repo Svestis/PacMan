@@ -152,6 +152,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="maze.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="pacdot.cpp" />
     <ClCompile Include="pacman.cpp" />
     <ClCompile Include="phantom.cpp" />
     <ClCompile Include="pong.cpp" />

@@ -871,6 +871,43 @@ void Menu::updateGameMultiPlayer()
 		delete enemies[0];
 		enemies[0] = nullptr;
 	}
+
+	for (auto const& value : maze->pacdots)
+	{
+		if (checkCollisionPacDotPacMan(value))
+		{
+			if (!value->getBig())
+			{
+				player_score += 1;
+			}
+			else
+			{
+				player_score += 10;
+				enemies[0]->setCollidable(true);
+			}
+			maze->destroyDot(value);
+		}
+	}
+
+	for (auto const& value : maze->pacdots)
+	{
+		if (checkCollisionPacDotPhantom(value))
+		{
+			if (!value->getBig())
+			{
+				phantom_score += 1;
+			}
+			else
+			{
+				phantom_score += 10;
+				pacman->setCollidable(true);
+			}
+			maze->destroyDot(value);
+		}
+	}
+
+	std::cout << player_score << "pac" << std::endl;
+	std::cout << phantom_score << "phant" << std::endl;
 }
 
 void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
@@ -2800,6 +2837,48 @@ bool Menu::checkCollisionPacMan()
 		{
 			return true;
 		}	
+	}
+	return false;
+}
+
+bool Menu::checkCollisionPacDotPacMan(Pacdot* cur_dot)
+{
+	float dx, dy, d;
+	Disk pacmanD, pacdotD;
+
+	if (!pacman || !maze)
+	{
+		return false;
+	}
+	pacmanD = pacman->getCollisionHull();
+	pacdotD = cur_dot->getCollisionHull();
+
+	d = sqrt(pow(pacmanD.cx - pacdotD.cx, 2) + pow(pacmanD.cy - pacdotD.cy, 2));
+
+	if (d <= pacmanD.radius + pacdotD.radius)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Menu::checkCollisionPacDotPhantom(Pacdot* cur_dot)
+{
+	float dx, dy, d;
+	Disk en1D, pacdotD;
+
+	if (!maze || !enemies[0])
+	{
+		return false;
+	}
+	en1D = enemies[0]->getCollisionHull();
+	pacdotD = cur_dot->getCollisionHull();
+
+	d = sqrt(pow(en1D.cx - pacdotD.cx, 2) + pow(en1D.cy - pacdotD.cy, 2));
+
+	if (d <= en1D.radius + pacdotD.radius)
+	{
+		return true;
 	}
 	return false;
 }

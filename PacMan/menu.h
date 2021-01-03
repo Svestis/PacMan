@@ -29,7 +29,9 @@ class Menu
 	int score = 0,
 		local_score = 0,
 		highscore = 0,
-		counter = 0;
+		counter = 0,
+		player_score = 0,
+		phantom_score = 0;
 	unsigned short int window_width = WINDOW_WIDTH, 
 					   window_height = WINDOW_HEIGHT,
 					   canvas_width = CANVAS_WIDTH,
@@ -95,6 +97,8 @@ class Menu
 	void drawGameMultiPlayer();
 	void cacheImages(); // Caching images
 	bool checkCollisionPacMan();
+	bool checkCollisionPacDotPacMan(Pacdot* cur_dot);
+	bool checkCollisionPacDotPhantom(Pacdot* cur_dot);
 	void resetBrush();
 public:
 	Maze* maze = nullptr;

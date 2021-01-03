@@ -583,11 +583,6 @@ void PacMan::draw()
 	graphics::drawDisk(disk.cx, disk.cy, disk.radius, br);
 
 	graphics::drawRect(pos.x, pos.y, 25, 25, brush);
-
-	std::cout << pos.x << " " << pos.y << std::endl;
-	graphics::MouseState mouse;
-	graphics::getMouseState(mouse);
-	std::cout << mouse.cur_pos_x << " " << mouse.cur_pos_y << std::endl;
 }
 
 void PacMan::init()

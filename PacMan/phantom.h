@@ -14,7 +14,7 @@ class Phantom : public GameElement, public CollidableD
 	double timer = 0;
 	bool start = true,
 		 modern,
-		multi, collid = true;
+		multi, collid = false;
 	float speed = 7.f;
 	graphics::Brush brush;
 public:

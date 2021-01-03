@@ -2,22 +2,32 @@
 
 #include "graphics.h"
 #include "config.h"
+#include "pacdot.h"
+#include <vector>
+#include <memory>
+
+class Pacdot;
 
 class Maze
 {
-	bool modern;
+	bool modern, start = true;
 	graphics::Brush brush;
 	unsigned short int canvas_width = CANVAS_WIDTH, canvas_height = CANVAS_HEIGHT, maze_width = 700, maze_height = 500;
+	void gridM();
+	void gridC();
+	void createPacDotM();
+	void createPacDotC();
+	void init();
 protected:
 	const class Menu& menu;
 public:
 	void draw();
 	void update();
-	void init();
-	void gridM();
-	void gridC();
+	void destroyDot(Pacdot* element);
 	unsigned short int getHeight() { return maze_height; };
 	unsigned short int getWidth() { return maze_width; };
+	std::vector<Pacdot*> pacdots;
+	bool getModern() const { return modern; };
 	Maze(const class Menu& ingame);
 	~Maze();
 };

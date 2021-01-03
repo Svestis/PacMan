@@ -1,12 +1,24 @@
 #pragma once
 
-#include "gameelement.h"
 #include "config.h"
+#include "graphics.h"
+#include "maze.h"
+#include "gameelement.h"
 
-class Pacdot : public GameElement
+class Pacdot: public CollidableD
 {
-	Position pos{ CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 };
-	void update() override;
-	void draw() override;
-	void init() override;
+	graphics::Brush brush;
+	Disk disk;
+	Position pos;
+	bool modern, big;
+	void init();
+protected:
+	const class Menu& menu;
+public:
+	void update();
+	void draw();
+	bool getBig() { return big; };
+	Disk getCollisionHull() const;
+	Pacdot(const class Menu& ingame, int x, int y, bool is_big);
+	~Pacdot();
 };

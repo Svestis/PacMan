@@ -1,9 +1,7 @@
 #pragma once
 
 #include "config.h"
-
 #include "graphics.h"
-
 #include "gameelement.h"
 #include <iostream>
 #include <random>
