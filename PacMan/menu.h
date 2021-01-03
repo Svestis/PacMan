@@ -46,7 +46,6 @@ class Menu
 	Phantom* enemies[4] = { nullptr, nullptr, nullptr, nullptr };
 	Pong* pong_player = nullptr;
 	Pong* pong_ai = nullptr;
-	Maze* maze = nullptr;
 	void updateClassicScreen(); // update function for classic menu screen
 	void updateModernScreen(); // update function for classic modern screen
 	void updateMenuScreen(); // update function for menu in general
@@ -98,6 +97,7 @@ class Menu
 	bool checkCollisionPacMan();
 	void resetBrush();
 public:
+	Maze* maze = nullptr;
 	PongBall* pong_ball = nullptr;
 	void update();
 	void draw();

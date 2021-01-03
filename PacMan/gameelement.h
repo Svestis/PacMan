@@ -2,6 +2,8 @@
 
 typedef enum { UP1, UP2, UP3, DOWN1, DOWN2, DOWN3, LEFT1, LEFT2, LEFT3, RIGHT1, RIGHT2, RIGHT3, CENTER } rotation;
 
+typedef enum {UP, DOWN, LEFT, RIGHT} direction;
+
 struct Position
 {
 	float x, y;

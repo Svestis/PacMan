@@ -29,10 +29,10 @@ void Phantom::updateMulti()
 		updateRightM();
 	}
 
-	if (pos.x < 0) pos.x = 0;
-	if (pos.x > CANVAS_WIDTH) pos.x = CANVAS_WIDTH;
-	if (pos.y < 0) pos.y = 0;
-	if (pos.y > CANVAS_HEIGHT) pos.y = CANVAS_HEIGHT;
+	if (pos.x < (CANVAS_WIDTH / 2 - menu.maze->getWidth() / 2) + 39) pos.x = CANVAS_WIDTH / 2 - menu.maze->getWidth() / 2 + 39;
+	if (pos.x > (CANVAS_WIDTH / 2 + menu.maze->getWidth() / 2) - 35) pos.x = CANVAS_WIDTH / 2 + menu.maze->getWidth() / 2 - 35;
+	if (pos.y < (CANVAS_HEIGHT / 2 - menu.maze->getHeight() / 2)) pos.y = CANVAS_HEIGHT / 2 - menu.maze->getHeight() / 2;
+	if (pos.y > (CANVAS_HEIGHT / 2 + menu.maze->getHeight() / 2) - 57) pos.y = CANVAS_HEIGHT / 2 + menu.maze->getHeight() / 2 - 57;
 }
 
 void Phantom::updateLeftM()
@@ -529,6 +529,10 @@ void Phantom::init()
 	phantom = menu.getPhantom();
 	modern = menu.getModern();
 	multi = menu.getMulti();
+	if (multi)
+	{
+		pos.y = pos.y - 90;
+	}
 }
 
 Phantom::Phantom(const Menu& ingame)

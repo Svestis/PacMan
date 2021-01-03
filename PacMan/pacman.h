@@ -3,15 +3,19 @@
 #include "gameelement.h"
 #include "config.h"
 #include "graphics.h"
+#include <tuple>
 
 class PacMan : public GameElement, public CollidableD
 {
 	rotation rot = CENTER;
+	direction dir = LEFT;
+	bool moveUp = true, moveDown = true, moveLeft = true, moveRight = true;
 	Disk disk;
 	double timer = 0;
 	bool start = true,
 		modern, multi, collid = false;
-	Position pos{ CANVAS_WIDTH/2, CANVAS_HEIGHT/2 };
+	Position pos{ CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 };
+	std::tuple <unsigned short int, unsigned short int> pos_grid;
 	float speed = 7.f;
 	graphics::Brush brush;
 public:

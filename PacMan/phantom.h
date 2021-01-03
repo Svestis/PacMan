@@ -7,7 +7,7 @@
 
 class Phantom : public GameElement, public CollidableD
 {
-	Position pos{ CANVAS_WIDTH / 2 + 50, CANVAS_HEIGHT / 2 + 50 };
+	Position pos{ CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2};
 	rotation rot = LEFT1;
 	character phantom;
 	Disk disk;

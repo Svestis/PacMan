@@ -1,5 +1,4 @@
-MusicOn: 1
-SoundOn: 1
-FullScreen: 0
-PongHighScore: 0
+MusicOn: 0
+SoundOn: 0
+PongHighScore: 2
 PacManHighScore: 0

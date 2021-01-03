@@ -273,38 +273,105 @@ void PacMan::updateM()
 		updateRightM();
 	}
 
-	if (pos.x < 0) pos.x = 0;
-	//if (pos.x < )
-	if (pos.x > CANVAS_WIDTH) pos.x = CANVAS_WIDTH;
-	if (pos.y < 0) pos.y = 0;
-	if (pos.y > CANVAS_HEIGHT) pos.y = CANVAS_HEIGHT;
+	if (pos.x < (CANVAS_WIDTH / 2 - menu.maze->getWidth() / 2) + 39) pos.x = CANVAS_WIDTH / 2 - menu.maze->getWidth() / 2 + 39;
+	if (pos.x > (CANVAS_WIDTH / 2 + menu.maze->getWidth() / 2) - 35) pos.x = CANVAS_WIDTH / 2 + menu.maze->getWidth() / 2 - 35;
+	if (pos.y < (CANVAS_HEIGHT / 2 - menu.maze->getHeight() / 2)) pos.y = CANVAS_HEIGHT / 2 - menu.maze->getHeight() / 2;
+	if (pos.y > (CANVAS_HEIGHT / 2 + menu.maze->getHeight() / 2) - 57) pos.y = CANVAS_HEIGHT / 2 + menu.maze->getHeight() / 2 - 57;
+	
 }
 
 void PacMan::updateC()
 {
-	if (graphics::getKeyState(graphics::SCANCODE_W) || graphics::getKeyState(graphics::SCANCODE_UP))
+	if ((graphics::getKeyState(graphics::SCANCODE_W) || graphics::getKeyState(graphics::SCANCODE_UP)) && moveUp)
 	{
 		pos.y -= speed * graphics::getDeltaTime() / 50.f ;
 		updateUpC();
+		dir = UP;
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_S) || graphics::getKeyState(graphics::SCANCODE_DOWN))
+	else if ((graphics::getKeyState(graphics::SCANCODE_S) || graphics::getKeyState(graphics::SCANCODE_DOWN)) && moveDown)
 	{
 		pos.y += speed * graphics::getDeltaTime() / 50.f;
 		updateDownC();
+		dir = DOWN;
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_A) || graphics::getKeyState(graphics::SCANCODE_LEFT))
+	else if ((graphics::getKeyState(graphics::SCANCODE_A) || graphics::getKeyState(graphics::SCANCODE_LEFT)) && moveLeft)
 	{
 		pos.x -= speed * graphics::getDeltaTime() / 50.f;
 		updateLeftC();
+		dir = LEFT;
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_D) || graphics::getKeyState(graphics::SCANCODE_RIGHT))
+	else if ((graphics::getKeyState(graphics::SCANCODE_D) || graphics::getKeyState(graphics::SCANCODE_RIGHT)) && moveRight)
 	{
 		pos.x += speed * graphics::getDeltaTime() / 50.f;
 		updateRightC();
+		dir = RIGHT;
 	}
 
-	if (pos.x < 0) pos.x = 0;
-	if (pos.x > CANVAS_WIDTH) pos.x = CANVAS_WIDTH;
+	if (pos.y < 317 && pos.y > 311 && (pos.x > CANVAS_WIDTH /2 + menu.maze->getWidth() /2 - 154 || pos.x < CANVAS_WIDTH /2 - menu.maze->getWidth() /2 + 154)) // Tube
+	{
+		moveUp = false;
+		moveDown = false;
+		pos.y = 314;
+		if (pos.x > (CANVAS_WIDTH / 2 + menu.maze->getWidth() / 2) - 15) // right
+		{	
+			pos.x = CANVAS_WIDTH / 2 - menu.maze->getWidth() / 2 + 15 + 1;
+		}
+		else if (pos.x < (CANVAS_WIDTH / 2 - menu.maze->getWidth() / 2) + 15) // left
+		{
+			pos.x = CANVAS_WIDTH / 2 + menu.maze->getWidth() / 2 - 15 - 1;
+		}
+	}
+	else if ((pos.y > 220 && pos.y <= 311) || (pos.y >= 317 && pos.y < 407)) // bump
+	{
+		if (pos.x > CANVAS_WIDTH / 2 + menu.maze->getWidth() / 2 - 155) // right
+		{
+			pos.x = CANVAS_WIDTH / 2 + menu.maze->getWidth() / 2 - 155;
+		}
+		else if (pos.x < (CANVAS_WIDTH / 2 - menu.maze->getWidth() / 2 + 155)) // left
+		{
+			pos.x = CANVAS_WIDTH / 2 - menu.maze->getWidth() / 2 + 155;
+		}
+		moveUp = true;
+		moveDown = true;
+	}
+	else // other
+	{
+		if (pos.y <= 220 && pos.y >= 218 && (pos.x >  CANVAS_WIDTH /2 + menu.maze->getWidth() / 2 - 155 || pos.x < CANVAS_WIDTH / 2 - menu.maze->getWidth() / 2 + 155)) // Right and left upper part
+		{
+			pos.y = 219;
+			moveDown = false;
+		}
+		else moveDown = true;
+
+		if (pos.y >= 407 && pos.y <= 409 && (pos.x > CANVAS_WIDTH / 2 + menu.maze->getWidth() / 2 - 155 || pos.x < CANVAS_WIDTH / 2 - menu.maze->getWidth() / 2 + 155)) // Right and left down part
+		{
+			pos.y = 408;
+			moveUp = false;
+		}
+		else moveUp = true;
+
+		if (pos.x > CANVAS_WIDTH / 2 + menu.maze->getWidth() / 2 - 27) // right
+		{
+			pos.x = CANVAS_WIDTH / 2 + menu.maze->getWidth() / 2 - 27;
+		}
+		else if (pos.x < CANVAS_WIDTH / 2 - menu.maze->getWidth() / 2 + 27) // left
+		{
+			pos.x = CANVAS_WIDTH / 2 - menu.maze->getWidth() / 2 + 27;
+		}
+	}
+	
+	if (pos.y > CANVAS_HEIGHT / 2 + menu.maze->getHeight() / 2 + 7) // down
+	{
+	
+		pos.y = CANVAS_HEIGHT / 2 + menu.maze->getHeight() / 2 + 7;
+	}
+
+	if (pos.y < CANVAS_HEIGHT / 2 - menu.maze->getHeight() / 2 + 54) // up
+	{
+		pos.y = CANVAS_HEIGHT / 2 - menu.maze->getHeight() / 2 + 54;
+	}
+
+		
 	if (pos.y < 0) pos.y = 0;
 	if (pos.y > CANVAS_HEIGHT) pos.y = CANVAS_HEIGHT;
 }
@@ -379,10 +446,10 @@ void PacMan::updateMulti()
 		updateRightM();
 	}
 
-	if (pos.x < 0) pos.x = 0;
-	if (pos.x > CANVAS_WIDTH) pos.x = CANVAS_WIDTH;
-	if (pos.y < 0) pos.y = 0;
-	if (pos.y > CANVAS_HEIGHT) pos.y = CANVAS_HEIGHT;
+	if (pos.x < (CANVAS_WIDTH / 2 - menu.maze->getWidth() / 2) + 39) pos.x = CANVAS_WIDTH / 2 - menu.maze->getWidth() / 2 + 39;
+	if (pos.x > (CANVAS_WIDTH / 2 + menu.maze->getWidth() / 2) - 35) pos.x = CANVAS_WIDTH / 2 + menu.maze->getWidth() / 2 - 35;
+	if (pos.y < (CANVAS_HEIGHT / 2 - menu.maze->getHeight() / 2)) pos.y = CANVAS_HEIGHT / 2 - menu.maze->getHeight() / 2;
+	if (pos.y > (CANVAS_HEIGHT / 2 + menu.maze->getHeight() / 2) - 57) pos.y = CANVAS_HEIGHT / 2 + menu.maze->getHeight() / 2 - 57;
 }
 
 void PacMan::drawPacmanC()
@@ -516,6 +583,11 @@ void PacMan::draw()
 	graphics::drawDisk(disk.cx, disk.cy, disk.radius, br);
 
 	graphics::drawRect(pos.x, pos.y, 25, 25, brush);
+
+	std::cout << pos.x << " " << pos.y << std::endl;
+	graphics::MouseState mouse;
+	graphics::getMouseState(mouse);
+	std::cout << mouse.cur_pos_x << " " << mouse.cur_pos_y << std::endl;
 }
 
 void PacMan::init()
@@ -527,6 +599,7 @@ PacMan::PacMan(const Menu& ingame)
 {
 	modern = menu.getModern(); // Getter in order not to do back to back calls (initialized and then remainds unchanged
 	multi = menu.getMulti(); //  Getter in order not to do back to back calls (initialized and then remainds unchanged
+	pos_grid = std::make_tuple(19, 23);
 }
 
 PacMan::~PacMan()

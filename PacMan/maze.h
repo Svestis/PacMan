@@ -14,6 +14,8 @@ public:
 	void draw();
 	void update();
 	void init();
+	void gridM();
+	void gridC();
 	unsigned short int getHeight() { return maze_height; };
 	unsigned short int getWidth() { return maze_width; };
 	Maze(const class Menu& ingame);

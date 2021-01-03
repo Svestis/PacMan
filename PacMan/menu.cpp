@@ -140,7 +140,7 @@ void Menu::updateClassicScreen()
 	// Back to classics
 	else if (graphics::getKeyState(graphics::SCANCODE_LSHIFT))
 	{
-		modern = !modern;
+		modern = true;
 		updateMusic(modern);
 	}
 	// Single player
@@ -230,7 +230,7 @@ void Menu::updateModernScreen()
 	{
 		if (mouse.button_left_released)
 		{
-			modern = !modern;
+			modern = false;
 			updateMusic(modern);
 		}
 		else hover[4] = 1.3f;
@@ -339,6 +339,11 @@ void Menu::updateClassicGame()
 		else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20))
 		{
 			updateB(STATUS_START);
+			if (maze)
+			{
+				delete maze;
+				maze = nullptr;
+			}
 		}
 		// Music on/off
 		else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
@@ -790,10 +795,14 @@ void Menu::updateGameMultiPlayer()
 		if (music_on)
 		{
 			updateMusic(modern);
+		}		
+		updateB(STATUS_START);
+		if (maze)
+		{
+			delete maze;
+			maze = nullptr;
 		}
 
-		
-		updateB(STATUS_START);
 	}
 	// Music on/off
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
@@ -974,7 +983,6 @@ void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
 	if (local_score % 150 == 0 && local_score!=0 && !lost)
 	{
 		local_score = 0;
-		std::cout << pong_player->getCollisionHull().h;
 		level += 1;
 		local_level += 1;
 	}
@@ -1056,6 +1064,16 @@ void Menu::update()
 			delete pacman;
 			pacman = nullptr;
 		}
+		if (enemies[0])
+		{
+			delete enemies[0];
+			enemies[0] = nullptr;
+		}
+		if (maze)
+		{
+			delete maze;
+			maze = nullptr;
+		}
 		multi = false;
 		updateGameC2();
 	}
@@ -1066,6 +1084,16 @@ void Menu::update()
 			delete pacman;
 			pacman = nullptr;
 		}
+		if (enemies[0])
+		{
+			delete enemies[0];
+			enemies[0] = nullptr;
+		}
+		if (maze)
+		{
+			delete maze;
+			maze = nullptr;
+		}
 		multi = false;
 		updateGameM();
 	}
@@ -1075,6 +1103,16 @@ void Menu::update()
 		{
 			delete pacman;
 			pacman = nullptr;
+		}
+		if (enemies[0])
+		{
+			delete enemies[0];
+			enemies[0] = nullptr;
+		}
+		if (maze)
+		{
+			delete maze;
+			maze = nullptr;
 		}
 		multi = false;
 		updateGameMInfo();
@@ -2611,14 +2649,32 @@ Menu::Menu()
 	settings.open(std::string(ASSET_PATH) + "settings.txt");
 	if (settings)
 	{
-		std::cout << "all ok";
-	}
+		std::string word;
 
-	std::string word;
-
-	while (settings >> word)
-	{
-		if ()
+		while (settings >> word)
+		{
+			if (word == "MusicOn:")
+			{
+				settings >> word;
+				music_on = stoi(word);
+			}
+			else if (word == "SoundOn:")
+			{
+				settings >> word;
+				sound_on = stoi(word);
+			}
+			else if (word == "PongHighScore:")
+			{
+				settings >> word;
+				highscore_pong = stoi(word);
+			}
+			else if (word == "PacManHighScore:")
+			{
+				settings >> word;
+				highscore = stoi(word);
+			}
+			else continue;
+		}
 	}
 
 	settings.close();
@@ -2631,7 +2687,6 @@ Menu::~Menu()
 
 	settings << "MusicOn: " << music_on << std::endl;
 	settings << "SoundOn: " << sound_on << std::endl;
-	settings << "FullScreen: " << full_screen << std::endl;
 	settings << "PongHighScore: " << highscore_pong << std::endl;
 	settings << "PacManHighScore: " << highscore << std::endl;
 
