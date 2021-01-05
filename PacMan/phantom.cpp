@@ -360,124 +360,157 @@ void Phantom::drawPhantomC()
 
 void Phantom::drawPhantomM()
 {
-	switch (phantom)
+	if (!collid)
 	{
-	case(PINKY):
+		switch (phantom)
+		{
+		case(PINKY):
+			switch (rot)
+			{
+			case(LEFT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_LEFT_1);
+				break;
+			case(LEFT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_LEFT_2);
+				break;
+			case(DOWN1):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_DOWN_1);
+				break;
+			case(DOWN2):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_DOWN_2);
+				break;
+			case(UP1):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_UP_1);
+				break;
+			case(UP2):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_UP_2);
+				break;
+			case(RIGHT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_RIGHT_1);
+				break;
+			case(RIGHT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_RIGHT_2);
+				break;
+			}
+			break;
+		case(INKY):
+			switch (rot)
+			{
+			case(LEFT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_LEFT_1);
+				break;
+			case(LEFT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_LEFT_2);
+				break;
+			case(DOWN1):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_DOWN_1);
+				break;
+			case(DOWN2):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_DOWN_2);
+				break;
+			case(UP1):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_UP_1);
+				break;
+			case(UP2):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_UP_2);
+				break;
+			case(RIGHT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_RIGHT_1);
+				break;
+			case(RIGHT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_RIGHT_2);
+				break;
+			}
+			break;
+		case(BLINKY):
+			switch (rot)
+			{
+			case(LEFT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_LEFT_1);
+				break;
+			case(LEFT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_LEFT_2);
+				break;
+			case(DOWN1):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_DOWN_1);
+				break;
+			case(DOWN2):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_DOWN_2);
+				break;
+			case(UP1):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_UP_1);
+				break;
+			case(UP2):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_UP_2);
+				break;
+			case(RIGHT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_RIGHT_1);
+				break;
+			case(RIGHT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_RIGHT_2);
+				break;
+			}
+			break;
+		case(CLYDE):
+			switch (rot)
+			{
+			case(LEFT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_LEFT_1);
+				break;
+			case(LEFT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_LEFT_2);
+				break;
+			case(DOWN1):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_DOWN_1);
+				break;
+			case(DOWN2):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_DOWN_2);
+				break;
+			case(UP1):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_UP_1);
+				break;
+			case(UP2):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_UP_2);
+				break;
+			case(RIGHT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_RIGHT_1);
+				break;
+			case(RIGHT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_RIGHT_2);
+				break;
+			}
+			break;
+		}
+	}
+	else
+	{
 		switch (rot)
 		{
 		case(LEFT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_LEFT_1);
+			brush.texture = std::string(ASSET_PATH) + std::string(WHITE_M_LEFT_1);
 			break;
 		case(LEFT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_LEFT_2);
+			brush.texture = std::string(ASSET_PATH) + std::string(WHITE_M_LEFT_2);
 			break;
 		case(DOWN1):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_DOWN_1);
+			brush.texture = std::string(ASSET_PATH) + std::string(WHITE_M_DOWN_1);
 			break;
 		case(DOWN2):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_DOWN_2);
+			brush.texture = std::string(ASSET_PATH) + std::string(WHITE_M_DOWN_2);
 			break;
 		case(UP1):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_UP_1);
+			brush.texture = std::string(ASSET_PATH) + std::string(WHITE_M_UP_1);
 			break;
 		case(UP2):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_UP_2);
+			brush.texture = std::string(ASSET_PATH) + std::string(WHITE_M_UP_2);
 			break;
 		case(RIGHT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_RIGHT_1);
+			brush.texture = std::string(ASSET_PATH) + std::string(WHITE_M_RIGHT_1);
 			break;
 		case(RIGHT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_RIGHT_2);
+			brush.texture = std::string(ASSET_PATH) + std::string(WHITE_M_RIGHT_2);
 			break;
 		}
-		break;
-	case(INKY):
-		switch (rot)
-		{
-		case(LEFT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_LEFT_1);
-			break;
-		case(LEFT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_LEFT_2);
-			break;
-		case(DOWN1):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_DOWN_1);
-			break;
-		case(DOWN2):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_DOWN_2);
-			break;
-		case(UP1):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_UP_1);
-			break;
-		case(UP2):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_UP_2);
-			break;
-		case(RIGHT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_RIGHT_1);
-			break;
-		case(RIGHT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_RIGHT_2);
-			break;
-		}
-		break;
-	case(BLINKY):
-		switch (rot)
-		{
-		case(LEFT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_LEFT_1);
-			break;
-		case(LEFT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_LEFT_2);
-			break;
-		case(DOWN1):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_DOWN_1);
-			break;
-		case(DOWN2):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_DOWN_2);
-			break;
-		case(UP1):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_UP_1);
-			break;
-		case(UP2):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_UP_2);
-			break;
-		case(RIGHT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_RIGHT_1);
-			break;
-		case(RIGHT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_RIGHT_2);
-			break;
-		}
-		break;
-	case(CLYDE):
-		switch (rot)
-		{
-		case(LEFT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_LEFT_1);
-			break;
-		case(LEFT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_LEFT_2);
-			break;
-		case(DOWN1):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_DOWN_1);
-			break;
-		case(DOWN2):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_DOWN_2);
-			break;
-		case(UP1):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_UP_1);
-			break;
-		case(UP2):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_UP_2);
-			break;
-		case(RIGHT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_RIGHT_1);
-			break;
-		case(RIGHT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_RIGHT_2);
-			break;
-		}
-		break;
 	}
 }
 

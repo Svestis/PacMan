@@ -13,7 +13,7 @@ class PacMan : public GameElement, public CollidableD
 	Disk disk;
 	double timer = 0;
 	bool start = true,
-		modern, multi, collid = false;
+		modern, multi, collid = true;
 	Position pos{ CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 };
 	std::tuple <unsigned short int, unsigned short int> pos_grid;
 	float speed = 7.f;

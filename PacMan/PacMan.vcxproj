@@ -152,6 +152,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="maze.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="obstacle.cpp" />
     <ClCompile Include="pacdot.cpp" />
     <ClCompile Include="pacman.cpp" />
     <ClCompile Include="phantom.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="gameelement.h" />
+    <ClInclude Include="obstacle.h" />
     <ClInclude Include="pacdot.h" />
     <ClInclude Include="pacman.h" />
     <ClInclude Include="phantom.h" />

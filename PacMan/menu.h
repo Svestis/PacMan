@@ -13,6 +13,7 @@ class Menu
 	typedef enum { STATUS_START, STATUS_PLAYINGM, STATUS_PLAYINGM_INFO, STATUS_PLAYINGM_GAME, STATUS_PLAYINGC, STATUS_PLAYINGCGAME, STATUS_PLAYINGC2, STATUS_PLAYINGB, STATUS_PLAYINGPONG } status;
 	status current_status = STATUS_START;
 	character phantom;
+	std::string msg = "0";
 	bool modern = true,
 		music_on = true,
 		sound_on = true,
@@ -80,7 +81,7 @@ class Menu
 	void drawClassicWelcome2();
 	void drawModernWelcome();
 	void drawPong();
-	void drawYN();
+	void drawYN(std::string txt ="0");
 	void drawGameM(); // drawing game for multiplayer state
 	void drawGameB(); // drawing game for bored state
 	void drawM(); // drawing music button

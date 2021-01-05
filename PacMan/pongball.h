@@ -25,7 +25,6 @@ public:
 	void draw();
 	void init();
 	Disk getCollisionHull() const override;
-	void wallSound();
 	bool isActive() { return active; };
 	void changeDirection();
 	void setAngle(Rectangle& rect);

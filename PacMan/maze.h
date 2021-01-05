@@ -3,10 +3,12 @@
 #include "graphics.h"
 #include "config.h"
 #include "pacdot.h"
+#include "obstacle.h"
 #include <vector>
 #include <memory>
 
 class Pacdot;
+class Obstacle;
 
 class Maze
 {
@@ -17,6 +19,7 @@ class Maze
 	void gridC();
 	void createPacDotM();
 	void createPacDotC();
+	void createObstacle();
 	void init();
 protected:
 	const class Menu& menu;
@@ -27,6 +30,7 @@ public:
 	unsigned short int getHeight() { return maze_height; };
 	unsigned short int getWidth() { return maze_width; };
 	std::vector<Pacdot*> pacdots;
+	std::vector<Obstacle*> obstacles;
 	bool getModern() const { return modern; };
 	Maze(const class Menu& ingame);
 	~Maze();

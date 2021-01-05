@@ -820,6 +820,24 @@ void Menu::updateGameMultiPlayer()
 	{
 		delete this; // TODO: check this one
 	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 40 - 20) &&
+		(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 20) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 40 - 15) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 15))
+	{
+		if (!lost)
+		{
+			updateP();
+		}
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 128) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 372) && (window2CanvasY(mouse.cur_pos_y) >= 259) && (window2CanvasY(mouse.cur_pos_y) <= 391) && lost)
+	{
+		updateY();
+	}
+	else if ((window2CanvasX(mouse.cur_pos_x) >= 128 + 500) &&
+		(window2CanvasX(mouse.cur_pos_x) <= 372 + 500) && (window2CanvasY(mouse.cur_pos_y) >= 259) && (window2CanvasY(mouse.cur_pos_y) <= 391) && lost)
+	{
+		updateN(STATUS_START);
+	}
 	else // TODO: SECOND PRIORITY add more info button
 	{
 		hover[0] = 1.f;
@@ -843,6 +861,8 @@ void Menu::updateGameMultiPlayer()
 	if (!enemies[0])
 	{
 		enemies[0] = new Phantom(*this);
+		time_counter = 0;
+		enemies[0]->setCollidable(false);
 	}
 
 	if (enemies[0])
@@ -853,6 +873,7 @@ void Menu::updateGameMultiPlayer()
 	if (!pacman)
 	{
 		pacman = new PacMan(*this);
+		pacman->setCollidable(true);
 	}
 
 	if (pacman)
@@ -869,6 +890,7 @@ void Menu::updateGameMultiPlayer()
 	if (checkCollisionPacMan() && enemies[0]->getCollidable())
 	{
 		delete enemies[0];
+		pacman->setCollidable(true);
 		enemies[0] = nullptr;
 	}
 
@@ -884,6 +906,12 @@ void Menu::updateGameMultiPlayer()
 			{
 				player_score += 10;
 				enemies[0]->setCollidable(true);
+				pacman->setCollidable(false);
+			}
+
+			if (player_score % 5 == 0 && sound_on)
+			{
+				graphics::playSound(std::string(ASSET_PATH) + std::string(CHOMP), 1.f, false);
 			}
 			maze->destroyDot(value);
 		}
@@ -900,14 +928,56 @@ void Menu::updateGameMultiPlayer()
 			else
 			{
 				phantom_score += 10;
-				pacman->setCollidable(true);
+			}
+
+			if (phantom_score % 5 == 0 && sound_on)
+			{
+				graphics::playSound(std::string(ASSET_PATH) + std::string(CHOMPFRUIT), 1.f, false);
 			}
 			maze->destroyDot(value);
 		}
 	}
 
-	std::cout << player_score << "pac" << std::endl;
-	std::cout << phantom_score << "phant" << std::endl;
+	if (enemies[0] && enemies[0]->getCollidable())
+	{
+		time_counter += graphics::getDeltaTime();
+		if (time_counter > 5000)
+		{
+			std::cout << std::to_string(time_counter) << std::endl;
+			enemies[0]->setCollidable(false);
+			pacman->setCollidable(true);
+			time_counter = 0;
+		}
+	}
+
+	if (maze->pacdots.size() == 0 && (player_score > 0 || phantom_score > 0))
+	{
+		paused = true;
+		lost = true;
+		delete pacman;
+		pacman = nullptr;
+		delete enemies[0];
+		enemies[0] = nullptr;
+		delete maze;
+		maze = nullptr;
+		if (phantom_score > player_score)
+		{
+			if (sound_on) graphics::playSound(std::string(ASSET_PATH) + std::string(GAMEOVERPACMAN), 1.f, false);
+			msg = "PHANTOM WINS";
+		}
+		else if (phantom_score < player_score)
+		{
+			if (sound_on) graphics::playSound(std::string(ASSET_PATH) + std::string(WINPACMAN), 1.f, false);
+			msg = "PLAYER WINS";
+		}
+		else
+		{
+			if (sound_on) graphics::playSound(std::string(ASSET_PATH) + std::string(TIEPACMAN), 1.f, false);
+			msg = "THAT IS A DRAW";
+		}
+		phantom_score = 0;
+		player_score = 0;
+	}
 }
 
 void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
@@ -958,16 +1028,14 @@ void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
 		delete this; // TODO: check this one
 	}
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 128) &&
-		(window2CanvasX(mouse.cur_pos_x) <= 372) && (window2CanvasY(mouse.cur_pos_y) >= 259) && (window2CanvasY(mouse.cur_pos_y) <= 391 ))
+		(window2CanvasX(mouse.cur_pos_x) <= 372) && (window2CanvasY(mouse.cur_pos_y) >= 259) && (window2CanvasY(mouse.cur_pos_y) <= 391 ) && lost)
 	{
 		updateY();
-		//graphics::drawRect(CANVAS_WIDTH / 2 + CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 75, 244, 133, brush);
 	}
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 128+500) &&
-		(window2CanvasX(mouse.cur_pos_x) <= 372+500) && (window2CanvasY(mouse.cur_pos_y) >= 259) && (window2CanvasY(mouse.cur_pos_y) <= 391))
+		(window2CanvasX(mouse.cur_pos_x) <= 372+500) && (window2CanvasY(mouse.cur_pos_y) >= 259) && (window2CanvasY(mouse.cur_pos_y) <= 391) && lost)
 	{
 		updateN(STATUS_PLAYINGB);
-		//graphics::drawRect(CANVAS_WIDTH / 2 + CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 75, 244, 133, brush);
 	}
 	else
 	{
@@ -1035,7 +1103,7 @@ void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
 	{
 		if (pong_ball->getX() < 0 || pong_ball->getX() > CANVAS_WIDTH)
 		{
-			graphics::playSound(std::string(ASSET_PATH) + std::string(GAMEOVERPONG), 1.f, false);
+			if(sound_on) graphics::playSound(std::string(ASSET_PATH) + std::string(GAMEOVERPONG), 1.f, false);
 			paused = true;
 			lost = true;
 			delete pong_ball;
@@ -2452,36 +2520,82 @@ void Menu::drawGameC2()
 
 void Menu::drawGameMultiPlayer()
 {
+	if (lost)
+	{
+		drawYN(msg);
+	}
 
 	drawM();
 	drawS();
 	drawX();
 	drawB();
+	drawP();
 	drawFullScreen();
 	brush.outline_opacity = 0.f;
 
-
-	if (maze)
+	if (!lost)
 	{
-		maze->draw();
-	}
+		if (maze)
+		{
+			maze->draw();
+		}
 
-	if (pacman)
-	{
-		pacman->draw();
-	}
+		if (pacman)
+		{
+			pacman->draw();
+		}
 
 
-	if (enemies[0])
-	{
-		enemies[0]->draw();
+		if (enemies[0])
+		{
+			enemies[0]->draw();
+		}
+
+		brush.fill_color[0] = COLORPACKMAN_R;
+		brush.fill_color[1] = COLORPACKMAN_G;
+		brush.fill_color[2] = COLORPACKMAN_B;
+
+		switch (phantom)
+		{
+		case(0):
+			graphics::drawText(1000, 150, 20.f, "PINKY", brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(PINKYCHAR);
+			break;
+		case(1):
+			graphics::drawText(1000, 150, 20.f, "BLINKY", brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(BLINKYCHAR);
+			break;
+		case(2):
+			graphics::drawText(1000, 150, 20.f, "INKY", brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(INKYCHAR);
+			break;
+		case(3):
+			graphics::drawText(1000, 150, 20.f, "CLYDE", brush);
+			brush.texture = std::string(ASSET_PATH) + std::string(CLYDECHAR);
+			break;
+		}
+
+		graphics::drawText(100, 150, 20.f, PACMANT, brush);
+		graphics::drawText(100, 180, 19.f, std::to_string(player_score), brush);
+		graphics::drawText(1000, 180, 19.f, std::to_string(phantom_score), brush);
+
+		brush.fill_color[0] = 1.f;
+		brush.fill_color[1] = 1.f;
+		brush.fill_color[2] = 1.f;
+
+		graphics::drawRect(1040, 300, 175, 175, brush);
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMANCHAR);
+		graphics::drawRect(140, 300, 175, 175, brush);
+
+		resetBrush();
 	}
 
 }
 
-void Menu::drawYN()
+void Menu::drawYN(std::string txt)
 {
-	graphics::drawText(width_to_x(canvas_width, 36.f), height_to_y(canvas_height, 30.f), 50.f, GAMEOVER, brush);
+	if(txt == "0") graphics::drawText(width_to_x(canvas_width, 36.f), height_to_y(canvas_height, 30.f), 50.f, GAMEOVER, brush);
+	else graphics::drawText(width_to_x(canvas_width, 34.f), height_to_y(canvas_height, 30.f), 50.f, txt, brush);
 
 	graphics::drawText(width_to_x(canvas_width, 37.5f), height_to_y(canvas_height, 45.f), 40.f, PLAYAGAIN, brush);
 
@@ -2807,8 +2921,6 @@ bool Menu::checkCollisionPong(float dir)
 				highscore_pong = score_pong;
 			}
 		}
-		graphics::playSound(WELCOME_MUSICC, 1.f, false);
-		graphics::playSound(CHOMP, 1.f, false);
 		pong_ball->setAngle(r1);
 		return true;
 	}
