@@ -18,6 +18,7 @@ class Phantom : public GameElement, public CollidableD
 	float speed = 7.f;
 	graphics::Brush brush;
 public:
+	bool movement[4] = { true, true, true, true }; // left, right, top, down
 	void update() override;
 	void draw() override;
 	void init() override;

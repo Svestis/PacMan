@@ -9,6 +9,12 @@ void Maze::draw()
 	brush.fill_opacity = 1.f;
 	if (modern)
 	{
+		if (start)
+		{
+			createPacDotM();
+			createObstacle();
+			start = false;
+		}
 		brush.texture = std::string(ASSET_PATH) + std::string(MAZE1);
 		graphics::drawRect(width_to_x(canvas_width, 50.f), height_to_y(canvas_height, 45.f), maze_width, maze_height, brush);
 		if (obstacles[0])
@@ -21,9 +27,14 @@ void Maze::draw()
 	{
 		brush.texture = std::string(ASSET_PATH) + std::string(MAZE2);
 		graphics::drawRect(width_to_x(canvas_width, 50.f), height_to_y(canvas_height, 55.f), maze_width, maze_height, brush);
+		if (start)
+		{
+			createPacDotC();
+			createObstacle();
+			start = false;
+		}
 		//gridC();
 	}
-
 	for (auto i : pacdots)
 	{
 		i->draw();
@@ -45,6 +56,12 @@ void Maze::createObstacle()
 	obstacles.push_back(new Obstacle(menu, 601, 256, 170, 61));
 
 	obstacles.push_back(new Obstacle(menu, 602, 49, 23, 37));
+
+	obstacles.push_back(new Obstacle(menu, 601, 326, 170, 15));
+
+	obstacles.push_back(new Obstacle(menu, 601, 145, 22, 93));
+
+	obstacles.push_back(new Obstacle(menu, 601, 420, 22, 110));
 
 	for (int inc : {0, 485})
 	{
@@ -76,11 +93,27 @@ void Maze::createObstacle()
 	{
 		obstacles.push_back(new Obstacle(menu, 493 + inc, 83, 96, 31));
 
-		for (int i : {0, 94, 141, 235, 330})
+		for (int i : {47, 235, 330})
 		{
-			//obstacles.push_back(new Obstacle(menu, 359 + inc, 138 + i, 72, 15));
+			obstacles.push_back(new Obstacle(menu, 493 + inc, 138 + i, 95, 15));
 		}
 	}
+
+	for (int inc : {0, 291})
+	{
+		for (int i : {0, 283})
+		{
+			obstacles.push_back(new Obstacle(menu, 456 + inc, 162 + i, 22, 60));
+		}
+
+		obstacles.push_back(new Obstacle(menu, 456 + inc, 279, 22, 110));
+	}
+
+	for (int inc : {0, 283})
+	{
+		obstacles.push_back(new Obstacle(menu, 601, 138 + inc, 170, 15));
+	}
+
 }
 
 void Maze::createPacDotM()
@@ -244,97 +277,16 @@ void Maze::gridM()
 	brush.outline_opacity = 0.f;
 	brush.fill_opacity = .2f;
 	for (int i = 0; i < 40; i++)
-	{		
-		graphics::drawRect(i * maze_width / 40 +260, canvas_height/2-30, 1, canvas_height/2+200, brush);
+	{
+		graphics::drawRect(i * maze_width / 40 + 260, canvas_height / 2 - 30, 1, canvas_height / 2 + 200, brush);
 	}
 
 	for (int i = 0; i < 40; i++)
 	{
-		graphics::drawRect(canvas_width/2, i * maze_height / 40 + 26, canvas_width / 2 + 150, 1, brush);
+		graphics::drawRect(canvas_width / 2, i * maze_height / 40 + 26, canvas_width / 2 + 150, 1, brush);
 	}
 
 }
-
-/*Fine tunned maze
-void Maze::gridM()
-{
-	brush.texture = "";
-	brush.outline_opacity = 0.f;
-	brush.fill_opacity = .2f;
-
-	for (int i = 0; i < 20; i++)
-	{
-		if (i==4 || i==5)
-		{
-			graphics::drawRect(canvas_width / 2, i * 31.25 + 21, canvas_width / 2 + 150, 1, brush);
-		}
-		else if (i==6 || i ==7)
-		{
-			graphics::drawRect(canvas_width / 2, i * 31.25 + 5, canvas_width / 2 + 150, 1, brush);
-		}
-		else if (i==8 || i==9)
-		{
-			graphics::drawRect(canvas_width / 2, i * 31.25 -9, canvas_width / 2 + 150, 1, brush);
-		}
-		else if (i == 10 || i==11)
-		{
-			graphics::drawRect(canvas_width / 2, i * 31.25 - 25, canvas_width / 2 + 150, 1, brush);
-		}
-		else if (i == 12 || i == 13)
-		{
-			graphics::drawRect(canvas_width / 2, i * 31.25 - 40, canvas_width / 2 + 150, 1, brush);
-		}
-		else if (i == 14|| i == 15)
-		{
-			graphics::drawRect(canvas_width / 2, i * 31.25 - 56, canvas_width / 2 + 150, 1, brush);
-		}
-		else if (i == 16 || i == 17)
-		{
-			graphics::drawRect(canvas_width / 2, i * 31.25 - 70, canvas_width / 2 + 150, 1, brush);
-		}
-		else if (i == 18 || i == 19)
-		{
-			graphics::drawRect(canvas_width / 2, i * 31.25 - 88, canvas_width / 2 + 150, 1, brush);
-		}
-		else
-		{
-			graphics::drawRect(canvas_width / 2, i *31.25 + 37, canvas_width / 2 + 150, 1, brush);
-		}
-	}
-
-	for (int i = 0; i < 16; i++)
-	{
-		if (i == 2 || i == 12)
-		{
-			graphics::drawRect(i * 45 + 269, canvas_height / 2 - 30, 1, canvas_height / 2 + 200, brush);
-		}
-		else if (i == 3 || i == 10 || i == 11 || i == 13)
-		{
-			graphics::drawRect(i * 45 + 262, canvas_height / 2 - 30, 1, canvas_height / 2 + 200, brush);
-		}
-		else if (i == 4)
-		{
-			graphics::drawRect(i * 45 + 265, canvas_height / 2 - 30, 1, canvas_height / 2 + 200, brush);
-		}
-		else if (i == 5 || i == 6 || i == 7)
-		{
-			graphics::drawRect(i * 45 + 273, canvas_height / 2 - 30, 1, canvas_height / 2 + 200, brush);
-		}
-		else if (i == 8 || i == 9)
-		{
-			graphics::drawRect(i * 45 + 256, canvas_height / 2 - 30, 1, canvas_height / 2 + 200, brush);
-		}
-		else if (i == 8 || i == 9)
-		{
-			graphics::drawRect(i * 45 + 380, canvas_height / 2 - 30, 1, canvas_height / 2 + 200, brush);
-		}
-		else if (i == 14 || i == 15)
-		{
-			graphics::drawRect(i * 45 + 253, canvas_height / 2 - 30, 1, canvas_height / 2 + 200, brush);
-		}
-	}
-}
-*/
 
 void Maze::gridC()
 {
@@ -354,18 +306,7 @@ void Maze::gridC()
 
 void Maze::update()
 {
-	if (modern && start)
-	{
-		createPacDotM();
-		createObstacle();
-		start = false;
-	}
-	else if (start)
-	{
-		createPacDotC();
-		createObstacle();
-		start = false;
-	}
+	
 }
 
 void Maze::init()

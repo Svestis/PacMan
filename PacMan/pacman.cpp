@@ -425,22 +425,22 @@ void PacMan::drawInitC()
 
 void PacMan::updateMulti()
 {
-	if (graphics::getKeyState(graphics::SCANCODE_W))
+	if (graphics::getKeyState(graphics::SCANCODE_W) && movement[2])
 	{
 		pos.y -= speed * graphics::getDeltaTime() / 50.f;
 		updateUpM();
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_S))
+	else if (graphics::getKeyState(graphics::SCANCODE_S) && movement[3])
 	{
 		pos.y += speed * graphics::getDeltaTime() / 50.f;
 		updateDownM();
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_A))
+	else if (graphics::getKeyState(graphics::SCANCODE_A) && movement[0])
 	{
 		pos.x -= speed * graphics::getDeltaTime() / 50.f;
 		updateLeftM();
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_D))
+	else if (graphics::getKeyState(graphics::SCANCODE_D) && movement[1])
 	{
 		pos.x += speed * graphics::getDeltaTime() / 50.f;
 		updateRightM();

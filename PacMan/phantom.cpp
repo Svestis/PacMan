@@ -8,22 +8,22 @@ void Phantom::updateM()
 
 void Phantom::updateMulti()
 {
-	if (graphics::getKeyState(graphics::SCANCODE_UP))
+	if (graphics::getKeyState(graphics::SCANCODE_UP) && movement[2])
 	{
 		pos.y -= speed * graphics::getDeltaTime() / 50.f;
 		updateUpM();
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_DOWN))
+	else if (graphics::getKeyState(graphics::SCANCODE_DOWN) && movement[3])
 	{
 		pos.y += speed * graphics::getDeltaTime() / 50.f;
 		updateDownM();
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_LEFT))
+	else if (graphics::getKeyState(graphics::SCANCODE_LEFT) && movement[0])
 	{
 		pos.x -= speed * graphics::getDeltaTime() / 50.f;
 		updateLeftM();
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_RIGHT))
+	else if (graphics::getKeyState(graphics::SCANCODE_RIGHT) && movement[1])
 	{
 		pos.x += speed * graphics::getDeltaTime() / 50.f;
 		updateRightM();

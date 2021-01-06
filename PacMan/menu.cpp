@@ -5,6 +5,7 @@
 #include "util.h"
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
 
 void Menu::updateY()
@@ -76,6 +77,21 @@ void Menu::updateB(status s)
 	if (mouse.button_left_released)
 	{
 		if (paused) paused = !paused;
+		if (maze)
+		{
+			delete maze;
+			maze = nullptr;
+		}
+		if (pacman)
+		{
+			delete pacman;
+			pacman = nullptr;
+		}
+		if (enemies[0])
+		{
+			delete enemies[0];
+			enemies[0] = nullptr;
+		}
 		score_pong = 0;
 		local_score = 0;
 		score = 0;
@@ -790,18 +806,9 @@ void Menu::updateGameMultiPlayer()
 		updateFullScreen();
 	}
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20))
-	{
-		
-		if (music_on)
-		{
-			updateMusic(modern);
-		}		
+	{	
 		updateB(STATUS_START);
-		if (maze)
-		{
-			delete maze;
-			maze = nullptr;
-		}
+		lost = false;
 
 	}
 	// Music on/off
@@ -848,9 +855,10 @@ void Menu::updateGameMultiPlayer()
 		hover[3] = 1.f;
 	}
 
-	if (!maze)
+	if (!maze && !replay)
 	{
 		maze = new Maze(*this);
+		time_counter_2 = 0;
 	}
 
 	if (maze)
@@ -858,11 +866,20 @@ void Menu::updateGameMultiPlayer()
 		maze->update();
 	}
 
-	if (!enemies[0])
+	if (!enemies[0] && !replay)
 	{
 		enemies[0] = new Phantom(*this);
 		time_counter = 0;
 		enemies[0]->setCollidable(false);
+	}
+	else if (!enemies[0])
+	{
+		time_counter_2 += graphics::getDeltaTime();
+		if (time_counter_2 > 5000)
+		{
+			enemies[0] = new Phantom(*this);
+			time_counter_2 = 0;
+		}
 	}
 
 	if (enemies[0])
@@ -870,10 +887,19 @@ void Menu::updateGameMultiPlayer()
 		enemies[0]->update();
 	}
 
-	if (!pacman)
+	if (!pacman && !replay)
 	{
 		pacman = new PacMan(*this);
 		pacman->setCollidable(true);
+	}
+	else if (!pacman)
+	{
+		time_counter_2 += graphics::getDeltaTime();
+		if (time_counter_2 > 5000)
+		{
+			pacman = new PacMan(*this);
+			time_counter_2 = 0;
+		}
 	}
 
 	if (pacman)
@@ -885,6 +911,7 @@ void Menu::updateGameMultiPlayer()
 	{
 		delete pacman;
 		pacman = nullptr;
+		replay = true;
 	}
 
 	if (checkCollisionPacMan() && enemies[0]->getCollidable())
@@ -892,15 +919,18 @@ void Menu::updateGameMultiPlayer()
 		delete enemies[0];
 		pacman->setCollidable(true);
 		enemies[0] = nullptr;
+		replay = true;
 	}
 
 	for (auto const& value : maze->pacdots)
 	{
-		if (checkCollisionPacDotPacMan(value))
+		if (checkCollisionPacDot(value, true))
 		{
+			std::cout << "collid" << std::endl;
 			if (!value->getBig())
 			{
 				player_score += 1;
+				std::cout << "inc" << std::endl;
 			}
 			else
 			{
@@ -919,7 +949,7 @@ void Menu::updateGameMultiPlayer()
 
 	for (auto const& value : maze->pacdots)
 	{
-		if (checkCollisionPacDotPhantom(value))
+		if (checkCollisionPacDot(value, false))
 		{
 			if (!value->getBig())
 			{
@@ -935,6 +965,54 @@ void Menu::updateGameMultiPlayer()
 				graphics::playSound(std::string(ASSET_PATH) + std::string(CHOMPFRUIT), 1.f, false);
 			}
 			maze->destroyDot(value);
+		}
+	}
+
+	for (auto const& value : maze->obstacles)
+	{
+		//float minDist 
+		if (!checkCollisionObstacle(value, false))
+		{
+			obst_counter += 1;
+		}
+		else
+		{
+			obst_counter = 0;
+		}
+
+		if (obst_counter == maze->obstacles.size())
+		{
+			if (enemies[0])
+			{
+				enemies[0]->movement[0] = true;
+				enemies[0]->movement[1] = true;
+				enemies[0]->movement[2] = true;
+				enemies[0]->movement[3] = true;
+			}
+		}
+	}
+
+	for (auto const& value : maze->obstacles)
+	{
+
+		if (!checkCollisionObstacle(value, true))
+		{
+			obst_counter_2 += 1;
+		}
+		else
+		{
+			obst_counter_2 = 0;
+		}
+
+		if (obst_counter_2 == maze->obstacles.size())
+		{
+			if (pacman)
+			{
+				pacman->movement[0] = true;
+				pacman->movement[1] = true;
+				pacman->movement[2] = true;
+				pacman->movement[3] = true;
+			}
 		}
 	}
 
@@ -960,7 +1038,7 @@ void Menu::updateGameMultiPlayer()
 		enemies[0] = nullptr;
 		delete maze;
 		maze = nullptr;
-		if (phantom_score > player_score)
+		if (phantom_score > player_score) // TODO: PRIO player score increases with b button
 		{
 			if (sound_on) graphics::playSound(std::string(ASSET_PATH) + std::string(GAMEOVERPACMAN), 1.f, false);
 			msg = "PHANTOM WINS";
@@ -2953,46 +3031,184 @@ bool Menu::checkCollisionPacMan()
 	return false;
 }
 
-bool Menu::checkCollisionPacDotPacMan(Pacdot* cur_dot)
+bool Menu::checkCollisionPacDot(Pacdot* cur_dot, bool is_pacman)
 {
-	float dx, dy, d;
-	Disk pacmanD, pacdotD;
+	float d;
+	Disk collidElement, pacdotD;
 
-	if (!pacman || !maze)
+	if (is_pacman)
 	{
-		return false;
+		if (!pacman || !maze)
+		{
+			return false;
+		}
+
+		collidElement = pacman->getCollisionHull();
 	}
-	pacmanD = pacman->getCollisionHull();
+	else
+	{
+		if (!maze || !enemies[0])
+		{
+			return false;
+		}
+
+		collidElement = enemies[0]->getCollisionHull();
+	}
+	
 	pacdotD = cur_dot->getCollisionHull();
 
-	d = sqrt(pow(pacmanD.cx - pacdotD.cx, 2) + pow(pacmanD.cy - pacdotD.cy, 2));
+	d = sqrt(pow(collidElement.cx - pacdotD.cx, 2) + pow(collidElement.cy - pacdotD.cy, 2));
 
-	if (d <= pacmanD.radius + pacdotD.radius)
+	if (d <= collidElement.radius + pacdotD.radius)
 	{
 		return true;
 	}
 	return false;
 }
 
-bool Menu::checkCollisionPacDotPhantom(Pacdot* cur_dot)
+bool Menu::checkCollisionObstacle(Obstacle* cur_obst, bool is_pacman)
 {
-	float dx, dy, d;
-	Disk en1D, pacdotD;
+	float dx, dy, d, nX, nY, nearestX, nearestY, topR, bottomR, leftR, rightR, distLeft, distRight, distTop, distBottom;
+	Disk collidElement;
+	Rectangle obstacleR;
 
-	if (!maze || !enemies[0])
+	if (is_pacman)
+	{
+		if (!pacman || !maze)
+		{
+			return false;
+		}
+
+		collidElement = pacman->getCollisionHull();
+	}
+	else
+	{
+		if (!maze || !enemies[0])
+		{
+			return false;
+		}
+		collidElement = enemies[0]->getCollisionHull();
+	}
+
+	obstacleR = cur_obst->getCollisionHull();
+
+	nX = obstacleR.cx - obstacleR.w / 2;
+	nY = obstacleR.cy - obstacleR.h / 2;
+
+	nearestX = std::max(nX, std::min(collidElement.cx, nX + obstacleR.w));
+	nearestY = std::max(nY, std::min(collidElement.cy, nY + obstacleR.h));
+
+	topR = nY - obstacleR.h;
+	bottomR = nY + obstacleR.h;
+	leftR = nX - obstacleR.w;
+	rightR = nX + obstacleR.w;
+
+	distLeft = abs(collidElement.cx + collidElement.radius - (obstacleR.cx - obstacleR.w / 2));
+	distRight = abs(collidElement.cx - collidElement.radius - (obstacleR.cx + obstacleR.w / 2));
+	distTop = abs(collidElement.cy + collidElement.radius - (obstacleR.cy - obstacleR.h/2));
+	distBottom = abs(collidElement.cy - collidElement.radius - (obstacleR.cy + obstacleR.h/2));
+
+
+	dx = collidElement.cx - nearestX;
+	dy = collidElement.cy - nearestY;
+
+	if (pow(dx, 2) + pow(dy, 2) < (pow(collidElement.radius,2)))
+	{
+		if (!is_pacman)
+		{
+			if (distTop < distRight && distTop < distBottom && distTop < distLeft)
+			{
+				if (topR < nearestY && nearestY < obstacleR.cy)
+				{
+					enemies[0]->movement[3] = false;
+					enemies[0]->movement[2] = true;
+					enemies[0]->movement[0] = true;
+					enemies[0]->movement[1] = true;
+				}
+			}
+			else if (distBottom < distLeft&& distBottom < distRight&& distBottom < distTop)
+			{
+				if (bottomR >= nearestY && nearestY >= obstacleR.cy)
+				{
+					enemies[0]->movement[2] = false;
+					enemies[0]->movement[3] = true;
+					enemies[0]->movement[0] = true;
+					enemies[0]->movement[1] = true;
+				}
+			}
+			else if (distLeft < distBottom && distLeft < distTop && distLeft < distRight)
+			{
+				if (leftR < nearestX && nearestX < obstacleR.cx)
+				{
+					enemies[0]->movement[1] = false;
+					enemies[0]->movement[0] = true;
+					enemies[0]->movement[2] = true;
+					enemies[0]->movement[3] = true;
+				}
+			}
+			else if (distRight < distBottom && distRight < distTop && distRight < distLeft)
+			{
+				if (rightR >= nearestX && nearestX >= obstacleR.cx)
+				{
+					enemies[0]->movement[0] = false;
+					enemies[0]->movement[1] = true;
+					enemies[0]->movement[2] = true;
+					enemies[0]->movement[3] = true;
+				}
+			}
+		}
+		else
+		{
+			if (distTop < distRight && distTop < distBottom && distTop < distLeft)
+			{
+				if (topR < nearestY && nearestY < obstacleR.cy)
+				{
+					pacman->movement[3] = false;
+					pacman->movement[2] = true;
+					pacman->movement[0] = true;
+					pacman->movement[1] = true;
+				}
+			}
+			else if (distBottom < distLeft && distBottom < distRight && distBottom < distTop)
+			{
+				if (bottomR >= nearestY && nearestY >= obstacleR.cy)
+				{
+					pacman->movement[2] = false;
+					pacman->movement[3] = true;
+					pacman->movement[0] = true;
+					pacman->movement[1] = true;
+				}
+			}
+			else if (distLeft < distBottom && distLeft < distTop && distLeft < distRight)
+			{
+				if (leftR < nearestX && nearestX < obstacleR.cx)
+				{
+					pacman->movement[1] = false;
+					pacman->movement[0] = true;
+					pacman->movement[2] = true;
+					pacman->movement[3] = true;
+				}
+			}
+			else if (distRight < distBottom && distRight < distTop && distRight < distLeft)
+			{
+				if (rightR >= nearestX && nearestX >= obstacleR.cx)
+				{
+					pacman->movement[0] = false;
+					pacman->movement[1] = true;
+					pacman->movement[2] = true;
+					pacman->movement[3] = true;
+				}
+			}
+		}
+		return true;
+	}
+	else
 	{
 		return false;
 	}
-	en1D = enemies[0]->getCollisionHull();
-	pacdotD = cur_dot->getCollisionHull();
 
-	d = sqrt(pow(en1D.cx - pacdotD.cx, 2) + pow(en1D.cy - pacdotD.cy, 2));
 
-	if (d <= en1D.radius + pacdotD.radius)
-	{
-		return true;
-	}
-	return false;
+
 }
 
 void Menu::resetBrush()

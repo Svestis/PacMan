@@ -23,7 +23,8 @@ class Menu
 		paused = false,
 		lost = false,
 		music_wasplaying = true,
-		multi = false;
+		multi = false,
+		replay = false;
 	unsigned short int score_pong = 0,
 		highscore_pong = 0;
 	float hover[14] = { 1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }; // Hovering for close button, info button, music button, sound button, classic button (or back), bored button (or pong or play again), single player (or arcade or dont play again), multiplayer, full screen, blinky, pinky, inky, clyde, pause
@@ -32,7 +33,9 @@ class Menu
 		highscore = 0,
 		counter = 0,
 		player_score = 0,
-		phantom_score = 0;
+		phantom_score = 0,
+		obst_counter = 0,
+		obst_counter_2 = 0;
 	unsigned short int window_width = WINDOW_WIDTH, 
 					   window_height = WINDOW_HEIGHT,
 					   canvas_width = CANVAS_WIDTH,
@@ -98,8 +101,8 @@ class Menu
 	void drawGameMultiPlayer();
 	void cacheImages(); // Caching images
 	bool checkCollisionPacMan();
-	bool checkCollisionPacDotPacMan(Pacdot* cur_dot);
-	bool checkCollisionPacDotPhantom(Pacdot* cur_dot);
+	bool checkCollisionPacDot(Pacdot* cur_dot, bool is_pacman);
+	bool checkCollisionObstacle(Obstacle* cur_obst, bool is_pacman);
 	void resetBrush();
 public:
 	Maze* maze = nullptr;
