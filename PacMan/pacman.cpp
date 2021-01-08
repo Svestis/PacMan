@@ -378,20 +378,23 @@ void PacMan::updateC()
 
 void PacMan::update()
 {
-	if (!multi && !start)
+	if (!menu.paused)
 	{
-		if (modern)
+		if (!multi && !start)
 		{
-			updateM();
+			if (modern)
+			{
+				updateM();
+			}
+			else
+			{
+				updateC();
+			}
 		}
-		else
+		else if (modern && !start)
 		{
-			updateC();
+			updateMulti();
 		}
-	}
-	else if (modern && !start)
-	{
-		updateMulti();
 	}
 }
 

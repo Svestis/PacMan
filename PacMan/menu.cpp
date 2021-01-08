@@ -94,9 +94,12 @@ void Menu::updateB(status s)
 		}
 		score_pong = 0;
 		local_score = 0;
+		player_score = 0;
+		phantom_score = 0;
 		score = 0;
 		level = 1;
 		lost = false;
+		paused = false;
 		local_level = 1;
 		time_counter = 0;
 		pong_speed = 5.f;
@@ -808,8 +811,6 @@ void Menu::updateGameMultiPlayer()
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20))
 	{	
 		updateB(STATUS_START);
-		lost = false;
-
 	}
 	// Music on/off
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
@@ -968,50 +969,205 @@ void Menu::updateGameMultiPlayer()
 		}
 	}
 
-	for (auto const& value : maze->obstacles)
-	{
-		//float minDist 
-		if (!checkCollisionObstacle(value, false))
-		{
-			obst_counter += 1;
-		}
-		else
-		{
-			obst_counter = 0;
-		}
 
-		if (obst_counter == maze->obstacles.size())
+	if (enemies[0] && enemies[0]->getCollisionHull().cx <= 601 && enemies[0]->getCollisionHull().cy <= 256)
+	{
+		for (auto const& value : maze->obstaclesUpLeft)
 		{
-			if (enemies[0])
+			if (!checkCollisionObstacle(value, false))
 			{
-				enemies[0]->movement[0] = true;
-				enemies[0]->movement[1] = true;
-				enemies[0]->movement[2] = true;
-				enemies[0]->movement[3] = true;
+				obst_counter += 1;
+			}
+			else
+			{
+				obst_counter = 0;
+			}
+
+			if (obst_counter == maze->obstaclesUpLeft.size())
+			{
+				if (enemies[0])
+				{
+					enemies[0]->movement[0] = true;
+					enemies[0]->movement[1] = true;
+					enemies[0]->movement[2] = true;
+					enemies[0]->movement[3] = true;
+				}
+			}
+		}
+	}
+	else if (enemies[0] && enemies[0]->getCollisionHull().cx > 601 && enemies[0]->getCollisionHull().cy <= 256)
+	{
+		for (auto const& value : maze->obstaclesUpRight)
+		{
+			if (!checkCollisionObstacle(value, false))
+			{
+				obst_counter += 1;
+			}
+			else
+			{
+				obst_counter = 0;
+			}
+
+			if (obst_counter == maze->obstaclesUpRight.size())
+			{
+				if (enemies[0])
+				{
+					enemies[0]->movement[0] = true;
+					enemies[0]->movement[1] = true;
+					enemies[0]->movement[2] = true;
+					enemies[0]->movement[3] = true;
+				}
+			}
+		}
+	}
+	else if (enemies[0] && enemies[0]->getCollisionHull().cx <= 601 && enemies[0]->getCollisionHull().cy > 256)
+	{
+		for (auto const& value : maze->obstaclesDownLeft)
+		{
+			if (!checkCollisionObstacle(value, false))
+			{
+				obst_counter += 1;
+			}
+			else
+			{
+				obst_counter = 0;
+			}
+
+			if (obst_counter == maze->obstaclesDownLeft.size())
+			{
+				if (enemies[0])
+				{
+					enemies[0]->movement[0] = true;
+					enemies[0]->movement[1] = true;
+					enemies[0]->movement[2] = true;
+					enemies[0]->movement[3] = true;
+				}
+			}
+		}
+	}
+	else if (enemies[0] && enemies[0]->getCollisionHull().cx > 601 && enemies[0]->getCollisionHull().cy > 256)
+	{
+		for (auto const& value : maze->obstaclesDownRight)
+		{
+			if (!checkCollisionObstacle(value, false))
+			{
+				obst_counter += 1;
+			}
+			else
+			{
+				obst_counter = 0;
+			}
+
+			if (obst_counter == maze->obstaclesDownRight.size())
+			{
+				if (enemies[0])
+				{
+					enemies[0]->movement[0] = true;
+					enemies[0]->movement[1] = true;
+					enemies[0]->movement[2] = true;
+					enemies[0]->movement[3] = true;
+				}
 			}
 		}
 	}
 
-	for (auto const& value : maze->obstacles)
+	if (pacman && pacman->getCollisionHull().cx <= 601 && pacman->getCollisionHull().cy <= 256)
 	{
-
-		if (!checkCollisionObstacle(value, true))
+		for (auto const& value : maze->obstaclesUpLeft)
 		{
-			obst_counter_2 += 1;
-		}
-		else
-		{
-			obst_counter_2 = 0;
-		}
-
-		if (obst_counter_2 == maze->obstacles.size())
-		{
-			if (pacman)
+			if (!checkCollisionObstacle(value, true))
 			{
-				pacman->movement[0] = true;
-				pacman->movement[1] = true;
-				pacman->movement[2] = true;
-				pacman->movement[3] = true;
+				obst_counter_2 += 1;
+			}
+			else
+			{
+				obst_counter_2 = 0;
+			}
+
+			if (obst_counter_2 == maze->obstaclesUpLeft.size())
+			{
+				if (pacman)
+				{
+					pacman->movement[0] = true;
+					pacman->movement[1] = true;
+					pacman->movement[2] = true;
+					pacman->movement[3] = true;
+				}
+			}
+		}
+	}
+	else if (pacman && pacman->getCollisionHull().cx > 601 && pacman->getCollisionHull().cy <= 256)
+	{
+		for (auto const& value : maze->obstaclesUpRight)
+		{
+			if (!checkCollisionObstacle(value, true))
+			{
+				obst_counter_2 += 1;
+			}
+			else
+			{
+				obst_counter_2 = 0;
+			}
+
+			if (obst_counter_2 == maze->obstaclesUpRight.size())
+			{
+				if (pacman)
+				{
+					pacman->movement[0] = true;
+					pacman->movement[1] = true;
+					pacman->movement[2] = true;
+					pacman->movement[3] = true;
+				}
+			}
+		}
+	}
+	else if (pacman && pacman->getCollisionHull().cx <= 601 && pacman->getCollisionHull().cy > 256)
+	{
+		for (auto const& value : maze->obstaclesDownLeft)
+		{
+			if (!checkCollisionObstacle(value, true))
+			{
+				obst_counter_2 += 1;
+			}
+			else
+			{
+				obst_counter_2 = 0;
+			}
+
+			if (obst_counter_2 == maze->obstaclesDownLeft.size())
+			{
+				if (pacman)
+				{
+					pacman->movement[0] = true;
+					pacman->movement[1] = true;
+					pacman->movement[2] = true;
+					pacman->movement[3] = true;
+				}
+			}
+		}
+	}
+	else if (pacman && pacman->getCollisionHull().cx > 601 && pacman->getCollisionHull().cy > 256)
+	{
+		for (auto const& value : maze->obstaclesDownRight)
+		{
+			if (!checkCollisionObstacle(value, true))
+			{
+				obst_counter_2 += 1;
+			}
+			else
+			{
+				obst_counter_2 = 0;
+			}
+
+			if (obst_counter_2 == maze->obstaclesDownRight.size())
+			{
+				if (pacman)
+				{
+					pacman->movement[0] = true;
+					pacman->movement[1] = true;
+					pacman->movement[2] = true;
+					pacman->movement[3] = true;
+				}
 			}
 		}
 	}
@@ -1298,6 +1454,7 @@ void Menu::update()
 			maze = nullptr;
 		}
 		multi = false;
+		lost = false;
 		updateGameMInfo();
 	}
 	else if (current_status == STATUS_PLAYINGB)
@@ -2756,6 +2913,7 @@ void Menu::drawPong()
 
 void Menu::draw()
 {
+	std::cout << "lost" << lost << std::endl;
 	if (current_status == STATUS_START)
 	{
 		drawMenuScreen();

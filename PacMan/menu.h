@@ -20,7 +20,6 @@ class Menu
 		full_screen = false,
 		place_holder = false,
 		key_down = false,
-		paused = false,
 		lost = false,
 		music_wasplaying = true,
 		multi = false,
@@ -107,6 +106,7 @@ class Menu
 public:
 	Maze* maze = nullptr;
 	PongBall* pong_ball = nullptr;
+	bool paused = false;
 	void update();
 	void draw();
 	void init();

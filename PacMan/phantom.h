@@ -15,7 +15,7 @@ class Phantom : public GameElement, public CollidableD
 	bool start = true,
 		 modern,
 		multi, collid = false;
-	float speed = 7.f;
+	float speed = 5.f;
 	graphics::Brush brush;
 public:
 	bool movement[4] = { true, true, true, true }; // left, right, top, down

@@ -16,7 +16,7 @@ class PacMan : public GameElement, public CollidableD
 		modern, multi, collid = true;
 	Position pos{ CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 };
 	std::tuple <unsigned short int, unsigned short int> pos_grid;
-	float speed = 7.f;
+	float speed = 5.f;
 	graphics::Brush brush;
 public:
 	void update() override;

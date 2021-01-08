@@ -177,20 +177,23 @@ void Phantom::updateDownC()
 
 void Phantom::update()
 {
-	if (!multi && !start)
+	if (!menu.paused)
 	{
-		if (modern)
+		if (!multi && !start)
 		{
-			updateM();
+			if (modern)
+			{
+				updateM();
+			}
+			else
+			{
+				updateC();
+			}
 		}
-		else
+		else if (multi && !start)
 		{
-			updateC();
+			updateMulti();
 		}
-	}
-	else if (multi && !start)
-	{
-		updateMulti();
 	}
 }
 

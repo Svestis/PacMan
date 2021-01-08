@@ -12,16 +12,15 @@ void Maze::draw()
 		if (start)
 		{
 			createPacDotM();
-			createObstacle();
+			createObstacleUpLeft();
+			createObstacleUpRight();
+			createObstacleDownLeft();
+			createObstacleDownRight();
 			start = false;
+			
 		}
 		brush.texture = std::string(ASSET_PATH) + std::string(MAZE1);
 		graphics::drawRect(width_to_x(canvas_width, 50.f), height_to_y(canvas_height, 45.f), maze_width, maze_height, brush);
-		if (obstacles[0])
-		{
-			obstacles[0]->draw();
-		}
-		//gridM();
 	}
 	else if (!modern)
 	{
@@ -30,20 +29,15 @@ void Maze::draw()
 		if (start)
 		{
 			createPacDotC();
-			createObstacle();
 			start = false;
 		}
-		//gridC();
 	}
+
 	for (auto i : pacdots)
 	{
 		i->draw();
 	}
 
-	for (auto i : obstacles)
-	{
-		i->draw();
-	}
 }
 
 void Maze::createPacDotC()
@@ -51,69 +45,136 @@ void Maze::createPacDotC()
 
 }
 
-void Maze::createObstacle()
+void Maze::createObstacleDownRight()
 {
-	obstacles.push_back(new Obstacle(menu, 601, 256, 170, 61));
+	obstaclesDownRight.push_back(new Obstacle(menu, 601, 256, 170, 61));
 
-	obstacles.push_back(new Obstacle(menu, 602, 49, 23, 37));
+	obstaclesDownRight.push_back(new Obstacle(menu, 601, 326, 170, 15));
 
-	obstacles.push_back(new Obstacle(menu, 601, 326, 170, 15));
+	obstaclesDownRight.push_back(new Obstacle(menu, 601, 420, 22, 110));
 
-	obstacles.push_back(new Obstacle(menu, 601, 145, 22, 93));
-
-	obstacles.push_back(new Obstacle(menu, 601, 420, 22, 110));
-
-	for (int inc : {0, 485})
+	for (int i : {141, 235, 330})
 	{
-		obstacles.push_back(new Obstacle(menu, 359 + inc, 83, 72, 31));
-
-		for (int i : {0, 94, 141, 235, 330})
-		{
-			obstacles.push_back(new Obstacle(menu, 359 + inc, 138 + i, 72, 15));
-		}
+		obstaclesDownRight.push_back(new Obstacle(menu, 844, 138 + i, 72, 15));
 	}
 
-	for (int inc : {0, 436})
+	for (int i : {93, 187})
 	{
-		for (int i : {0, 93, 187})
-		{
-			obstacles.push_back(new Obstacle(menu, 383 + inc, 209 + i, 24, 63));
-		}
+		obstaclesDownRight.push_back(new Obstacle(menu, 819, 209 + i, 24, 63));
 	}
 
-	for (int inc : {0, 613})
+	for (int i : {142, 235})
 	{
-		for (int i : {0, 142, 235})
-		{
-			obstacles.push_back(new Obstacle(menu, 295 + inc, 185 + i, 55, 15));
-		}
+		obstaclesDownRight.push_back(new Obstacle(menu, 908, 185 + i, 55, 15));
 	}
 
-	for (int inc : {0, 217})
+	for (int i : {235, 330})
 	{
-		obstacles.push_back(new Obstacle(menu, 493 + inc, 83, 96, 31));
-
-		for (int i : {47, 235, 330})
-		{
-			obstacles.push_back(new Obstacle(menu, 493 + inc, 138 + i, 95, 15));
-		}
+		obstaclesDownRight.push_back(new Obstacle(menu, 710, 138 + i, 95, 15));
 	}
 
-	for (int inc : {0, 291})
-	{
-		for (int i : {0, 283})
-		{
-			obstacles.push_back(new Obstacle(menu, 456 + inc, 162 + i, 22, 60));
-		}
+	obstaclesDownRight.push_back(new Obstacle(menu, 747, 445, 22, 60));
 
-		obstacles.push_back(new Obstacle(menu, 456 + inc, 279, 22, 110));
+	obstaclesDownRight.push_back(new Obstacle(menu, 747, 279, 22, 110));
+
+	obstaclesDownRight.push_back(new Obstacle(menu, 601, 421, 170, 15));
+}
+
+void Maze::createObstacleDownLeft()
+{
+	obstaclesDownLeft.push_back(new Obstacle(menu, 601, 256, 170, 61));
+
+	obstaclesDownLeft.push_back(new Obstacle(menu, 601, 326, 170, 15));
+
+	obstaclesDownLeft.push_back(new Obstacle(menu, 601, 420, 22, 110));
+
+	for (int i : {141, 235, 330})
+	{
+		obstaclesDownLeft.push_back(new Obstacle(menu, 359, 138 + i, 72, 15));
 	}
 
-	for (int inc : {0, 283})
+
+	for (int i : {93, 187})
 	{
-		obstacles.push_back(new Obstacle(menu, 601, 138 + inc, 170, 15));
+		obstaclesDownLeft.push_back(new Obstacle(menu, 383, 209 + i, 24, 63));
 	}
 
+
+	for (int i : {142, 235})
+	{
+		obstaclesDownLeft.push_back(new Obstacle(menu, 295, 185 + i, 55, 15));
+	}
+
+	for (int i : {235, 330})
+	{
+		obstaclesDownLeft.push_back(new Obstacle(menu, 493, 138 + i, 95, 15));
+	}
+
+	obstaclesDownLeft.push_back(new Obstacle(menu, 456, 445, 22, 60));
+
+	obstaclesDownLeft.push_back(new Obstacle(menu, 456, 279, 22, 110));
+
+	obstaclesDownLeft.push_back(new Obstacle(menu, 601, 421, 170, 15));	
+}
+
+void Maze::createObstacleUpRight()
+{
+	obstaclesUpRight.push_back(new Obstacle(menu, 601, 256, 170, 61));
+
+	obstaclesUpRight.push_back(new Obstacle(menu, 602, 49, 23, 37));
+
+	obstaclesUpRight.push_back(new Obstacle(menu, 601, 145, 22, 93));
+
+	obstaclesUpRight.push_back(new Obstacle(menu, 844, 83, 72, 31));
+
+	for (int i : {0, 94})
+	{
+		obstaclesUpRight.push_back(new Obstacle(menu, 844, 138 + i, 72, 15));
+	}
+
+	obstaclesUpRight.push_back(new Obstacle(menu, 747, 162, 22, 60));
+
+	obstaclesUpRight.push_back(new Obstacle(menu, 747, 279, 22, 110));
+
+	obstaclesUpRight.push_back(new Obstacle(menu, 710, 83, 96, 31));
+
+	obstaclesUpRight.push_back(new Obstacle(menu, 710, 185, 95, 15));
+
+	obstaclesUpRight.push_back(new Obstacle(menu, 819, 209, 24, 63));
+
+	obstaclesUpRight.push_back(new Obstacle(menu, 908, 185, 55, 15));
+	
+	obstaclesUpRight.push_back(new Obstacle(menu, 601, 138, 170, 15));
+}
+
+void Maze::createObstacleUpLeft()
+{
+	obstaclesUpLeft.push_back(new Obstacle(menu, 601, 256, 170, 61));
+
+	obstaclesUpLeft.push_back(new Obstacle(menu, 602, 49, 23, 37));
+
+	obstaclesUpLeft.push_back(new Obstacle(menu, 601, 145, 22, 93));
+
+	obstaclesUpLeft.push_back(new Obstacle(menu, 359, 83, 72, 31));
+
+	for (int i : {0, 94})
+	{
+		obstaclesUpLeft.push_back(new Obstacle(menu, 359, 138 + i, 72, 15));
+	}
+
+	obstaclesUpLeft.push_back(new Obstacle(menu, 383, 209, 24, 63));
+
+	obstaclesUpLeft.push_back(new Obstacle(menu, 295, 185, 55, 15));
+
+	obstaclesUpLeft.push_back(new Obstacle(menu, 493, 83, 96, 31));
+
+	obstaclesUpLeft.push_back(new Obstacle(menu, 493, 185, 95, 15));
+
+	obstaclesUpLeft.push_back(new Obstacle(menu, 456, 162, 22, 60));
+
+	obstaclesUpLeft.push_back(new Obstacle(menu, 456, 279, 22, 110));
+
+	obstaclesUpLeft.push_back(new Obstacle(menu, 601, 138, 170, 15));
 }
 
 void Maze::createPacDotM()
@@ -327,6 +388,63 @@ void Maze::destroyDot(Pacdot* element)
 	(pacdots).erase(pacdots.begin() + index);
 }
 
+void Maze::destroyObstacle(Obstacle* element, std::string side)
+{
+	if (side == "lt")
+	{
+		auto it = find(obstaclesUpLeft.begin(), obstaclesUpLeft.end(), element);
+		int index = -1;
+		if (it != obstaclesUpLeft.end())
+		{
+			index = it - obstaclesUpLeft.begin();
+		}
+
+		delete obstaclesUpLeft[index];
+		(obstaclesUpLeft)[index] = NULL;
+		(obstaclesUpLeft).erase(obstaclesUpLeft.begin() + index);
+	}
+	else if (side == "rt")
+	{
+		auto it = find(obstaclesUpRight.begin(), obstaclesUpRight.end(), element);
+		int index = -1;
+		if (it != obstaclesUpRight.end())
+		{
+			index = it - obstaclesUpRight.begin();
+		}
+
+		delete obstaclesUpRight[index];
+		(obstaclesUpRight)[index] = NULL;
+		(obstaclesUpRight).erase(obstaclesUpRight.begin() + index);
+	}
+	else if (side == "ld")
+	{
+		auto it = find(obstaclesDownLeft.begin(), obstaclesDownLeft.end(), element);
+		int index = -1;
+		if (it != obstaclesDownLeft.end())
+		{
+			index = it - obstaclesDownLeft.begin();
+		}
+
+		delete obstaclesDownLeft[index];
+		(obstaclesDownLeft)[index] = NULL;
+		(obstaclesDownLeft).erase(obstaclesDownLeft.begin() + index);
+	}
+	else if (side == "rd")
+	{
+		auto it = find(obstaclesDownRight.begin(), obstaclesDownRight.end(), element);
+		int index = -1;
+		if (it != obstaclesDownRight.end())
+		{
+			index = it - obstaclesDownRight.begin();
+		}
+
+		delete obstaclesDownRight[index];
+		(obstaclesDownRight)[index] = NULL;
+		(obstaclesDownRight).erase(obstaclesDownRight.begin() + index);
+	}
+	
+}
+
 Maze::Maze(const Menu& ingame)
 	:menu(ingame)
 {
@@ -335,4 +453,33 @@ Maze::Maze(const Menu& ingame)
 
 Maze::~Maze()
 {
+	for (auto element : pacdots)
+	{
+		delete element;
+	}
+	pacdots.clear();
+
+	for (auto element : obstaclesDownLeft)
+	{
+		delete element;
+	}
+	obstaclesDownLeft.clear();
+
+	for (auto element : obstaclesDownRight)
+	{
+		delete element;
+	}
+	obstaclesDownRight.clear();
+
+	for (auto element : obstaclesUpLeft)
+	{
+		delete element;
+	}
+	obstaclesUpLeft.clear();
+
+	for (auto element : obstaclesUpRight)
+	{
+		delete element;
+	}
+	obstaclesUpRight.clear();
 }

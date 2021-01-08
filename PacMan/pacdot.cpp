@@ -53,6 +53,7 @@ Pacdot::Pacdot(const Menu& ingame, int x, int y, bool is_big)
 
 Pacdot::~Pacdot()
 {
+
 }
 
 Disk Pacdot::getCollisionHull() const
