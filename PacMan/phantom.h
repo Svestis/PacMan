@@ -7,24 +7,20 @@
 
 class Phantom : public GameElement, public CollidableD
 {
-	Position pos{ CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2};
+	Position pos{ CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 - 90};
 	rotation rot = LEFT1;
 	character phantom;
 	Disk disk;
-	double timer = 0;
+	double timer = 0, timer_2 = 0;
 	bool start = true,
 		 modern,
-		multi, collid = false;
+		multi, init_ = true, collid = false;
 	float speed = 5.f;
+	int dir = 1, counter = 0;
 	graphics::Brush brush;
-public:
-	bool movement[4] = { true, true, true, true }; // left, right, top, down
-	void update() override;
-	void draw() override;
 	void init() override;
 	void drawPhantomC();
 	void drawPhantomM();
-	Disk getCollisionHull() const override;
 	void updateLeftC() override;
 	void updateRightC() override;
 	void updateUpC() override;
@@ -36,10 +32,17 @@ public:
 	void updateC() override;
 	void updateM() override;
 	void updateMulti();
+	void updateStartM();
+public:
+	bool movement[4] = { true, true, true, true }; // left, right, top, down
+	void update() override;
+	void draw() override;
+	Disk getCollisionHull() const override;
 	void drawInitM() override;
 	void drawInitC() override;
 	bool getCollidable() { return collid; };
 	void setCollidable(bool c) { collid = c; };
 	Phantom(const class Menu& ingame);
+	Phantom(const class Menu& ingame, character charac);
 	~Phantom();
 };

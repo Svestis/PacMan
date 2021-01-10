@@ -35,6 +35,84 @@ void Phantom::updateMulti()
 	if (pos.y > (CANVAS_HEIGHT / 2 + menu.maze->getHeight() / 2) - 57) pos.y = CANVAS_HEIGHT / 2 + menu.maze->getHeight() / 2 - 57;
 }
 
+void Phantom::updateStartM()
+{
+	if (phantom == PINKY)
+	{
+		if (pos.y < 240)
+		{
+			std::cout << "PINKY " << counter << std::endl;
+			dir = -1;
+			updateUpM();
+			counter += 1;
+		}
+		else if (pos.y > 265)
+		{
+			std::cout << "PINKY " << counter << std::endl;
+			dir = 1;
+			updateDownM();
+			counter += 1;
+		}
+			
+		pos.y -= dir * graphics::getDeltaTime() * speed / 50.f;
+	
+
+		if (counter == 17)
+		{
+			start = false;
+		}
+	}
+	else if (phantom == CLYDE)
+	{
+		if (pos.y < 240)
+		{
+			std::cout << "CLYDE " << counter << std::endl;
+			dir = -1;
+			updateUpM();
+			counter += 1;
+		}
+		else if (pos.y > 265)
+		{
+			std::cout << "CLYDE " << counter << std::endl;
+			dir = 1;
+			updateDownM();
+			counter += 1;
+		}
+
+		pos.y -= dir * graphics::getDeltaTime() * speed / 50.f;
+
+		if (counter == 36)
+		{
+			start = false;
+		}
+	}
+	else if (phantom == INKY)
+	{
+		if (pos.y < 240)
+		{
+			std::cout << "INKY " << counter << std::endl;
+			dir = -1;
+			updateUpM();
+			counter += 1;
+		}
+		else if (pos.y > 265)
+		{
+			std::cout << "INKY " << counter << std::endl;
+			dir = 1;
+			updateDownM();
+			counter += 1;
+		}
+
+		pos.y -= dir * graphics::getDeltaTime() * speed / 50.f;
+
+		if (counter == 26)
+		{
+			start = false;
+		}
+	}
+
+}
+
 void Phantom::updateLeftM()
 {
 	timer += graphics::getDeltaTime();
@@ -105,6 +183,7 @@ void Phantom::updateDownM()
 
 void Phantom::updateC()
 {
+
 }
 
 void Phantom::updateLeftC()
@@ -190,31 +269,18 @@ void Phantom::update()
 				updateC();
 			}
 		}
+		else if (!multi && start)
+		{
+			if (modern)
+			{
+				updateStartM();
+			}
+		}
 		else if (multi && !start)
 		{
 			updateMulti();
 		}
 	}
-}
-
-void Phantom::drawInitM()
-{
-	switch(phantom)
-	{
-	case(BLINKY):
-		brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_LEFT_1);
-		break;
-	case(PINKY):
-		brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_LEFT_1);
-		break;
-	case(INKY):
-		brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_LEFT_1);
-		break;
-	case(CLYDE):
-		brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_LEFT_1);
-		break;
-	}
-	start = false;
 }
 
 void Phantom::drawInitC()
@@ -234,7 +300,6 @@ void Phantom::drawInitC()
 		brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_LEFT_1);
 		break;
 	}
-	start = false;
 }
 
 void Phantom::drawPhantomC()
@@ -526,6 +591,10 @@ Disk Phantom::getCollisionHull() const
 	return disk;
 }
 
+void Phantom::drawInitM()
+{
+}
+
 
 void Phantom::draw()
 {
@@ -538,16 +607,16 @@ void Phantom::draw()
 	{
 		drawPhantomC();
 	}
-	else if (start && modern)
-	{
-		drawInitM();
-	}
 	else if (!start && modern)
 	{
 		drawPhantomM();
 	}
+	else if (start && modern)
+	{
+		drawPhantomM();
+	}
 
-	graphics::Brush br;
+	/*graphics::Brush br;
 	brush.outline_opacity = 0.f;
 	br.fill_color[0] = 1.f;
 	br.fill_color[1] = 0.3f;
@@ -555,25 +624,61 @@ void Phantom::draw()
 	br.fill_opacity = 0.5f;
 	br.gradient = false;
 	disk = getCollisionHull();
-	graphics::drawDisk(disk.cx, disk.cy, disk.radius, br);
+	graphics::drawDisk(disk.cx, disk.cy, disk.radius, br);*/
 
 	graphics::drawRect(pos.x, pos.y, 25, 25, brush);
 }
 
 void Phantom::init()
 {
-	phantom = menu.getPhantom();
 	modern = menu.getModern();
 	multi = menu.getMulti();
 	if (multi)
 	{
 		pos.y = pos.y - 90;
+		phantom = menu.getPhantom();
+	}
+	else if (!multi && modern)
+	{
+		if (phantom == BLINKY)
+		{
+			pos.y = pos.y;
+			pos.x = pos.x;
+			rot = LEFT1;
+		}
+		else if (phantom == PINKY)
+		{
+			pos.y = pos.y + 45;
+			pos.x = pos.x;
+			rot = UP1;
+		}
+		else if (phantom == INKY)
+		{
+			pos.y = pos.y + 45;
+			pos.x = pos.x - 50;
+			rot = DOWN1;
+			dir = -1;
+		}
+		else if (phantom == CLYDE)
+		{
+			pos.y = pos.y + 45;
+			pos.x = pos.x + 50;
+			rot = DOWN1;
+			dir = -1;
+		}
 	}
 }
 
 Phantom::Phantom(const Menu& ingame)
 	: GameElement(ingame)
 {
+	init();
+}
+
+Phantom::Phantom(const Menu& ingame, character charac)
+	: GameElement(ingame)
+{
+	phantom = charac;
 	init();
 }
 

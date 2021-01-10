@@ -92,6 +92,21 @@ void Menu::updateB(status s)
 			delete enemies[0];
 			enemies[0] = nullptr;
 		}
+		if (enemies[1])
+		{
+			delete enemies[1];
+			enemies[1] = nullptr;
+		}
+		if (enemies[2])
+		{
+			delete enemies[2];
+			enemies[2] = nullptr;
+		}
+		if (enemies[3])
+		{
+			delete enemies[3];
+			enemies[3] = nullptr;
+		}
 		score_pong = 0;
 		local_score = 0;
 		player_score = 0;
@@ -358,11 +373,6 @@ void Menu::updateClassicGame()
 		else if ((window2CanvasX(mouse.cur_pos_x) >= 20) && (window2CanvasX(mouse.cur_pos_x) <= 60) && (window2CanvasY(mouse.cur_pos_y) >= 30 - 20) && (window2CanvasY(mouse.cur_pos_y) <= 30 + 20))
 		{
 			updateB(STATUS_START);
-			if (maze)
-			{
-				delete maze;
-				maze = nullptr;
-			}
 		}
 		// Music on/off
 		else if ((window2CanvasX(mouse.cur_pos_x) >= 485 - 83) &&
@@ -390,20 +400,81 @@ void Menu::updateClassicGame()
 			hover[3] = 1.f;
 		}
 	}
+	else
+	{
+		if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
+		{
+			delete this; // TODO: check this one
+		}
+		else if (graphics::getKeyState(graphics::SCANCODE_B) && !key_down)
+		{
+			key_down = true;
+			music_on = true;
+			if (paused) paused = !paused;
+			updateMusic(modern);
+			current_status = STATUS_START;
+		}
+		// Sound on/off
+		else if (graphics::getKeyState(graphics::SCANCODE_N) && !key_down)
+		{
+			key_down = true;
+			sound_on = !sound_on; //TODO: Add function to turn sound on off
+		}
+		else if (graphics::getKeyState(graphics::SCANCODE_RSHIFT) && !key_down)
+		{
+			key_down = true;
+			full_screen = !full_screen;
+			graphics::setFullScreen(full_screen);
+		}
+		else if (graphics::getKeyState(graphics::SCANCODE_SPACE) && !key_down)
+		{
+			key_down = true;
+			paused = !paused;
+		}
+		else if (!graphics::getKeyState(graphics::SCANCODE_B) && !graphics::getKeyState(graphics::SCANCODE_N) && !graphics::getKeyState(graphics::SCANCODE_RSHIFT) && !graphics::getKeyState(graphics::SCANCODE_SPACE))
+		{
+			key_down = false;
+		}
+	}
 
 	if (!maze)
 	{
 		maze = new Maze(*this);
+		time_counter_2 = 0;
 	}
 
 	if (!pacman)
 	{
 		pacman = new PacMan(*this);
+		pacman->setCollidable(true);
 	}
 
 	if (!enemies[0])
 	{
-		enemies[0] = new Phantom(*this);
+		enemies[0] = new Phantom(*this, BLINKY);
+		time_counter = 0;
+		enemies[0]->setCollidable(false);
+	}
+
+	if (!enemies[1])
+	{
+		enemies[1] = new Phantom(*this, PINKY);
+		time_counter = 0;
+		enemies[1]->setCollidable(false);
+	}
+
+	if (!enemies[2])
+	{
+		enemies[2] = new Phantom(*this, CLYDE);
+		time_counter = 0;
+		enemies[2]->setCollidable(false);
+	}
+
+	if (!enemies[3])
+	{
+		enemies[3] = new Phantom(*this, INKY);
+		time_counter = 0;
+		enemies[3]->setCollidable(false);
 	}
 
 	if (maze)
@@ -411,48 +482,165 @@ void Menu::updateClassicGame()
 		maze->update();
 	}
 
-	if (enemies[0] && !paused)
+	if (enemies[0])
 	{
 		enemies[0]->update();
 	}
 
-	if (pacman && !paused)
+	if (enemies[1])
+	{
+		enemies[1]->update();
+	}
+
+	if (enemies[2])
+	{
+		enemies[2]->update();
+	}
+
+	if (enemies[3])
+	{
+		enemies[3]->update();
+	}
+
+	if (pacman)
 	{
 		pacman->update();
 	}
 
-	if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
+	if (checkCollisionPacMan() && pacman->getCollidable())
 	{
-		delete this; // TODO: check this one
+		delete pacman;
+		pacman = nullptr;
+		replay = true;
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_B) && !key_down)
+
+	for (auto const& value : maze->pacdots)
 	{
-		key_down = true;
-		music_on = true;
-		if (paused) paused = !paused;
-		updateMusic(modern);
-		current_status = STATUS_START;
+		if (checkCollisionPacDot(value, true))
+		{
+			if (!value->getBig())
+			{
+				score += 1;
+			}
+			else
+			{
+				score += 10;
+				enemies[0]->setCollidable(true);
+				pacman->setCollidable(false);
+			}
+
+			if (score % 5 == 0 && sound_on)
+			{
+				graphics::playSound(std::string(ASSET_PATH) + std::string(CHOMP), 1.f, false);
+			}
+
+			if (score > highscore)
+			{
+				highscore = score;
+			}
+			maze->destroyDot(value);
+		}
 	}
-	// Sound on/off
-	else if (graphics::getKeyState(graphics::SCANCODE_N) && !key_down)
+
+	if (pacman && pacman->getCollisionHull().cx <= 601 && pacman->getCollisionHull().cy <= 256)
 	{
-		key_down = true;
-		sound_on = !sound_on; //TODO: Add function to turn sound on off
+		for (auto const& value : maze->obstaclesUpLeft)
+		{
+			if (!checkCollisionObstacle(value, true))
+			{
+				obst_counter_2 += 1;
+			}
+			else
+			{
+				obst_counter_2 = 0;
+			}
+
+			if (obst_counter_2 == maze->obstaclesUpLeft.size())
+			{
+				if (pacman)
+				{
+					pacman->movement[0] = true;
+					pacman->movement[1] = true;
+					pacman->movement[2] = true;
+					pacman->movement[3] = true;
+				}
+			}
+		}
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_RSHIFT) && !key_down)
+	else if (pacman && pacman->getCollisionHull().cx > 601 && pacman->getCollisionHull().cy <= 256)
 	{
-		key_down = true;
-		full_screen = !full_screen;
-		graphics::setFullScreen(full_screen);
+		for (auto const& value : maze->obstaclesUpRight)
+		{
+			if (!checkCollisionObstacle(value, true))
+			{
+				obst_counter_2 += 1;
+			}
+			else
+			{
+				obst_counter_2 = 0;
+			}
+
+			if (obst_counter_2 == maze->obstaclesUpRight.size())
+			{
+				if (pacman)
+				{
+					pacman->movement[0] = true;
+					pacman->movement[1] = true;
+					pacman->movement[2] = true;
+					pacman->movement[3] = true;
+				}
+			}
+		}
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_SPACE) && !key_down)
+	else if (pacman && pacman->getCollisionHull().cx <= 601 && pacman->getCollisionHull().cy > 256)
 	{
-		key_down = true;
-		paused = !paused;
+		for (auto const& value : maze->obstaclesDownLeft)
+		{
+			if (!checkCollisionObstacle(value, true))
+			{
+				obst_counter_2 += 1;
+			}
+			else
+			{
+				obst_counter_2 = 0;
+			}
+
+			if (obst_counter_2 == maze->obstaclesDownLeft.size())
+			{
+				if (pacman)
+				{
+					pacman->movement[0] = true;
+					pacman->movement[1] = true;
+					pacman->movement[2] = true;
+					pacman->movement[3] = true;
+				}
+			}
+		}
 	}
-	else if (!graphics::getKeyState(graphics::SCANCODE_B) && !graphics::getKeyState(graphics::SCANCODE_N) && !graphics::getKeyState(graphics::SCANCODE_RSHIFT) && !graphics::getKeyState(graphics::SCANCODE_SPACE))
+	else if (pacman && pacman->getCollisionHull().cx > 601 && pacman->getCollisionHull().cy > 256)
 	{
-		key_down = false;
+		for (auto const& value : maze->obstaclesDownRight)
+		{
+			if (!checkCollisionObstacle(value, true))
+			{
+				obst_counter_2 += 1;
+			}
+			else
+			{
+				obst_counter_2 = 0;
+			}
+
+			if (obst_counter_2 == maze->obstaclesDownRight.size())
+			{
+				if (pacman)
+				{
+					pacman->movement[0] = true;
+					pacman->movement[1] = true;
+					pacman->movement[2] = true;
+					pacman->movement[3] = true;
+				}
+			}
+		}
 	}
 }
 
@@ -783,18 +971,6 @@ void Menu::updateClassicWelcome2()
 	}
 }
 
-void Menu::updateGameC2()
-{
-	if (modern)
-	{
-		// TODO: update screen for moderng single player
-	}
-	else
-	{
-		updateClassicWelcome2();
-	}
-}
-
 void Menu::updateGameMultiPlayer()
 {
 	graphics::getMouseState(mouse);
@@ -927,11 +1103,9 @@ void Menu::updateGameMultiPlayer()
 	{
 		if (checkCollisionPacDot(value, true))
 		{
-			std::cout << "collid" << std::endl;
 			if (!value->getBig())
 			{
 				player_score += 1;
-				std::cout << "inc" << std::endl;
 			}
 			else
 			{
@@ -1414,7 +1588,7 @@ void Menu::update()
 			maze = nullptr;
 		}
 		multi = false;
-		updateGameC2();
+		updateClassicWelcome2();
 	}
 	else if (current_status == STATUS_PLAYINGM)
 	{
@@ -1991,45 +2165,69 @@ void Menu::drawClassicGame()
 {
 	if (modern) 
 	{
+		if (lost)
+		{
+			drawYN(msg);
+		}
 		drawM();
 		drawS();
 		drawX();
 		drawB();
+		drawP();
 		drawFullScreen();
-	}
-	brush.outline_opacity = 0.f;
-
-	if (maze)
-	{
-		maze->draw();
+		brush.outline_opacity = 0.f;
 	}
 
-	if (pacman)
+	if (!lost)
 	{
-		pacman->draw();
-	}
+		if (maze)
+		{
+			maze->draw();
+		}
 
-	if (enemies[0])
-	{
-		enemies[0]->draw();
+		if (pacman)
+		{
+			pacman->draw();
+		}
+
+		if (enemies[0])
+		{
+			enemies[0]->draw();
+		}
+
+		if (enemies[1])
+		{
+			enemies[1]->draw();
+		}
+
+		if (enemies[2])
+		{
+			enemies[2]->draw();
+		}
+
+		if (enemies[3])
+		{
+			enemies[3]->draw();
+		}
 	}
 
 	brush.fill_color[0] = 1.f;
 	brush.fill_color[1] = 1.f;
 	brush.fill_color[2] = 1.f;
 
-	graphics::drawText(CANVAS_WIDTH / 2 - 67, 50, 25.f, HISCORE, brush);
-	graphics::drawText(CANVAS_WIDTH / 2 - 67, 70, 20.f, std::to_string(highscore), brush);
-	graphics::drawText(CANVAS_WIDTH / 2 - 200, 50, 25.f, UPSONE, brush);
-	graphics::drawText(CANVAS_WIDTH / 2 - 200, 70, 20.f, std::to_string(score), brush);
+	if (modern)
+	{
+		graphics::drawText(CANVAS_WIDTH / 2 + 400, 130, 25.f, HISCORE, brush);
+		graphics::drawText(CANVAS_WIDTH / 2 + 400, 150, 20.f, std::to_string(highscore), brush);
+		graphics::drawText(CANVAS_WIDTH / 2 - 500, 130, 25.f, SCORE, brush);
+		graphics::drawText(CANVAS_WIDTH / 2 - 500, 150, 20.f, std::to_string(score), brush);
 
-	brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_LEFT_2);
-	graphics::drawRect(140, CANVAS_HEIGHT - 30, 20, 20, brush);
-	graphics::drawRect(160, CANVAS_HEIGHT - 30, 20, 20, brush);
-	graphics::drawRect(180, CANVAS_HEIGHT - 30, 20, 20, brush);
-	graphics::drawRect(200, CANVAS_HEIGHT - 30, 20, 20, brush);
-
-
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_LEFT_2);
+		graphics::drawRect(140, CANVAS_HEIGHT - 30, 20, 20, brush);
+		graphics::drawRect(160, CANVAS_HEIGHT - 30, 20, 20, brush);
+		graphics::drawRect(180, CANVAS_HEIGHT - 30, 20, 20, brush);
+		graphics::drawRect(200, CANVAS_HEIGHT - 30, 20, 20, brush);
+	}
 }
 
 void Menu::drawModernWelcome()
@@ -2739,20 +2937,6 @@ void Menu::drawClassicWelcome2()
 	
 }
 
-void Menu::drawGameC2()
-{
-	if (modern)
-	{
-
-	}
-	// TODO: Seperate classic game from modern game for single player
-
-	else
-	{
-		drawClassicWelcome2();
-	}
-}
-
 void Menu::drawGameMultiPlayer()
 {
 	if (lost)
@@ -2913,7 +3097,6 @@ void Menu::drawPong()
 
 void Menu::draw()
 {
-	std::cout << "lost" << lost << std::endl;
 	if (current_status == STATUS_START)
 	{
 		drawMenuScreen();
@@ -2924,7 +3107,7 @@ void Menu::draw()
 	}
 	else if (current_status == STATUS_PLAYINGC2)
 	{
-		drawGameC2();
+		drawClassicWelcome2();
 	}
 	else if (current_status == STATUS_PLAYINGM)
 	{
@@ -3247,126 +3430,129 @@ bool Menu::checkCollisionObstacle(Obstacle* cur_obst, bool is_pacman)
 		}
 		collidElement = enemies[0]->getCollisionHull();
 	}
-
-	obstacleR = cur_obst->getCollisionHull();
-
-	nX = obstacleR.cx - obstacleR.w / 2;
-	nY = obstacleR.cy - obstacleR.h / 2;
-
-	nearestX = std::max(nX, std::min(collidElement.cx, nX + obstacleR.w));
-	nearestY = std::max(nY, std::min(collidElement.cy, nY + obstacleR.h));
-
-	topR = nY - obstacleR.h;
-	bottomR = nY + obstacleR.h;
-	leftR = nX - obstacleR.w;
-	rightR = nX + obstacleR.w;
-
-	distLeft = abs(collidElement.cx + collidElement.radius - (obstacleR.cx - obstacleR.w / 2));
-	distRight = abs(collidElement.cx - collidElement.radius - (obstacleR.cx + obstacleR.w / 2));
-	distTop = abs(collidElement.cy + collidElement.radius - (obstacleR.cy - obstacleR.h/2));
-	distBottom = abs(collidElement.cy - collidElement.radius - (obstacleR.cy + obstacleR.h/2));
-
-
-	dx = collidElement.cx - nearestX;
-	dy = collidElement.cy - nearestY;
-
-	if (pow(dx, 2) + pow(dy, 2) < (pow(collidElement.radius,2)))
+	if (modern)
 	{
-		if (!is_pacman)
+		obstacleR = cur_obst->getCollisionHull();
+
+		nX = obstacleR.cx - obstacleR.w / 2;
+		nY = obstacleR.cy - obstacleR.h / 2;
+
+		nearestX = std::max(nX, std::min(collidElement.cx, nX + obstacleR.w));
+		nearestY = std::max(nY, std::min(collidElement.cy, nY + obstacleR.h));
+
+		topR = nY - obstacleR.h;
+		bottomR = nY + obstacleR.h;
+		leftR = nX - obstacleR.w;
+		rightR = nX + obstacleR.w;
+
+		distLeft = abs(collidElement.cx + collidElement.radius - (obstacleR.cx - obstacleR.w / 2));
+		distRight = abs(collidElement.cx - collidElement.radius - (obstacleR.cx + obstacleR.w / 2));
+		distTop = abs(collidElement.cy + collidElement.radius - (obstacleR.cy - obstacleR.h / 2));
+		distBottom = abs(collidElement.cy - collidElement.radius - (obstacleR.cy + obstacleR.h / 2));
+
+
+		dx = collidElement.cx - nearestX;
+		dy = collidElement.cy - nearestY;
+
+		if (pow(dx, 2) + pow(dy, 2) < (pow(collidElement.radius, 2)))
 		{
-			if (distTop < distRight && distTop < distBottom && distTop < distLeft)
+			if (!is_pacman)
 			{
-				if (topR < nearestY && nearestY < obstacleR.cy)
+				if (distTop < distRight && distTop < distBottom && distTop < distLeft)
 				{
-					enemies[0]->movement[3] = false;
-					enemies[0]->movement[2] = true;
-					enemies[0]->movement[0] = true;
-					enemies[0]->movement[1] = true;
+					if (topR < nearestY && nearestY < obstacleR.cy)
+					{
+						enemies[0]->movement[3] = false;
+						enemies[0]->movement[2] = true;
+						enemies[0]->movement[0] = true;
+						enemies[0]->movement[1] = true;
+					}
+				}
+				else if (distBottom < distLeft && distBottom < distRight && distBottom < distTop)
+				{
+					if (bottomR >= nearestY && nearestY >= obstacleR.cy)
+					{
+						enemies[0]->movement[2] = false;
+						enemies[0]->movement[3] = true;
+						enemies[0]->movement[0] = true;
+						enemies[0]->movement[1] = true;
+					}
+				}
+				else if (distLeft < distBottom && distLeft < distTop && distLeft < distRight)
+				{
+					if (leftR < nearestX && nearestX < obstacleR.cx)
+					{
+						enemies[0]->movement[1] = false;
+						enemies[0]->movement[0] = true;
+						enemies[0]->movement[2] = true;
+						enemies[0]->movement[3] = true;
+					}
+				}
+				else if (distRight < distBottom && distRight < distTop && distRight < distLeft)
+				{
+					if (rightR >= nearestX && nearestX >= obstacleR.cx)
+					{
+						enemies[0]->movement[0] = false;
+						enemies[0]->movement[1] = true;
+						enemies[0]->movement[2] = true;
+						enemies[0]->movement[3] = true;
+					}
 				}
 			}
-			else if (distBottom < distLeft&& distBottom < distRight&& distBottom < distTop)
+			else
 			{
-				if (bottomR >= nearestY && nearestY >= obstacleR.cy)
+				if (distTop < distRight && distTop < distBottom && distTop < distLeft)
 				{
-					enemies[0]->movement[2] = false;
-					enemies[0]->movement[3] = true;
-					enemies[0]->movement[0] = true;
-					enemies[0]->movement[1] = true;
+					if (topR < nearestY && nearestY < obstacleR.cy)
+					{
+						pacman->movement[3] = false;
+						pacman->movement[2] = true;
+						pacman->movement[0] = true;
+						pacman->movement[1] = true;
+					}
+				}
+				else if (distBottom < distLeft && distBottom < distRight && distBottom < distTop)
+				{
+					if (bottomR >= nearestY && nearestY >= obstacleR.cy)
+					{
+						pacman->movement[2] = false;
+						pacman->movement[3] = true;
+						pacman->movement[0] = true;
+						pacman->movement[1] = true;
+					}
+				}
+				else if (distLeft < distBottom && distLeft < distTop && distLeft < distRight)
+				{
+					if (leftR < nearestX && nearestX < obstacleR.cx)
+					{
+						pacman->movement[1] = false;
+						pacman->movement[0] = true;
+						pacman->movement[2] = true;
+						pacman->movement[3] = true;
+					}
+				}
+				else if (distRight < distBottom && distRight < distTop && distRight < distLeft)
+				{
+					if (rightR >= nearestX && nearestX >= obstacleR.cx)
+					{
+						pacman->movement[0] = false;
+						pacman->movement[1] = true;
+						pacman->movement[2] = true;
+						pacman->movement[3] = true;
+					}
 				}
 			}
-			else if (distLeft < distBottom && distLeft < distTop && distLeft < distRight)
-			{
-				if (leftR < nearestX && nearestX < obstacleR.cx)
-				{
-					enemies[0]->movement[1] = false;
-					enemies[0]->movement[0] = true;
-					enemies[0]->movement[2] = true;
-					enemies[0]->movement[3] = true;
-				}
-			}
-			else if (distRight < distBottom && distRight < distTop && distRight < distLeft)
-			{
-				if (rightR >= nearestX && nearestX >= obstacleR.cx)
-				{
-					enemies[0]->movement[0] = false;
-					enemies[0]->movement[1] = true;
-					enemies[0]->movement[2] = true;
-					enemies[0]->movement[3] = true;
-				}
-			}
+			return true;
 		}
 		else
 		{
-			if (distTop < distRight && distTop < distBottom && distTop < distLeft)
-			{
-				if (topR < nearestY && nearestY < obstacleR.cy)
-				{
-					pacman->movement[3] = false;
-					pacman->movement[2] = true;
-					pacman->movement[0] = true;
-					pacman->movement[1] = true;
-				}
-			}
-			else if (distBottom < distLeft && distBottom < distRight && distBottom < distTop)
-			{
-				if (bottomR >= nearestY && nearestY >= obstacleR.cy)
-				{
-					pacman->movement[2] = false;
-					pacman->movement[3] = true;
-					pacman->movement[0] = true;
-					pacman->movement[1] = true;
-				}
-			}
-			else if (distLeft < distBottom && distLeft < distTop && distLeft < distRight)
-			{
-				if (leftR < nearestX && nearestX < obstacleR.cx)
-				{
-					pacman->movement[1] = false;
-					pacman->movement[0] = true;
-					pacman->movement[2] = true;
-					pacman->movement[3] = true;
-				}
-			}
-			else if (distRight < distBottom && distRight < distTop && distRight < distLeft)
-			{
-				if (rightR >= nearestX && nearestX >= obstacleR.cx)
-				{
-					pacman->movement[0] = false;
-					pacman->movement[1] = true;
-					pacman->movement[2] = true;
-					pacman->movement[3] = true;
-				}
-			}
+			return false;
 		}
-		return true;
 	}
 	else
 	{
 		return false;
 	}
-
-
-
 }
 
 void Menu::resetBrush()

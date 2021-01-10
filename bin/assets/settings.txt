@@ -1,4 +1,4 @@
 MusicOn: 0
 SoundOn: 0
 PongHighScore: 2
-PacManHighScore: 0
+PacManHighScore: 126

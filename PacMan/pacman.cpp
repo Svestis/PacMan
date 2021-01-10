@@ -252,22 +252,22 @@ void PacMan::drawInitM()
 
 void PacMan::updateM()
 {
-	if (graphics::getKeyState(graphics::SCANCODE_W) || graphics::getKeyState(graphics::SCANCODE_UP))
+	if ((graphics::getKeyState(graphics::SCANCODE_W) || graphics::getKeyState(graphics::SCANCODE_UP)) && movement[2])
 	{
 		pos.y -= speed * graphics::getDeltaTime() / 50.f;
 		updateUpM();
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_S) || graphics::getKeyState(graphics::SCANCODE_DOWN))
+	else if ((graphics::getKeyState(graphics::SCANCODE_S) || graphics::getKeyState(graphics::SCANCODE_DOWN)) && movement[3])
 	{
 		pos.y += speed * graphics::getDeltaTime() / 50.f;
 		updateDownM();
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_A) || graphics::getKeyState(graphics::SCANCODE_LEFT))
+	else if ((graphics::getKeyState(graphics::SCANCODE_A) || graphics::getKeyState(graphics::SCANCODE_LEFT)) && movement[0])
 	{
 		pos.x -= speed * graphics::getDeltaTime() / 50.f;
 		updateLeftM();
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_D) || graphics::getKeyState(graphics::SCANCODE_RIGHT))
+	else if ((graphics::getKeyState(graphics::SCANCODE_D) || graphics::getKeyState(graphics::SCANCODE_RIGHT)) && movement[1])
 	{
 		pos.x += speed * graphics::getDeltaTime() / 50.f;
 		updateRightM();
@@ -575,7 +575,7 @@ void PacMan::draw()
 		drawPacmanM();
 	}
 
-	graphics::Brush br;
+	/*graphics::Brush br;
 	brush.outline_opacity = 0.f;
 	br.fill_color[0] = 0.5f;
 	br.fill_color[1] = 1.f;
@@ -583,7 +583,7 @@ void PacMan::draw()
 	br.fill_opacity = 0.5f;
 	br.gradient = false;
 	disk = getCollisionHull();
-	graphics::drawDisk(disk.cx, disk.cy, disk.radius, br);
+	graphics::drawDisk(disk.cx, disk.cy, disk.radius, br);*/
 
 	graphics::drawRect(pos.x, pos.y, 25, 25, brush);
 }
