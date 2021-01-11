@@ -1,9 +1,472 @@
 #include "phantom.h"
 #include "menu.h"
 
-void Phantom::updateM()
+void Phantom::updateChaseM()
 {
 
+	float distXLeft = 0.f;
+	float distXRight = 0.f;
+	float distYUp = 0.f;
+	float distYDown = 0.f;
+
+	if (phantom == BLINKY)
+	{
+		if (menu.pacman)
+		{
+			distXLeft = sqrt(pow(pos.x - 1 - menu.pacman->getPosition().x, 2) + pow(pos.y - menu.pacman->getPosition().y, 2));
+			distXRight = sqrt(pow(pos.x + 1 - menu.pacman->getPosition().x, 2) + pow(pos.y - menu.pacman->getPosition().y, 2));
+			distYUp = sqrt(pow(pos.x - menu.pacman->getPosition().x, 2) + pow(pos.y - 1 - menu.pacman->getPosition().y, 2));
+			distYDown = sqrt(pow(pos.x - menu.pacman->getPosition().x, 2) + pow(pos.y + 1 - menu.pacman->getPosition().y, 2));
+		}
+
+		if (movement[0] && distXLeft <= distXRight && distXLeft <= distYUp && distXLeft <= distYDown)
+		{
+			pos.x -= speed * graphics::getDeltaTime() / 50.f;
+			updateLeftM();
+		}
+		else if (!movement[0] && movement[1] && distXRight <= distYUp && distXRight <= distYDown)
+		{
+			pos.x += speed * graphics::getDeltaTime() / 50.f;
+			updateRightM();
+		}
+		else if (!movement[0] && movement[2] && distYUp <= distXRight && distYUp <= distYDown)
+		{
+			pos.y -= speed * graphics::getDeltaTime() / 50.f;
+			updateUpM();
+		}
+		else if (!movement[0] && movement[3] && distYDown <= distXRight && distYDown <= distYUp)
+		{
+			pos.y += speed * graphics::getDeltaTime() / 50.f;
+			updateDownM();
+		}
+		else if (movement[1] && distXRight <= distXLeft && distXRight <= distYUp && distXRight <= distYDown)
+		{
+			pos.x += speed * graphics::getDeltaTime() / 50.f;
+			updateRightM();
+		}
+		else if (!movement[1] && movement[0] && distXLeft <= distYUp && distXLeft <= distYDown)
+		{
+			pos.x -= speed * graphics::getDeltaTime() / 50.f;
+			updateLeftM();
+		}
+		else if (!movement[1] && movement[2] && distYUp <= distYDown && distYUp <= distXLeft)
+		{
+			pos.y -= speed * graphics::getDeltaTime() / 50.f;
+			updateUpM();
+		}
+		else if (!movement[1] && movement[3] && distYDown <= distYUp && distYDown <= distXLeft)
+		{
+			pos.y += speed * graphics::getDeltaTime() / 50.f;
+			updateDownM();
+		}
+		else if (movement[2] && distYUp <= distXLeft && distYUp <= distXRight && distYUp <= distYDown)
+		{
+			pos.y -= speed * graphics::getDeltaTime() / 50.f;
+			updateUpM();
+		}
+		else if (!movement[2] && movement[0] && distXLeft <= distXRight && distXLeft <= distYDown)
+		{
+			pos.x -= speed * graphics::getDeltaTime() / 50.f;
+			updateLeftM();
+		}
+		else if (!movement[2] && movement[1] && distXRight <= distXLeft && distXRight <= distYDown)
+		{
+			pos.x += speed * graphics::getDeltaTime() / 50.f;
+			updateRightM();
+		}
+		else if (!movement[2] && movement[3] && distYDown <= distXRight && distYDown <= distXLeft)
+		{
+			pos.y += speed * graphics::getDeltaTime() / 50.f;
+			updateDownM();
+		}
+		else if (movement[3] && distYDown <= distYUp && distYDown <= distXLeft && distYDown <= distXRight)
+		{
+			pos.y += speed * graphics::getDeltaTime() / 50.f;
+			updateDownM();
+		}
+		else if (!movement[3] && movement[0] && distXLeft <= distYUp && distXLeft <= distXRight)
+		{
+			pos.x -= speed * graphics::getDeltaTime() / 50.f;
+			updateLeftM();
+		}
+		else if (!movement[3] && movement[1] && distXRight <= distXLeft && distXRight <= distYUp)
+		{
+			pos.x += speed * graphics::getDeltaTime() / 50.f;
+			updateRightM();
+		}
+		else if (!movement[3] && movement[2] && distYUp <= distXRight && distYUp <= distXLeft)
+		{
+			pos.y -= speed * graphics::getDeltaTime() / 50.f;
+			updateUpM();
+		}
+		else if (!movement[0])
+		{
+			if (movement[1]) pos.x += graphics::getDeltaTime() * speed / 50.f;
+			else if (movement[2]) pos.y -= graphics::getDeltaTime() * speed / 50.f;
+			else if (movement[3]) pos.y += graphics::getDeltaTime() * speed / 50.f;
+		}
+		else if (!movement[1])
+		{
+			if (movement[2]) pos.y -= graphics::getDeltaTime() * speed / 50.f;
+			else if (movement[3]) pos.y += graphics::getDeltaTime() * speed / 50.f;
+		}
+		else if (!movement[2])
+		{
+			if (movement[3]) pos.y += graphics::getDeltaTime() * speed / 50.f;
+		}
+	}
+	else if (phantom == PINKY)
+	{
+		if (menu.pacman)
+		{
+			distXLeft = sqrt(pow(pos.x - 4 - menu.pacman->getPosition().x, 2) + pow(pos.y - menu.pacman->getPosition().y, 2));
+			distXRight = sqrt(pow(pos.x + 4 - menu.pacman->getPosition().x, 2) + pow(pos.y - menu.pacman->getPosition().y, 2));
+			distYUp = sqrt(pow(pos.x - menu.pacman->getPosition().x, 2) + pow(pos.y - 4 - menu.pacman->getPosition().y, 2));
+			distYDown = sqrt(pow(pos.x - menu.pacman->getPosition().x, 2) + pow(pos.y + 4 - menu.pacman->getPosition().y, 2));
+		}
+
+		if (pos.y > CANVAS_HEIGHT / 2 - 90)
+		{
+			pos.y -= graphics::getDeltaTime() * speed / 50.f;
+			updateUpM();
+		}
+		else
+		{
+			if (movement[0] && distXLeft <= distXRight && distXLeft <= distYUp && distXLeft <= distYDown)
+			{
+				pos.x -= speed * graphics::getDeltaTime() / 50.f;
+				updateLeftM();
+			}
+			else if (!movement[0] && movement[1] && distXRight <= distYUp && distXRight <= distYDown)
+			{
+				pos.x += speed * graphics::getDeltaTime() / 50.f;
+				updateRightM();
+			}
+			else if (!movement[0] && movement[2] && distYUp <= distXRight && distYUp <= distYDown)
+			{
+				pos.y -= speed * graphics::getDeltaTime() / 50.f;
+				updateUpM();
+			}
+			else if (!movement[0] && movement[3] && distYDown <= distXRight && distYDown <= distYUp)
+			{
+				pos.y += speed * graphics::getDeltaTime() / 50.f;
+				updateDownM();
+			}
+			else if (movement[1] && distXRight <= distXLeft && distXRight <= distYUp && distXRight <= distYDown)
+			{
+				pos.x += speed * graphics::getDeltaTime() / 50.f;
+				updateRightM();
+			}
+			else if (!movement[1] && movement[0] && distXLeft <= distYUp && distXLeft <= distYDown)
+			{
+				pos.x -= speed * graphics::getDeltaTime() / 50.f;
+				updateLeftM();
+			}
+			else if (!movement[1] && movement[2] && distYUp <= distYDown && distYUp <= distXLeft)
+			{
+				pos.y -= speed * graphics::getDeltaTime() / 50.f;
+				updateUpM();
+			}
+			else if (!movement[1] && movement[3] && distYDown <= distYUp && distYDown <= distXLeft)
+			{
+				pos.y += speed * graphics::getDeltaTime() / 50.f;
+				updateDownM();
+			}
+			else if (movement[2] && distYUp <= distXLeft && distYUp <= distXRight && distYUp <= distYDown)
+			{
+				pos.y -= speed * graphics::getDeltaTime() / 50.f;
+				updateUpM();
+			}
+			else if (!movement[2] && movement[0] && distXLeft <= distXRight && distXLeft <= distYDown)
+			{
+				pos.x -= speed * graphics::getDeltaTime() / 50.f;
+				updateLeftM();
+			}
+			else if (!movement[2] && movement[1] && distXRight <= distXLeft && distXRight <= distYDown)
+			{
+				pos.x += speed * graphics::getDeltaTime() / 50.f;
+				updateRightM();
+			}
+			else if (!movement[2] && movement[3] && distYDown <= distXRight && distYDown <= distXLeft)
+			{
+				pos.y += speed * graphics::getDeltaTime() / 50.f;
+				updateDownM();
+			}
+			else if (movement[3] && distYDown <= distYUp && distYDown <= distXLeft && distYDown <= distXRight)
+			{
+				pos.y += speed * graphics::getDeltaTime() / 50.f;
+				updateDownM();
+			}
+			else if (!movement[3] && movement[0] && distXLeft <= distYUp && distXLeft <= distXRight)
+			{
+				pos.x -= speed * graphics::getDeltaTime() / 50.f;
+				updateLeftM();
+			}
+			else if (!movement[3] && movement[1] && distXRight <= distXLeft && distXRight <= distYUp)
+			{
+				pos.x += speed * graphics::getDeltaTime() / 50.f;
+				updateRightM();
+			}
+			else if (!movement[3] && movement[2] && distYUp <= distXRight && distYUp <= distXLeft)
+			{
+				pos.y -= speed * graphics::getDeltaTime() / 50.f;
+				updateUpM();
+			}
+			else if (!movement[0])
+			{
+				if (movement[1]) pos.x += graphics::getDeltaTime() * speed / 50.f;
+				else if (movement[2]) pos.y -= graphics::getDeltaTime() * speed / 50.f;
+				else if (movement[3]) pos.y += graphics::getDeltaTime() * speed / 50.f;
+			}
+			else if (!movement[1])
+			{
+				if (movement[2]) pos.y -= graphics::getDeltaTime() * speed / 50.f;
+				else if (movement[3]) pos.y += graphics::getDeltaTime() * speed / 50.f;
+			}
+			else if (!movement[2])
+			{
+				if (movement[3]) pos.y += graphics::getDeltaTime() * speed / 50.f;
+			}
+		}
+	}
+	else if (phantom == INKY)
+	{
+		if (menu.pacman)
+		{
+			distXLeft = sqrt(pow(pos.x - 10 - menu.pacman->getPosition().x, 2) + pow(pos.y - menu.pacman->getPosition().y, 2));
+			distXRight = sqrt(pow(pos.x + 10 - menu.pacman->getPosition().x, 2) + pow(pos.y - menu.pacman->getPosition().y, 2));
+			distYUp = sqrt(pow(pos.x - menu.pacman->getPosition().x, 2) + pow(pos.y - 10 - menu.pacman->getPosition().y, 2));
+			distYDown = sqrt(pow(pos.x - menu.pacman->getPosition().x, 2) + pow(pos.y + 10 - menu.pacman->getPosition().y, 2));
+		}
+
+		if (pos.x < CANVAS_WIDTH / 2)
+		{
+			pos.x += graphics::getDeltaTime() * speed / 50.f;
+			updateRightM();
+		}
+		else if (pos.y > CANVAS_HEIGHT / 2 - 90)
+		{
+			pos.y -= graphics::getDeltaTime() * speed / 50.f;
+			updateUpM();
+		}
+		else
+		{
+			if (movement[0] && distXLeft <= distXRight && distXLeft <= distYUp && distXLeft <= distYDown)
+			{
+				pos.x -= speed * graphics::getDeltaTime() / 50.f;
+				updateLeftM();
+			}
+			else if (!movement[0] && movement[1] && distXRight <= distYUp && distXRight <= distYDown)
+			{
+				pos.x += speed * graphics::getDeltaTime() / 50.f;
+				updateRightM();
+			}
+			else if (!movement[0] && movement[2] && distYUp <= distXRight && distYUp <= distYDown)
+			{
+				pos.y -= speed * graphics::getDeltaTime() / 50.f;
+				updateUpM();
+			}
+			else if (!movement[0] && movement[3] && distYDown <= distXRight && distYDown <= distYUp)
+			{
+				pos.y += speed * graphics::getDeltaTime() / 50.f;
+				updateDownM();
+			}
+			else if (movement[1] && distXRight <= distXLeft && distXRight <= distYUp && distXRight <= distYDown)
+			{
+				pos.x += speed * graphics::getDeltaTime() / 50.f;
+				updateRightM();
+			}
+			else if (!movement[1] && movement[0] && distXLeft <= distYUp && distXLeft <= distYDown)
+			{
+				pos.x -= speed * graphics::getDeltaTime() / 50.f;
+				updateLeftM();
+			}
+			else if (!movement[1] && movement[2] && distYUp <= distYDown && distYUp <= distXLeft)
+			{
+				pos.y -= speed * graphics::getDeltaTime() / 50.f;
+				updateUpM();
+			}
+			else if (!movement[1] && movement[3] && distYDown <= distYUp && distYDown <= distXLeft)
+			{
+				pos.y += speed * graphics::getDeltaTime() / 50.f;
+				updateDownM();
+			}
+			else if (movement[2] && distYUp <= distXLeft && distYUp <= distXRight && distYUp <= distYDown)
+			{
+				pos.y -= speed * graphics::getDeltaTime() / 50.f;
+				updateUpM();
+			}
+			else if (!movement[2] && movement[0] && distXLeft <= distXRight && distXLeft <= distYDown)
+			{
+				pos.x -= speed * graphics::getDeltaTime() / 50.f;
+				updateLeftM();
+			}
+			else if (!movement[2] && movement[1] && distXRight <= distXLeft && distXRight <= distYDown)
+			{
+				pos.x += speed * graphics::getDeltaTime() / 50.f;
+				updateRightM();
+			}
+			else if (!movement[2] && movement[3] && distYDown <= distXRight && distYDown <= distXLeft)
+			{
+				pos.y += speed * graphics::getDeltaTime() / 50.f;
+				updateDownM();
+			}
+			else if (movement[3] && distYDown <= distYUp && distYDown <= distXLeft && distYDown <= distXRight)
+			{
+				pos.y += speed * graphics::getDeltaTime() / 50.f;
+				updateDownM();
+			}
+			else if (!movement[3] && movement[0] && distXLeft <= distYUp && distXLeft <= distXRight)
+			{
+				pos.x -= speed * graphics::getDeltaTime() / 50.f;
+				updateLeftM();
+			}
+			else if (!movement[3] && movement[1] && distXRight <= distXLeft && distXRight <= distYUp)
+			{
+				pos.x += speed * graphics::getDeltaTime() / 50.f;
+				updateRightM();
+			}
+			else if (!movement[3] && movement[2] && distYUp <= distXRight && distYUp <= distXLeft)
+			{
+				pos.y -= speed * graphics::getDeltaTime() / 50.f;
+				updateUpM();
+			}
+			else if (!movement[0])
+			{
+				if (movement[1]) pos.x += graphics::getDeltaTime() * speed / 50.f;
+				else if (movement[2]) pos.y -= graphics::getDeltaTime() * speed / 50.f;
+				else if (movement[3]) pos.y += graphics::getDeltaTime() * speed / 50.f;
+			}
+			else if (!movement[1])
+			{
+				if (movement[2]) pos.y -= graphics::getDeltaTime() * speed / 50.f;
+				else if (movement[3]) pos.y += graphics::getDeltaTime() * speed / 50.f;
+			}
+			else if (!movement[2])
+			{
+				if (movement[3]) pos.y += graphics::getDeltaTime() * speed / 50.f;
+			}
+		}
+	}
+	else if (phantom == CLYDE)
+	{
+	if (menu.pacman)
+	{
+		distXLeft = sqrt(pow(pos.x - 1 - menu.pacman->getPosition().x, 2) + pow(pos.y - menu.pacman->getPosition().y, 2));
+		distXRight = sqrt(pow(pos.x + 1 - menu.pacman->getPosition().x, 2) + pow(pos.y - menu.pacman->getPosition().y, 2));
+		distYUp = sqrt(pow(pos.x - menu.pacman->getPosition().x, 2) + pow(pos.y - 1 - menu.pacman->getPosition().y, 2));
+		distYDown = sqrt(pow(pos.x - menu.pacman->getPosition().x, 2) + pow(pos.y + 1 - menu.pacman->getPosition().y, 2));
+	}
+
+	if (pos.x > CANVAS_WIDTH / 2)
+	{
+		pos.x -= graphics::getDeltaTime() * speed / 50.f;
+		updateLeftM();
+	}
+	else if (pos.y > CANVAS_HEIGHT / 2 - 90)
+	{
+		pos.y -= graphics::getDeltaTime() * speed / 50.f;
+		updateUpM();
+	}
+	else
+	{
+		if (movement[0] && distXLeft <= distXRight && distXLeft <= distYUp && distXLeft <= distYDown)
+		{
+			pos.x -= speed * graphics::getDeltaTime() / 50.f;
+			updateLeftM();
+		}
+		else if (!movement[0] && movement[1] && distXRight <= distYUp && distXRight <= distYDown)
+		{
+			pos.x += speed * graphics::getDeltaTime() / 50.f;
+			updateRightM();
+		}
+		else if (!movement[0] && movement[2] && distYUp <= distXRight && distYUp <= distYDown)
+		{
+			pos.y -= speed * graphics::getDeltaTime() / 50.f;
+			updateUpM();
+		}
+		else if (!movement[0] && movement[3] && distYDown <= distXRight && distYDown <= distYUp)
+		{
+			pos.y += speed * graphics::getDeltaTime() / 50.f;
+			updateDownM();
+		}
+		else if (movement[1] && distXRight <= distXLeft && distXRight <= distYUp && distXRight <= distYDown)
+		{
+			pos.x += speed * graphics::getDeltaTime() / 50.f;
+			updateRightM();
+		}
+		else if (!movement[1] && movement[0] && distXLeft <= distYUp && distXLeft <= distYDown)
+		{
+			pos.x -= speed * graphics::getDeltaTime() / 50.f;
+			updateLeftM();
+		}
+		else if (!movement[1] && movement[2] && distYUp <= distYDown && distYUp <= distXLeft)
+		{
+			pos.y -= speed * graphics::getDeltaTime() / 50.f;
+			updateUpM();
+		}
+		else if (!movement[1] && movement[3] && distYDown <= distYUp && distYDown <= distXLeft)
+		{
+			pos.y += speed * graphics::getDeltaTime() / 50.f;
+			updateDownM();
+		}
+		else if (movement[2] && distYUp <= distXLeft && distYUp <= distXRight && distYUp <= distYDown)
+		{
+			pos.y -= speed * graphics::getDeltaTime() / 50.f;
+			updateUpM();
+		}
+		else if (!movement[2] && movement[0] && distXLeft <= distXRight && distXLeft <= distYDown)
+		{
+			pos.x -= speed * graphics::getDeltaTime() / 50.f;
+			updateLeftM();
+		}
+		else if (!movement[2] && movement[1] && distXRight <= distXLeft && distXRight <= distYDown)
+		{
+			pos.x += speed * graphics::getDeltaTime() / 50.f;
+			updateRightM();
+		}
+		else if (!movement[2] && movement[3] && distYDown <= distXRight && distYDown <= distXLeft)
+		{
+			pos.y += speed * graphics::getDeltaTime() / 50.f;
+			updateDownM();
+		}
+		else if (movement[3] && distYDown <= distYUp && distYDown <= distXLeft && distYDown <= distXRight)
+		{
+			pos.y += speed * graphics::getDeltaTime() / 50.f;
+			updateDownM();
+		}
+		else if (!movement[3] && movement[0] && distXLeft <= distYUp && distXLeft <= distXRight)
+		{
+			pos.x -= speed * graphics::getDeltaTime() / 50.f;
+			updateLeftM();
+		}
+		else if (!movement[3] && movement[1] && distXRight <= distXLeft && distXRight <= distYUp)
+		{
+			pos.x += speed * graphics::getDeltaTime() / 50.f;
+			updateRightM();
+		}
+		else if (!movement[3] && movement[2] && distYUp <= distXRight && distYUp <= distXLeft)
+		{
+			pos.y -= speed * graphics::getDeltaTime() / 50.f;
+			updateUpM();
+		}
+		else if (!movement[0])
+		{
+			if (movement[1]) pos.x += graphics::getDeltaTime() * speed / 50.f;
+			else if (movement[2]) pos.y -= graphics::getDeltaTime() * speed / 50.f;
+			else if (movement[3]) pos.y += graphics::getDeltaTime() * speed / 50.f;
+		}
+		else if (!movement[1])
+		{
+			if (movement[2]) pos.y -= graphics::getDeltaTime() * speed / 50.f;
+			else if (movement[3]) pos.y += graphics::getDeltaTime() * speed / 50.f;
+		}
+		else if (!movement[2])
+		{
+			if (movement[3]) pos.y += graphics::getDeltaTime() * speed / 50.f;
+		}
+	}
+	}
 }
 
 void Phantom::updateMulti()
@@ -41,74 +504,51 @@ void Phantom::updateStartM()
 	{
 		if (pos.y < 240)
 		{
-			std::cout << "PINKY " << counter << std::endl;
 			dir = -1;
 			updateUpM();
-			counter += 1;
 		}
 		else if (pos.y > 265)
 		{
-			std::cout << "PINKY " << counter << std::endl;
 			dir = 1;
-			updateDownM();
-			counter += 1;
+			updateDownM();;
 		}
 			
 		pos.y -= dir * graphics::getDeltaTime() * speed / 50.f;
-	
-
-		if (counter == 17)
-		{
-			start = false;
-		}
 	}
 	else if (phantom == CLYDE)
 	{
 		if (pos.y < 240)
 		{
-			std::cout << "CLYDE " << counter << std::endl;
 			dir = -1;
 			updateUpM();
-			counter += 1;
 		}
 		else if (pos.y > 265)
 		{
-			std::cout << "CLYDE " << counter << std::endl;
 			dir = 1;
 			updateDownM();
-			counter += 1;
 		}
 
 		pos.y -= dir * graphics::getDeltaTime() * speed / 50.f;
-
-		if (counter == 36)
-		{
-			start = false;
-		}
 	}
 	else if (phantom == INKY)
 	{
 		if (pos.y < 240)
 		{
-			std::cout << "INKY " << counter << std::endl;
 			dir = -1;
 			updateUpM();
-			counter += 1;
 		}
 		else if (pos.y > 265)
 		{
-			std::cout << "INKY " << counter << std::endl;
 			dir = 1;
 			updateDownM();
-			counter += 1;
+
 		}
 
 		pos.y -= dir * graphics::getDeltaTime() * speed / 50.f;
-
-		if (counter == 26)
-		{
-			start = false;
-		}
+	}
+	else if (phantom == BLINKY)
+	{
+		start = false;
 	}
 
 }
@@ -184,6 +624,10 @@ void Phantom::updateDownM()
 void Phantom::updateC()
 {
 
+}
+
+void Phantom::updateM()
+{
 }
 
 void Phantom::updateLeftC()
@@ -262,7 +706,7 @@ void Phantom::update()
 		{
 			if (modern)
 			{
-				updateM();
+				updateChaseM();
 			}
 			else
 			{
@@ -276,7 +720,7 @@ void Phantom::update()
 				updateStartM();
 			}
 		}
-		else if (multi && !start)
+		else if (multi)
 		{
 			updateMulti();
 		}
@@ -635,7 +1079,6 @@ void Phantom::init()
 	multi = menu.getMulti();
 	if (multi)
 	{
-		pos.y = pos.y - 90;
 		phantom = menu.getPhantom();
 	}
 	else if (!multi && modern)
@@ -645,12 +1088,14 @@ void Phantom::init()
 			pos.y = pos.y;
 			pos.x = pos.x;
 			rot = LEFT1;
+			speed = 4.f;
 		}
 		else if (phantom == PINKY)
 		{
 			pos.y = pos.y + 45;
 			pos.x = pos.x;
 			rot = UP1;
+			speed = 4.f;
 		}
 		else if (phantom == INKY)
 		{
@@ -658,6 +1103,7 @@ void Phantom::init()
 			pos.x = pos.x - 50;
 			rot = DOWN1;
 			dir = -1;
+			speed = 4.f;
 		}
 		else if (phantom == CLYDE)
 		{
@@ -665,6 +1111,7 @@ void Phantom::init()
 			pos.x = pos.x + 50;
 			rot = DOWN1;
 			dir = -1;
+			speed = 4.f;
 		}
 	}
 }

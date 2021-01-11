@@ -31,6 +31,7 @@ class Phantom : public GameElement, public CollidableD
 	void updateDownM() override;
 	void updateC() override;
 	void updateM() override;
+	void updateChaseM();
 	void updateMulti();
 	void updateStartM();
 public:
@@ -42,6 +43,8 @@ public:
 	void drawInitC() override;
 	bool getCollidable() { return collid; };
 	void setCollidable(bool c) { collid = c; };
+	void setStart(bool s) { start = s; };
+	bool getStart() { return start; };
 	Phantom(const class Menu& ingame);
 	Phantom(const class Menu& ingame, character charac);
 	~Phantom();

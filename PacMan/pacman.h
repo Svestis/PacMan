@@ -41,6 +41,7 @@ public:
 	void updateMulti();
 	bool getCollidable() { return collid; };
 	void setCollidable(bool c) { collid = c; };	
+	Position getPosition() { return pos; };
 	bool movement[4] = { true, true, true, true }; // left, right, top, down
 	PacMan(const class Menu& ingame);
 	~PacMan();

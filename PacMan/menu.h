@@ -34,7 +34,11 @@ class Menu
 		player_score = 0,
 		phantom_score = 0,
 		obst_counter = 0,
-		obst_counter_2 = 0;
+		obst_counter_2 = 0,
+		obst_counter_3 = 0,
+		obst_counter_4 = 0,
+		obst_counter_5 = 0,
+		pacman_lives = 4;
 	unsigned short int window_width = WINDOW_WIDTH, 
 					   window_height = WINDOW_HEIGHT,
 					   canvas_width = CANVAS_WIDTH,
@@ -47,7 +51,6 @@ class Menu
 	graphics::Brush brush,
 					loc_brush;
 	graphics::MouseState mouse;
-	PacMan* pacman = nullptr;
 	Phantom* enemies[4] = { nullptr, nullptr, nullptr, nullptr };
 	Pong* pong_player = nullptr;
 	Pong* pong_ai = nullptr;
@@ -99,13 +102,14 @@ class Menu
 	void drawFullScreen(); // full screen button
 	void drawGameMultiPlayer();
 	void cacheImages(); // Caching images
-	bool checkCollisionPacMan();
+	bool checkCollisionPacMan(int num=0);
 	bool checkCollisionPacDot(Pacdot* cur_dot, bool is_pacman);
-	bool checkCollisionObstacle(Obstacle* cur_obst, bool is_pacman);
+	bool checkCollisionObstacle(Obstacle* cur_obst, bool is_pacman, int num=0);
 	void resetBrush();
 public:
 	Maze* maze = nullptr;
 	PongBall* pong_ball = nullptr;
+	PacMan* pacman = nullptr;
 	bool paused = false;
 	void update();
 	void draw();
