@@ -4,6 +4,7 @@
 #include "graphics.h"
 #include "config.h"
 #include "util.h"
+#include "obstacle.h"
 
 class Phantom : public GameElement, public CollidableD
 {
@@ -11,10 +12,11 @@ class Phantom : public GameElement, public CollidableD
 	rotation rot = LEFT1;
 	character phantom;
 	Disk disk;
+	int b_f = 0, u_d = 0;
 	double timer = 0, timer_2 = 0;
 	bool start = true,
 		 modern,
-		multi, init_ = true, collid = false;
+		multi, init_ = true, collid = false, out = false;
 	float speed = 5.f;
 	int dir = 1, counter = 0;
 	graphics::Brush brush;
@@ -34,6 +36,7 @@ class Phantom : public GameElement, public CollidableD
 	void updateChaseM();
 	void updateMulti();
 	void updateStartM();
+	void chase();
 public:
 	bool movement[4] = { true, true, true, true }; // left, right, top, down
 	void update() override;
@@ -45,6 +48,7 @@ public:
 	void setCollidable(bool c) { collid = c; };
 	void setStart(bool s) { start = s; };
 	bool getStart() { return start; };
+	void setSpeed(double s) { speed = s; };
 	Phantom(const class Menu& ingame);
 	Phantom(const class Menu& ingame, character charac);
 	~Phantom();

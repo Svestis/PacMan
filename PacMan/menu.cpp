@@ -37,7 +37,11 @@ void Menu::updateP()
 {
 	graphics::getMouseState(mouse);
 
-	if (mouse.button_left_released)	paused = !paused;
+	if (mouse.button_left_released)
+	{
+		hover[13] = 1.f;
+		paused = !paused;
+	}
 	else hover[13] = 1.3f;
 }
 
@@ -124,6 +128,9 @@ void Menu::updateB(status s)
 		obst_counter_3 = 0;
 		obst_counter_4 = 0;
 		obst_counter_5 = 0;
+		pacman_level = 1;
+		pacman_speed = 5.f;
+		phantom_speed = 4.f;
 	}
 	else hover[4] = 1.3f;
 }
@@ -395,6 +402,24 @@ void Menu::updateClassicGame()
 		{
 			delete this; // TODO: check this one
 		}
+		else if ((window2CanvasX(mouse.cur_pos_x) >= CANVAS_WIDTH - 40 - 20) &&
+			(window2CanvasX(mouse.cur_pos_x) <= CANVAS_WIDTH - 20) && (window2CanvasY(mouse.cur_pos_y) >= CANVAS_HEIGHT - 40 - 15) && (window2CanvasY(mouse.cur_pos_y) <= CANVAS_HEIGHT - 15))
+		{
+			if (!lost)
+			{
+				updateP();
+			}
+		}
+		else if ((window2CanvasX(mouse.cur_pos_x) >= 128) &&
+			(window2CanvasX(mouse.cur_pos_x) <= 372) && (window2CanvasY(mouse.cur_pos_y) >= 259) && (window2CanvasY(mouse.cur_pos_y) <= 391) && lost)
+		{
+			updateY();
+		}
+		else if ((window2CanvasX(mouse.cur_pos_x) >= 128 + 500) &&
+			(window2CanvasX(mouse.cur_pos_x) <= 372 + 500) && (window2CanvasY(mouse.cur_pos_y) >= 259) && (window2CanvasY(mouse.cur_pos_y) <= 391) && lost)
+		{
+			updateN(STATUS_START);
+		}
 		else // TODO: SECOND PRIORITY add more info button
 		{
 			hover[0] = 1.f;
@@ -403,6 +428,9 @@ void Menu::updateClassicGame()
 			hover[2] = 1.f;
 			hover[6] = 1.f;
 			hover[3] = 1.f;
+			hover[13] = 1.f;
+			hover[6] = 1.f;
+			hover[5] = 1.f;
 		}
 	}
 	else
@@ -442,6 +470,50 @@ void Menu::updateClassicGame()
 		}
 	}
 
+	if (enemies[0] && enemies[0]->getCollidable())
+	{
+		time_counter += graphics::getDeltaTime();
+		if (time_counter > 5000)
+		{
+			enemies[0]->setCollidable(false);
+			pacman->setCollidable(true);
+			time_counter = 0;
+		}
+	}
+
+	if (enemies[1] && enemies[1]->getCollidable())
+	{
+		time_counter += graphics::getDeltaTime();
+		if (time_counter > 5000)
+		{
+			enemies[1]->setCollidable(false);
+			pacman->setCollidable(true);
+			time_counter = 0;
+		}
+	}
+
+	if (enemies[2] && enemies[2]->getCollidable())
+	{
+		time_counter += graphics::getDeltaTime();
+		if (time_counter > 5000)
+		{
+			enemies[2]->setCollidable(false);
+			pacman->setCollidable(true);
+			time_counter = 0;
+		}
+	}
+
+	if (enemies[3] && enemies[3]->getCollidable())
+	{
+		time_counter += graphics::getDeltaTime();
+		if (time_counter > 5000)
+		{
+			enemies[3]->setCollidable(false);
+			pacman->setCollidable(true);
+			time_counter = 0;
+		}
+	}
+
 	if (!maze)
 	{
 		maze = new Maze(*this);
@@ -454,6 +526,8 @@ void Menu::updateClassicGame()
 		{
 			pacman = new PacMan(*this);
 			pacman->setCollidable(true);
+			time_counter = 0;
+			pacman->setSpeed(pacman_speed);
 		}
 	}
 
@@ -464,6 +538,7 @@ void Menu::updateClassicGame()
 			enemies[0] = new Phantom(*this, BLINKY);
 			time_counter = 0;
 			enemies[0]->setCollidable(false);
+			enemies[0]->setSpeed(phantom_speed);
 		}
 	}
 
@@ -474,6 +549,7 @@ void Menu::updateClassicGame()
 			enemies[1] = new Phantom(*this, PINKY);
 			time_counter = 0;
 			enemies[1]->setCollidable(false);
+			enemies[1]->setSpeed(phantom_speed);
 		}
 	}
 
@@ -484,6 +560,7 @@ void Menu::updateClassicGame()
 			enemies[2] = new Phantom(*this, INKY);
 			time_counter = 0;
 			enemies[2]->setCollidable(false);
+			enemies[2]->setSpeed(phantom_speed);
 		}
 	}
 
@@ -494,6 +571,7 @@ void Menu::updateClassicGame()
 			enemies[3] = new Phantom(*this, CLYDE);
 			time_counter = 0;
 			enemies[3]->setCollidable(false);
+			enemies[3]->setSpeed(phantom_speed);
 		}
 	}
 
@@ -502,88 +580,39 @@ void Menu::updateClassicGame()
 		maze->update();
 	}
 
-	if (enemies[0])
+	for (int i = 0; i < 4; i++)
 	{
-		enemies[0]->update();
-	}
-
-	if (enemies[1])
-	{
-		enemies[1]->update();
-	}
-
-	if (enemies[2])
-	{
-		enemies[2]->update();
-	}
-
-	if (enemies[3])
-	{
-		enemies[3]->update();
+		if (enemies[i]) enemies[i]->update();
 	}
 
 	if (pacman)
 	{
 		pacman->update();
 	}
-
-	if (checkCollisionPacMan() && pacman->getCollidable())
+	
+	if (pacman && pacman->getCollidable() && enemies[0] && enemies[1] && enemies[2] && enemies[3] && (checkCollisionPacMan() || checkCollisionPacMan(1) || checkCollisionPacMan(2) || checkCollisionPacMan(3)))
 	{
 		delete pacman;
 		pacman = nullptr;
 		--pacman_lives;
 	}
 
-	if (checkCollisionPacMan(1) && pacman->getCollidable())
+	if (pacman_lives == 0)
 	{
-		delete pacman;
-		pacman = nullptr;
-		--pacman_lives;
+		lost = true;
 	}
 
-	if (checkCollisionPacMan(2) && pacman->getCollidable())
+	for (int i = 0; i < 4; i++)
 	{
-		delete pacman;
-		pacman = nullptr;
-		--pacman_lives;
-	}
-
-	if (checkCollisionPacMan(3) && pacman->getCollidable())
-	{
-		delete pacman;
-		pacman = nullptr;
-		--pacman_lives;
-	}
-
-	if (checkCollisionPacMan() && enemies[0]->getCollidable())
-	{
-		delete enemies[0];
-		pacman->setCollidable(true);
-		enemies[0] = nullptr;
-		if (enemies[1]) enemies[1]->setStart(false);
-	}
-
-	if (checkCollisionPacMan(1) && enemies[1]->getCollidable())
-	{
-		delete enemies[1];
-		pacman->setCollidable(true);
-		enemies[1] = nullptr;
-		if (enemies[2]) enemies[2]->setStart(false);
-	}
-
-	if (checkCollisionPacMan(2) && enemies[2]->getCollidable())
-	{
-		delete enemies[1];
-		pacman->setCollidable(true);
-		enemies[2] = nullptr;
-		if (enemies[3]) enemies[3]->setStart(false);
-	}
-
-	if (checkCollisionPacMan(3) && enemies[3]->getCollidable())
-	{
-		delete enemies[1];
-		pacman->setCollidable(true);
-		enemies[3] = nullptr;
+		if (checkCollisionPacMan(i) && enemies[i]->getCollidable())
+		{
+			delete enemies[i];
+			pacman->setCollidable(true);
+			enemies[i] = nullptr;
+			obst_counter = 0;
+			if (i != 3 && enemies[i+1]) enemies[i+1]->setStart(false);
+			time_counter = 0;
+		}
 	}
 
 	for (auto const& value : maze->pacdots)
@@ -592,11 +621,13 @@ void Menu::updateClassicGame()
 		{
 			if (!value->getBig())
 			{
-				score += 1;
+				score += 10;
+				local_score += 1;
 			}
 			else
 			{
-				score += 10;
+				score += 50;
+				local_score += 1;
 				if (enemies[0])enemies[0]->setCollidable(true);
 				else if (enemies[1]) enemies[1]->setCollidable(true);
 				else if (enemies[2]) enemies[2]->setCollidable(true);
@@ -718,409 +749,145 @@ void Menu::updateClassicGame()
 		}
 	}
 
-
-	if (enemies[0] && enemies[0]->getCollisionHull().cx <= 601 && enemies[0]->getCollisionHull().cy <= 256)
+	for (int i = 0; i < 4; i++)
 	{
-		for (auto const& value : maze->obstaclesUpLeft)
+		obst_counter = 0;
+		if (enemies[i] && !enemies[i]->getStart())
 		{
-			if (!checkCollisionObstacle(value, false))
+			if (enemies[i] && enemies[i]->getCollisionHull().cx <= 601 && enemies[i]->getCollisionHull().cy <= 256)
 			{
-				obst_counter += 1;
-			}
-			else
-			{
-				obst_counter = 0;
-			}
-
-			if (obst_counter == maze->obstaclesUpLeft.size())
-			{
-				if (enemies[0])
+				for (auto const& value : maze->obstaclesUpLeft)
 				{
-					enemies[0]->movement[0] = true;
-					enemies[0]->movement[1] = true;
-					enemies[0]->movement[2] = true;
-					enemies[0]->movement[3] = true;
+					if (!checkCollisionObstacle(value, false, i))
+					{
+						obst_counter += 1;
+					}
+					else
+					{
+						obst_counter = 0;
+					}
+
+					if (obst_counter == maze->obstaclesUpLeft.size())
+					{
+						if (enemies[i])
+						{
+							enemies[i]->movement[0] = true;
+							enemies[i]->movement[1] = true;
+							enemies[i]->movement[2] = true;
+							enemies[i]->movement[3] = true;
+						}
+					}
 				}
 			}
-		}
-	}
-	else if (enemies[0] && enemies[0]->getCollisionHull().cx > 601 && enemies[0]->getCollisionHull().cy <= 256)
-	{
-		for (auto const& value : maze->obstaclesUpRight)
-		{
-			if (!checkCollisionObstacle(value, false))
+			else if (enemies[i] && enemies[i]->getCollisionHull().cx > 601 && enemies[i]->getCollisionHull().cy <= 256)
 			{
-				obst_counter += 1;
-			}
-			else
-			{
-				obst_counter = 0;
-			}
-
-			if (obst_counter == maze->obstaclesUpRight.size())
-			{
-				if (enemies[0])
+				for (auto const& value : maze->obstaclesUpRight)
 				{
-					enemies[0]->movement[0] = true;
-					enemies[0]->movement[1] = true;
-					enemies[0]->movement[2] = true;
-					enemies[0]->movement[3] = true;
+					if (!checkCollisionObstacle(value, false, i))
+					{
+						obst_counter += 1;
+					}
+					else
+					{
+						obst_counter = 0;
+					}
+
+					if (obst_counter == maze->obstaclesUpRight.size())
+					{
+						if (enemies[i])
+						{
+							enemies[i]->movement[0] = true;
+							enemies[i]->movement[1] = true;
+							enemies[i]->movement[2] = true;
+							enemies[i]->movement[3] = true;
+						}
+					}
 				}
 			}
-		}
-	}
-	else if (enemies[0] && enemies[0]->getCollisionHull().cx <= 601 && enemies[0]->getCollisionHull().cy > 256)
-	{
-		for (auto const& value : maze->obstaclesDownLeft)
-		{
-			if (!checkCollisionObstacle(value, false))
+			else if (enemies[i] && enemies[i]->getCollisionHull().cx <= 601 && enemies[i]->getCollisionHull().cy > 256)
 			{
-				obst_counter += 1;
-			}
-			else
-			{
-				obst_counter = 0;
-			}
-
-			if (obst_counter == maze->obstaclesDownLeft.size())
-			{
-				if (enemies[0])
+				for (auto const& value : maze->obstaclesDownLeft)
 				{
-					enemies[0]->movement[0] = true;
-					enemies[0]->movement[1] = true;
-					enemies[0]->movement[2] = true;
-					enemies[0]->movement[3] = true;
+					if (!checkCollisionObstacle(value, false, i))
+					{
+						obst_counter += 1;
+					}
+					else
+					{
+						obst_counter = 0;
+					}
+
+					if (obst_counter == maze->obstaclesDownLeft.size())
+					{
+						if (enemies[i])
+						{
+							enemies[i]->movement[0] = true;
+							enemies[i]->movement[1] = true;
+							enemies[i]->movement[2] = true;
+							enemies[i]->movement[3] = true;
+						}
+					}
 				}
 			}
-		}
-	}
-	else if (enemies[0] && enemies[0]->getCollisionHull().cx > 601 && enemies[0]->getCollisionHull().cy > 256)
-	{
-		for (auto const& value : maze->obstaclesDownRight)
-		{
-			if (!checkCollisionObstacle(value, false))
+			else if (enemies[i] && enemies[i]->getCollisionHull().cx > 601 && enemies[i]->getCollisionHull().cy > 256)
 			{
-				obst_counter += 1;
-			}
-			else
-			{
-				obst_counter = 0;
-			}
-
-			if (obst_counter == maze->obstaclesDownRight.size())
-			{
-				if (enemies[0])
+				for (auto const& value : maze->obstaclesDownRight)
 				{
-					enemies[0]->movement[0] = true;
-					enemies[0]->movement[1] = true;
-					enemies[0]->movement[2] = true;
-					enemies[0]->movement[3] = true;
-				}
-			}
-		}
-	}
+					if (!checkCollisionObstacle(value, false, i))
+					{
+						obst_counter += 1;
+					}
+					else
+					{
+						obst_counter = 0;
+					}
 
-	if (enemies[1] && enemies[1]->getCollisionHull().cx <= 601 && enemies[1]->getCollisionHull().cy <= 256)
-	{
-		for (auto const& value : maze->obstaclesUpLeft)
-		{
-			if (!checkCollisionObstacle(value, false, 1))
-			{
-				obst_counter_3 += 1;
-			}
-			else
-			{
-				obst_counter_3 = 0;
-			}
-
-			if (obst_counter_3 == maze->obstaclesUpLeft.size())
-			{
-				if (enemies[1])
-				{
-					enemies[1]->movement[0] = true;
-					enemies[1]->movement[1] = true;
-					enemies[1]->movement[2] = true;
-					enemies[1]->movement[3] = true;
-				}
-			}
-		}
-	}
-	else if (enemies[1] && enemies[1]->getCollisionHull().cx > 601 && enemies[1]->getCollisionHull().cy <= 256)
-	{
-		for (auto const& value : maze->obstaclesUpRight)
-		{
-			if (!checkCollisionObstacle(value, false, 1))
-			{
-				obst_counter_3 += 1;
-			}
-			else
-			{
-				obst_counter_3 = 0;
-			}
-
-			if (obst_counter_3 == maze->obstaclesUpRight.size())
-			{
-				if (enemies[1])
-				{
-					enemies[1]->movement[0] = true;
-					enemies[1]->movement[1] = true;
-					enemies[1]->movement[2] = true;
-					enemies[1]->movement[3] = true;
-				}
-			}
-		}
-	}
-	else if (enemies[1] && enemies[1]->getCollisionHull().cx <= 601 && enemies[1]->getCollisionHull().cy > 256)
-	{
-		for (auto const& value : maze->obstaclesDownLeft)
-		{
-			if (!checkCollisionObstacle(value, false, 1))
-			{
-				obst_counter_3 += 1;
-			}
-			else
-			{
-				obst_counter_3 = 0;
-			}
-
-			if (obst_counter_3 == maze->obstaclesDownLeft.size())
-			{
-				if (enemies[1])
-				{
-					enemies[1]->movement[0] = true;
-					enemies[1]->movement[1] = true;
-					enemies[1]->movement[2] = true;
-					enemies[1]->movement[3] = true;
-				}
-			}
-		}
-	}
-	else if (enemies[1] && enemies[1]->getCollisionHull().cx > 601 && enemies[1]->getCollisionHull().cy > 256)
-	{
-		for (auto const& value : maze->obstaclesDownRight)
-		{
-			if (!checkCollisionObstacle(value, false, 1))
-			{
-				obst_counter_3 += 1;
-			}
-			else
-			{
-				obst_counter_3 = 0;
-			}
-
-			if (obst_counter_3 == maze->obstaclesDownRight.size())
-			{
-				if (enemies[1])
-				{
-					enemies[1]->movement[0] = true;
-					enemies[1]->movement[1] = true;
-					enemies[1]->movement[2] = true;
-					enemies[1]->movement[3] = true;
+					if (obst_counter == maze->obstaclesDownRight.size())
+					{
+						if (enemies[i])
+						{
+							enemies[i]->movement[0] = true;
+							enemies[i]->movement[1] = true;
+							enemies[i]->movement[2] = true;
+							enemies[i]->movement[3] = true;
+						}
+					}
 				}
 			}
 		}
 	}
 
-	if (enemies[2] && enemies[2]->getCollisionHull().cx <= 601 && enemies[2]->getCollisionHull().cy <= 256)
+	if (!enemies[0] && !enemies[1] && !enemies[2] && !enemies[3])
 	{
-		for (auto const& value : maze->obstaclesUpLeft)
-		{
-			if (!checkCollisionObstacle(value, false, 2))
-			{
-				obst_counter_4 += 1;
-			}
-			else
-			{
-				obst_counter_4 = 0;
-			}
-
-			if (obst_counter_4 == maze->obstaclesUpLeft.size())
-			{
-				if (enemies[2])
-				{
-					enemies[2]->movement[0] = true;
-					enemies[2]->movement[1] = true;
-					enemies[2]->movement[2] = true;
-					enemies[2]->movement[3] = true;
-				}
-			}
-		}
-	}
-	else if (enemies[2] && enemies[2]->getCollisionHull().cx > 601 && enemies[2]->getCollisionHull().cy <= 256)
-	{
-		for (auto const& value : maze->obstaclesUpRight)
-		{
-			if (!checkCollisionObstacle(value, false, 2))
-			{
-				obst_counter_4 += 1;
-			}
-			else
-			{
-				obst_counter_4 = 0;
-			}
-
-			if (obst_counter_4 == maze->obstaclesUpRight.size())
-			{
-				if (enemies[2])
-				{
-					enemies[2]->movement[0] = true;
-					enemies[2]->movement[1] = true;
-					enemies[2]->movement[2] = true;
-					enemies[2]->movement[3] = true;
-				}
-			}
-		}
-	}
-	else if (enemies[2] && enemies[2]->getCollisionHull().cx <= 601 && enemies[2]->getCollisionHull().cy > 256)
-	{
-		for (auto const& value : maze->obstaclesDownLeft)
-		{
-			if (!checkCollisionObstacle(value, false, 2))
-			{
-				obst_counter_4 += 1;
-			}
-			else
-			{
-				obst_counter_4 = 0;
-			}
-
-			if (obst_counter_4 == maze->obstaclesDownLeft.size())
-			{
-				if (enemies[2])
-				{
-					enemies[2]->movement[0] = true;
-					enemies[2]->movement[1] = true;
-					enemies[2]->movement[2] = true;
-					enemies[2]->movement[3] = true;
-				}
-			}
-		}
-	}
-	else if (enemies[2] && enemies[2]->getCollisionHull().cx > 601 && enemies[2]->getCollisionHull().cy > 256)
-	{
-		for (auto const& value : maze->obstaclesDownRight)
-		{
-			if (!checkCollisionObstacle(value, false, 2))
-			{
-				obst_counter_4 += 1;
-			}
-			else
-			{
-				obst_counter_4 = 0;
-			}
-
-			if (obst_counter_4 == maze->obstaclesDownRight.size())
-			{
-				if (enemies[2])
-				{
-					enemies[2]->movement[0] = true;
-					enemies[2]->movement[1] = true;
-					enemies[2]->movement[2] = true;
-					enemies[2]->movement[3] = true;
-				}
-			}
-		}
+		delete maze;
+		maze = nullptr;
+		delete pacman;
+		pacman = nullptr;
+		phantom_speed += 0.3f;
+		pacman_speed += 0.3f;
+		pacman_level += 1;
+		local_score = 0;
 	}
 
-	if (enemies[3] && enemies[3]->getCollisionHull().cx <= 601 && enemies[3]->getCollisionHull().cy <= 256)
+	
+	if (pacman && maze && maze->pacdots.empty() && local_score > 0)
 	{
-		for (auto const& value : maze->obstaclesUpLeft)
+		delete maze;
+		maze = nullptr;
+		delete pacman;
+		pacman = nullptr;
+		for (int i = 0; i < 4; i++)
 		{
-			if (!checkCollisionObstacle(value, false, 3))
+			if (enemies[i])
 			{
-				obst_counter_5 += 1;
-			}
-			else
-			{
-				obst_counter_5 = 0;
-			}
-
-			if (obst_counter_5 == maze->obstaclesUpLeft.size())
-			{
-				if (enemies[3])
-				{
-					enemies[3]->movement[0] = true;
-					enemies[3]->movement[1] = true;
-					enemies[3]->movement[2] = true;
-					enemies[3]->movement[3] = true;
-				}
+				delete enemies[i];
+				enemies[i] = nullptr;
 			}
 		}
-	}
-	else if (enemies[3] && enemies[3]->getCollisionHull().cx > 601 && enemies[3]->getCollisionHull().cy <= 256)
-	{
-		for (auto const& value : maze->obstaclesUpRight)
-		{
-			if (!checkCollisionObstacle(value, false, 3))
-			{
-				obst_counter_5 += 1;
-			}
-			else
-			{
-				obst_counter_5 = 0;
-			}
-
-			if (obst_counter_5 == maze->obstaclesUpRight.size())
-			{
-				if (enemies[3])
-				{
-					enemies[3]->movement[0] = true;
-					enemies[3]->movement[1] = true;
-					enemies[3]->movement[2] = true;
-					enemies[3]->movement[3] = true;
-				}
-			}
-		}
-	}
-	else if (enemies[3] && enemies[3]->getCollisionHull().cx <= 601 && enemies[3]->getCollisionHull().cy > 256)
-	{
-		for (auto const& value : maze->obstaclesDownLeft)
-		{
-			if (!checkCollisionObstacle(value, false, 3))
-			{
-				obst_counter_5 += 1;
-			}
-			else
-			{
-				obst_counter_5 = 0;
-			}
-
-			if (obst_counter_5 == maze->obstaclesDownLeft.size())
-			{
-				if (enemies[3])
-				{
-					enemies[3]->movement[0] = true;
-					enemies[3]->movement[1] = true;
-					enemies[3]->movement[2] = true;
-					enemies[3]->movement[3] = true;
-				}
-			}
-		}
-	}
-	else if (enemies[3] && enemies[3]->getCollisionHull().cx > 601 && enemies[3]->getCollisionHull().cy > 256)
-	{
-		for (auto const& value : maze->obstaclesDownRight)
-		{
-			if (!checkCollisionObstacle(value, false, 3))
-			{
-				obst_counter_5 += 1;
-			}
-			else
-			{
-				obst_counter_5 = 0;
-			}
-
-			if (obst_counter_5 == maze->obstaclesDownRight.size())
-			{
-				if (enemies[3])
-				{
-					enemies[3]->movement[0] = true;
-					enemies[3]->movement[1] = true;
-					enemies[3]->movement[2] = true;
-					enemies[3]->movement[3] = true;
-				}
-			}
-		}
+		phantom_speed += 0.3f;
+		pacman_speed += 0.3f;
+		pacman_level += 1;
+		local_score = 0;
 	}
 }
 
@@ -1510,6 +1277,7 @@ void Menu::updateGameMultiPlayer()
 		hover[2] = 1.f;
 		hover[6] = 1.f;
 		hover[3] = 1.f;
+		hover[13] = 1.f;
 	}
 
 	if (!maze && !replay)
@@ -1585,11 +1353,11 @@ void Menu::updateGameMultiPlayer()
 		{
 			if (!value->getBig())
 			{
-				player_score += 1;
+				player_score += 10;
 			}
 			else
 			{
-				player_score += 10;
+				player_score += 50;
 				enemies[0]->setCollidable(true);
 				pacman->setCollidable(false);
 			}
@@ -1608,11 +1376,11 @@ void Menu::updateGameMultiPlayer()
 		{
 			if (!value->getBig())
 			{
-				phantom_score += 1;
+				phantom_score += 10;
 			}
 			else
 			{
-				phantom_score += 10;
+				phantom_score += 50;
 			}
 
 			if (phantom_score % 5 == 0 && sound_on)
@@ -1831,7 +1599,6 @@ void Menu::updateGameMultiPlayer()
 		time_counter += graphics::getDeltaTime();
 		if (time_counter > 5000)
 		{
-			std::cout << std::to_string(time_counter) << std::endl;
 			enemies[0]->setCollidable(false);
 			pacman->setCollidable(true);
 			time_counter = 0;
@@ -2134,6 +1901,7 @@ void Menu::update()
 	else if (current_status == STATUS_PLAYINGCGAME)
 	{
 		multi = false;
+		lost = false;
 		updateClassicGame();
 	}
 	else if (current_status == STATUS_PLAYINGM_GAME)
@@ -2701,6 +2469,8 @@ void Menu::drawClassicGame()
 		graphics::drawText(CANVAS_WIDTH / 2 + 400, 150, 20.f, std::to_string(highscore), brush);
 		graphics::drawText(CANVAS_WIDTH / 2 - 500, 130, 25.f, SCORE, brush);
 		graphics::drawText(CANVAS_WIDTH / 2 - 500, 150, 20.f, std::to_string(score), brush);
+		graphics::drawText(CANVAS_WIDTH / 2 - 500, 190, 25.f, "LEVEL", brush);
+		graphics::drawText(CANVAS_WIDTH / 2 - 500, 210, 20.f, std::to_string(pacman_level), brush);
 
 		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_LEFT_2);
 		if(pacman_lives>0)graphics::drawRect(140, CANVAS_HEIGHT - 30, 20, 20, brush);

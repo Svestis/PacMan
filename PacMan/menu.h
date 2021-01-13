@@ -38,7 +38,8 @@ class Menu
 		obst_counter_3 = 0,
 		obst_counter_4 = 0,
 		obst_counter_5 = 0,
-		pacman_lives = 4;
+		pacman_lives = 4,
+		pacman_level = 1;
 	unsigned short int window_width = WINDOW_WIDTH, 
 					   window_height = WINDOW_HEIGHT,
 					   canvas_width = CANVAS_WIDTH,
@@ -47,7 +48,9 @@ class Menu
 					   local_level = 1;
 	double time_counter = 0.f,
 		   time_counter_2 = 0.f,
-		   pong_speed = 5.f;
+		   pong_speed = 5.f,
+		   phantom_speed = 4.f,
+		   pacman_speed = 5.f;
 	graphics::Brush brush,
 					loc_brush;
 	graphics::MouseState mouse;

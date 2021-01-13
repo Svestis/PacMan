@@ -17,7 +17,6 @@ void Maze::draw()
 			createObstacleDownLeft();
 			createObstacleDownRight();
 			start = false;
-			
 		}
 		brush.texture = std::string(ASSET_PATH) + std::string(MAZE1);
 		graphics::drawRect(width_to_x(canvas_width, 50.f), height_to_y(canvas_height, 45.f), maze_width, maze_height, brush);
@@ -37,7 +36,6 @@ void Maze::draw()
 	{
 		i->draw();
 	}
-
 }
 
 void Maze::createPacDotC()
@@ -179,7 +177,7 @@ void Maze::createObstacleUpLeft()
 
 void Maze::createPacDotM()
 {
-	for (int inc : {50, 115}) // first/ last row
+	/*for (int inc : {50, 115}) // first/ last row
 	{
 		for (int i = 330; i < 600; i += 30)
 		{
@@ -324,7 +322,7 @@ void Maze::createPacDotM()
 	for (int i = 850; i < 895; i += 30)
 	{
 		pacdots.push_back(new Pacdot(menu, i, 255, false));
-	}
+	}*/
 
 	pacdots.push_back(new Pacdot(menu, 295, 55, true));
 	pacdots.push_back(new Pacdot(menu, 295, 485, true));
