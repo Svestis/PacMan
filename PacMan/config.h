@@ -103,7 +103,7 @@
 #define P1 "PLAYER 1"
 #define P2 "PLAYER 2"
 #define PACMANINF "PACMAN"
-#define CLASSSTARTTITLE "1UP          HIGH SCORE          2UP"
+#define CLASSSTARTTITLE "             HIGH SCORE             "
 #define CREDITS "CREDITS"
 #define PUSHSTART "PUSH START BUTTON"
 #define HISCORE  "HIGH SCORE"

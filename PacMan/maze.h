@@ -23,6 +23,7 @@ class Maze
 	void createObstacleUpRight();
 	void createObstacleDownLeft();
 	void createObstacleDownRight();
+	void createObstacleM();
 	void init();
 protected:
 	const class Menu& menu;
@@ -30,15 +31,10 @@ public:
 	void draw();
 	void update();
 	void destroyDot(Pacdot* element);
-	void destroyObstacle(Obstacle* element, std::string side);
 	unsigned short int getHeight() { return maze_height; };
 	unsigned short int getWidth() { return maze_width; };
 	std::vector<Pacdot*> pacdots;
 	std::vector<Obstacle*> obstacles;
-	std::vector<Obstacle*> obstaclesUpLeft;
-	std::vector<Obstacle*> obstaclesUpRight;
-	std::vector<Obstacle*> obstaclesDownLeft;
-	std::vector<Obstacle*> obstaclesDownRight;
 	bool getModern() const { return modern; };
 	Maze(const class Menu& ingame);
 	~Maze();

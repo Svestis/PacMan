@@ -16,6 +16,7 @@ class Menu
 	std::string msg = "0";
 	bool modern = true,
 		music_on = true,
+		music_on_holder = true,
 		sound_on = true,
 		full_screen = false,
 		place_holder = false,
@@ -28,6 +29,7 @@ class Menu
 		highscore_pong = 0;
 	float hover[14] = { 1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }; // Hovering for close button, info button, music button, sound button, classic button (or back), bored button (or pong or play again), single player (or arcade or dont play again), multiplayer, full screen, blinky, pinky, inky, clyde, pause
 	int score = 0,
+		pacman_local_score = 0,
 		local_score = 0,
 		highscore = 0,
 		counter = 0,

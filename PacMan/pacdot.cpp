@@ -24,7 +24,14 @@ void Pacdot::draw()
 	else
 	{
 		brush.texture = std::string(ASSET_PATH) + std::string(PACDOT_C);
-		graphics::drawRect(pos.x, pos.y, 20, 20, brush);
+		if (!big)
+		{
+			graphics::drawRect(pos.x, pos.y, 15, 15, brush);
+		}
+		else
+		{
+			graphics::drawRect(pos.x, pos.y, 25, 25, brush);
+		}
 	}
 
 	/*graphics::Brush br;
