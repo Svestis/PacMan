@@ -2206,10 +2206,10 @@ void Menu::drawClassicGame()
 		graphics::drawText(CANVAS_WIDTH / 2 - 500, 210, 20.f, std::to_string(pacman_level), brush);
 
 		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_LEFT_2);
-		if(pacman_lives>0)graphics::drawRect(140, CANVAS_HEIGHT - 30, 20, 20, brush);
-		if(pacman_lives>1)graphics::drawRect(160, CANVAS_HEIGHT - 30, 20, 20, brush);
-		if(pacman_lives>2)graphics::drawRect(180, CANVAS_HEIGHT - 30, 20, 20, brush);
-		if(pacman_lives>3)graphics::drawRect(200, CANVAS_HEIGHT - 30, 20, 20, brush);
+		if(pacman_lives>0)graphics::drawRect(150, CANVAS_HEIGHT - 30, 30, 30, brush);
+		if(pacman_lives>1)graphics::drawRect(190, CANVAS_HEIGHT - 30, 30, 30, brush);
+		if(pacman_lives>2)graphics::drawRect(230, CANVAS_HEIGHT - 30, 30, 30, brush);
+		if(pacman_lives>3)graphics::drawRect(270, CANVAS_HEIGHT - 30, 30, 30, brush);
 	}
 }
 
@@ -2223,7 +2223,7 @@ void Menu::drawModernWelcome()
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
 
-		graphics::drawText(CANVAS_WIDTH / 2 - 166, 50, 25.f, CLASSSTARTTITLE, brush);
+		graphics::drawText(CANVAS_WIDTH / 2 - 130, 50, 25.f, CLASSSTARTTITLE, brush);
 		graphics::drawText(CANVAS_WIDTH / 2 - 166 + 85, 70, 20.f, std::to_string(highscore), brush);
 
 		graphics::drawText(CANVAS_WIDTH / 2 - 188, 125, 20.f, CHARNICK, brush);
@@ -2233,7 +2233,7 @@ void Menu::drawModernWelcome()
 	if (time_counter > 1000)
 	{
 		brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_RIGHT_1);
-		graphics::drawRect(280, 190 - 25, 30, 30, brush);
+		graphics::drawRect(375, 200, 30, 30, brush);
 		brush.fill_color[0] = COLORBLINKYC_R;
 		brush.fill_color[1] = COLORBLINKYC_G;
 		brush.fill_color[2] = COLORBLINKYC_B;
@@ -2241,12 +2241,12 @@ void Menu::drawModernWelcome()
 	if (time_counter > 2000)
 	{
 		brush.texture = "";
-		graphics::drawText(330, 190 - 25 + 5, 15.f, BLINKYT, brush);
+		graphics::drawText(425, 205, 15.f, BLINKYT, brush);
 	}
 	if (time_counter > 3000)
 	{
 		brush.texture = "";
-		graphics::drawText(590, 190 - 25 + 5, 15.f, BLINKYTN, brush);
+		graphics::drawText(685, 205, 15.f, BLINKYTN, brush);
 	}
 	if (time_counter > 4000)
 	{
@@ -2254,7 +2254,7 @@ void Menu::drawModernWelcome()
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
 		brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_RIGHT_1);
-		graphics::drawRect(280, 230 - 25, 30, 30, brush);
+		graphics::drawRect(375, 250, 30, 30, brush);
 		brush.fill_color[0] = COLORPINKYC_R;
 		brush.fill_color[1] = COLORPINKYC_G;
 		brush.fill_color[2] = COLORPINKYC_B;
@@ -2262,12 +2262,12 @@ void Menu::drawModernWelcome()
 	if (time_counter > 5000)
 	{
 		brush.texture = "";
-		graphics::drawText(330, 230 - 25 + 5, 15.f, PINCKYT, brush);
+		graphics::drawText(425, 255, 15.f, PINCKYT, brush);
 	}
 	if (time_counter > 6000)
 	{
 		brush.texture = "";
-		graphics::drawText(590, 230 - 25 + 5, 15.f, PINCKYTN, brush);
+		graphics::drawText(685, 255, 15.f, PINCKYTN, brush);
 	}
 	if (time_counter > 7000)
 	{
@@ -2275,7 +2275,7 @@ void Menu::drawModernWelcome()
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
 		brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_RIGHT_1);
-		graphics::drawRect(280, 270 - 25, 30, 30, brush);
+		graphics::drawRect(375, 300, 30, 30, brush);
 		brush.fill_color[0] = COLORINKYC_R;
 		brush.fill_color[1] = COLORINKYC_G;
 		brush.fill_color[2] = COLORINKYC_B;
@@ -2283,12 +2283,12 @@ void Menu::drawModernWelcome()
 	if (time_counter > 8000)
 	{
 		brush.texture = "";
-		graphics::drawText(330, 270 - 25 + 5, 15.f, INKYT, brush);
+		graphics::drawText(425, 305, 15.f, INKYT, brush);
 	}
 	if (time_counter > 9000)
 	{
 		brush.texture = "";
-		graphics::drawText(590, 270 - 25 + 5, 15.f, INKYTN, brush);
+		graphics::drawText(685, 305, 15.f, INKYTN, brush);
 	}
 	if (time_counter > 10000)
 	{
@@ -2296,7 +2296,7 @@ void Menu::drawModernWelcome()
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
 		brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_RIGHT_1);
-		graphics::drawRect(280, 310 - 25, 30, 30, brush);
+		graphics::drawRect(375, 350, 30, 30, brush);
 		brush.fill_color[0] = COLORCLYDEC_R;
 		brush.fill_color[1] = COLORCLYDEC_G;
 		brush.fill_color[2] = COLORCLYDEC_B;
@@ -2304,12 +2304,12 @@ void Menu::drawModernWelcome()
 	if (time_counter > 11000)
 	{
 		brush.texture = "";
-		graphics::drawText(330, 310 - 25 + 5, 15.f, CLYDET, brush);
+		graphics::drawText(425, 355, 15.f, CLYDET, brush);
 	}
 	if (time_counter > 12000)
 	{
 		brush.texture = "";
-		graphics::drawText(590, 310 - 25 + 5, 15.f, CLYDETN, brush);
+		graphics::drawText(685, 355, 15.f, CLYDETN, brush);
 	}
 	if (time_counter > 13000)
 	{
@@ -2317,110 +2317,110 @@ void Menu::drawModernWelcome()
 		brush.fill_color[1] = 1.f;
 		brush.fill_color[2] = 1.f;
 		brush.texture = std::string(ASSET_PATH) + std::string(PACDOT_M);
-		graphics::drawRect(200-120, 360-160, 10, 10, brush);
-		graphics::drawRect(200-120, 390-160, 25, 25, brush);
-		graphics::drawText(220-120, 367-160, 13.f, "PTS", brush);
-		graphics::drawText(220-120, 399-160, 13.f, "PTS", brush);
-		graphics::drawText(290-120, 367-160, 17.f, "10", brush);
-		graphics::drawText(290-120, 399-160, 17.f, "50", brush);
+		graphics::drawRect(200-120, 400-160, 10, 10, brush);
+		graphics::drawRect(200-120, 430-160, 25, 25, brush);
+		graphics::drawText(220-120, 407-160, 13.f, "PTS", brush);
+		graphics::drawText(220-120, 439-160, 13.f, "PTS", brush);
+		graphics::drawText(290-120, 407-160, 17.f, "10", brush);
+		graphics::drawText(290-120, 439-160, 17.f, "50", brush);
 
 		brush.texture = std::string(ASSET_PATH) + std::string(WASD);
 		brush.outline_opacity = 0.5f;
-		graphics::drawRect(CANVAS_WIDTH - 250 + 120, CANVAS_HEIGHT - 300, 150, 75, brush);
+		graphics::drawRect(CANVAS_WIDTH - 250 + 120, CANVAS_HEIGHT - 350, 150, 75, brush);
 		brush.texture = std::string(ASSET_PATH) + std::string(ARROWS);
-		graphics::drawRect(CANVAS_WIDTH - 250 + 120, CANVAS_HEIGHT - 200, 150, 75, brush);
+		graphics::drawRect(CANVAS_WIDTH - 250 + 120, CANVAS_HEIGHT - 250, 150, 75, brush);
 		brush.outline_opacity = 0.f;
 	}
-	if (time_counter > 14000 && counter < 601)
+	if (time_counter > 14000 && counter < 851)
 	{
 		time_counter_2 += graphics::getDeltaTime();
 		counter += 1;
-		if (time_counter_2 < 100 && CANVAS_WIDTH / 2 + 100 - counter >= CANVAS_WIDTH / 2 - 200)
+		if (time_counter_2 < 100 && CANVAS_WIDTH / 2 + 200 - counter >= CANVAS_WIDTH / 2 - 200)
 		{
 			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_LEFT_1);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 100 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 100 - counter, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_LEFT_1);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 140 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 140 - counter, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_LEFT_1);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 160 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 160 - counter, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_LEFT_1);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 180 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 180 - counter, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_LEFT_1);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 200 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 200 - counter, 400, 20, 20, brush);
 		}
-		else if (time_counter_2 < 200 && CANVAS_WIDTH / 2 + 100 - counter >= CANVAS_WIDTH / 2 - 200)
+		else if (time_counter_2 < 200 && CANVAS_WIDTH / 2 + 200 - counter >= CANVAS_WIDTH / 2 - 200)
 		{
 			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_LEFT_2);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 100 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 100 - counter, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_LEFT_2);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 140 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 140 - counter, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_LEFT_2);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 160 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 160 - counter, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_LEFT_2);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 180 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 180 - counter, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_LEFT_2);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 200 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 200 - counter, 400, 20, 20, brush);
 		}
-		else if (time_counter_2 < 300 && CANVAS_WIDTH / 2 + 100 - counter >= CANVAS_WIDTH / 2 - 200)
+		else if (time_counter_2 < 300 && CANVAS_WIDTH / 2 + 200 - counter >= CANVAS_WIDTH / 2 - 200)
 		{
 			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_LEFT_3);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 100 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 100 - counter, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_M_LEFT_1);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 140 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 140 - counter, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_M_LEFT_1);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 160 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 160 - counter, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(INKY_M_LEFT_1);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 180 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 180 - counter, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_M_LEFT_1);
-			graphics::drawRect(CANVAS_WIDTH / 2 + 200 - counter, 330, 20, 20, brush);
+			graphics::drawRect(CANVAS_WIDTH / 2 + 200 - counter, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(PACDOT_M);
-			graphics::drawRect(300, 330, 20, 20, brush);
+			graphics::drawRect(290, 400, 20, 20, brush);
 		}
 		else if (time_counter_2 < 100)
 		{
 			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_RIGHT_2);
-			graphics::drawRect(counter, 330, 20, 20, brush);
+			graphics::drawRect(counter-100, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
-			graphics::drawRect(counter + 40, 330, 20, 20, brush);
+			graphics::drawRect(counter - 60, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
-			graphics::drawRect(counter + 60, 330, 20, 20, brush);
+			graphics::drawRect(counter - 40, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
-			graphics::drawRect(counter + 80, 330, 20, 20, brush);
+			graphics::drawRect(counter - 20, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
-			graphics::drawRect(counter + 100, 330, 20, 20, brush);
+			graphics::drawRect(counter, 400, 20, 20, brush);
 		}
 		else if (time_counter_2 < 200)
 		{
 			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_RIGHT_1);
-			graphics::drawRect(counter, 330, 20, 20, brush);
+			graphics::drawRect(counter - 100, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_2);
-			graphics::drawRect(counter + 40, 330, 20, 20, brush);
+			graphics::drawRect(counter - 60, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_2);
-			graphics::drawRect(counter + 60, 330, 20, 20, brush);
+			graphics::drawRect(counter - 40, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_2);
-			graphics::drawRect(counter + 80, 330, 20, 20, brush);
+			graphics::drawRect(counter - 20, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_2);
-			graphics::drawRect(counter + 100, 330, 20, 20, brush);
+			graphics::drawRect(counter, 400, 20, 20, brush);
 		}
 		else if (time_counter_2 < 300)
 		{
 			brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_M_RIGHT_2);
-			graphics::drawRect(counter, 330, 20, 20, brush);
+			graphics::drawRect(counter - 100, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
-			graphics::drawRect(counter + 40, 330, 20, 20, brush);
+			graphics::drawRect(counter - 60, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
-			graphics::drawRect(counter + 60, 330, 20, 20, brush);
+			graphics::drawRect(counter - 40, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
-			graphics::drawRect(counter + 80, 330, 20, 20, brush);
+			graphics::drawRect(counter - 20, 400, 20, 20, brush);
 			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_M_RIGHT_1);
-			graphics::drawRect(counter + 100, 330, 20, 20, brush);
+			graphics::drawRect(counter, 400, 20, 20, brush);
 		}
 		else
 		{
 			time_counter_2 = 0.f;
 		}
 	}
-	if (counter > 600)
+	if (counter > 850)
 	{
 		time_counter = 0.f;
 		counter = 0;
@@ -2445,7 +2445,7 @@ void Menu::drawModernWelcome()
 	brush.texture = std::string(ASSET_PATH) + std::string(SINGLEPALYER);
 
 	// Drawing image for single player
-	graphics::drawRect(CANVAS_WIDTH/2, CANVAS_HEIGHT / 2 + 130, 210, 70, brush);
+	graphics::drawRect(CANVAS_WIDTH/2, CANVAS_HEIGHT / 2 + 170, 210, 70, brush);
 
 	// Resetting hover
 	graphics::resetPose();

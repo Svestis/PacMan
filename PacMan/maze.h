@@ -19,10 +19,6 @@ class Maze
 	void gridC();
 	void createPacDotM();
 	void createPacDotC();
-	void createObstacleUpLeft();
-	void createObstacleUpRight();
-	void createObstacleDownLeft();
-	void createObstacleDownRight();
 	void createObstacleM();
 	void init();
 protected:
