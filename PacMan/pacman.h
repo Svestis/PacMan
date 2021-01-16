@@ -22,7 +22,6 @@ public:
 	void update() override;
 	void draw() override;
 	void init() override;
-	void drawDeath();
 	void drawPacmanC(); // Spawn
 	void drawPacmanM(); // Spawn
 	Disk getCollisionHull() const override;
@@ -36,8 +35,8 @@ public:
 	void updateDownM() override; //Move down
 	void updateC() override; // Moving
 	void updateM() override; // Moving
-	void drawInitM() override; // Init
-	void drawInitC() override; // Init
+	void drawInitM(); // Init
+	void drawInitC(); // Init
 	void updateMulti();
 	bool getCollidable() { return collid; };
 	void setCollidable(bool c) { collid = c; };	

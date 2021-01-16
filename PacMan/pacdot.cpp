@@ -33,16 +33,6 @@ void Pacdot::draw()
 			graphics::drawRect(pos.x, pos.y, 25, 25, brush);
 		}
 	}
-
-	/*graphics::Brush br;
-	brush.outline_opacity = 0.f;
-	br.fill_color[0] = 0.5f;
-	br.fill_color[1] = 1.f;
-	br.fill_color[2] = 0.f;
-	br.fill_opacity = 0.5f;
-	br.gradient = false;
-	disk = getCollisionHull();
-	graphics::drawDisk(disk.cx, disk.cy, disk.radius, br);*/
 }
 
 void Pacdot::init()

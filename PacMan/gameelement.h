@@ -52,6 +52,4 @@ public:
 	virtual void updateDownM() = 0;
 	virtual void updateC() = 0;
 	virtual void updateM() = 0;
-	virtual void drawInitM() = 0;
-	virtual void drawInitC() = 0;
 };

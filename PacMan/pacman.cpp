@@ -170,57 +170,31 @@ void PacMan::updateDownM()
 	}
 }
 
-void PacMan::drawDeath()
+void PacMan::drawInitC()
 {
-	timer += graphics::getDeltaTime();
-	if (timer < 75)
+	if (start) timer += graphics::getDeltaTime();
+	if (timer < 200)
 	{
-		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_1);
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_START);
+		rot = CENTER;
 	}
-	else if (timer < 150)
+	else if (timer < 400)
 	{
-		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_2);
-	}
-	else if (timer < 225)
-	{
-		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_3);
-	}
-	else if (timer < 300)
-	{
-		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_4);
-	}
-	else if (timer < 375)
-	{
-		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_5);
-	}
-	else if (timer < 450)
-	{
-		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_6);
-	}
-	else if (timer < 525)
-	{
-		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_7);
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_LEFT_1);
+		rot = LEFT1;
 	}
 	else if (timer < 600)
 	{
-		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_8);
-	}
-	else if (timer < 675)
-	{
-		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_9);
-	}
-	else if (timer < 750)
-	{
-		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_10);
-	}
-	else if (timer < 825)
-	{
-		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_DEATH_11);
+		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_LEFT_2);
+		rot = LEFT2;
 	}
 	else
 	{
 		timer = 0;
+		start = false;
 	}
+
+	brush.outline_opacity = 0.f;
 }
 
 void PacMan::drawInitM()
@@ -284,25 +258,25 @@ void PacMan::updateM()
 
 void PacMan::updateC()
 {
-	if ((graphics::getKeyState(graphics::SCANCODE_W) || graphics::getKeyState(graphics::SCANCODE_UP)) && moveUp)
+	if ((graphics::getKeyState(graphics::SCANCODE_W) || graphics::getKeyState(graphics::SCANCODE_UP)) && movement[2])
 	{
 		pos.y -= speed * graphics::getDeltaTime() / 50.f ;
 		updateUpC();
 		dir = UP;
 	}
-	else if ((graphics::getKeyState(graphics::SCANCODE_S) || graphics::getKeyState(graphics::SCANCODE_DOWN)) && moveDown)
+	else if ((graphics::getKeyState(graphics::SCANCODE_S) || graphics::getKeyState(graphics::SCANCODE_DOWN)) && movement[3])
 	{
 		pos.y += speed * graphics::getDeltaTime() / 50.f;
 		updateDownC();
 		dir = DOWN;
 	}
-	else if ((graphics::getKeyState(graphics::SCANCODE_A) || graphics::getKeyState(graphics::SCANCODE_LEFT)) && moveLeft)
+	else if ((graphics::getKeyState(graphics::SCANCODE_A) || graphics::getKeyState(graphics::SCANCODE_LEFT)) && movement[0])
 	{
 		pos.x -= speed * graphics::getDeltaTime() / 50.f;
 		updateLeftC();
 		dir = LEFT;
 	}
-	else if ((graphics::getKeyState(graphics::SCANCODE_D) || graphics::getKeyState(graphics::SCANCODE_RIGHT)) && moveRight)
+	else if ((graphics::getKeyState(graphics::SCANCODE_D) || graphics::getKeyState(graphics::SCANCODE_RIGHT)) && movement[1])
 	{
 		pos.x += speed * graphics::getDeltaTime() / 50.f;
 		updateRightC();
@@ -400,34 +374,6 @@ void PacMan::update()
 			updateMulti();
 		}
 	}
-}
-
-// Setting drawing for start
-void PacMan::drawInitC()
-{
-	if (start) timer += graphics::getDeltaTime();
-	if (timer < 200)
-	{
-		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_START);
-		rot = CENTER;
-	}
-	else if (timer < 400)
-	{
-		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_LEFT_1);
-		rot = LEFT1;
-	}
-	else if (timer < 600)
-	{
-		brush.texture = std::string(ASSET_PATH) + std::string(PACMAN_C_LEFT_2);
-		rot = LEFT2;
-	}
-	else
-	{
-		timer = 0;
-		start = false;
-	}
-
-	brush.outline_opacity = 0.f;
 }
 
 void PacMan::updateMulti()
@@ -582,21 +528,15 @@ void PacMan::draw()
 		drawPacmanM();
 	}
 
-	/*graphics::Brush br;
-	brush.outline_opacity = 0.f;
-	br.fill_color[0] = 0.5f;
-	br.fill_color[1] = 1.f;
-	br.fill_color[2] = 0.f;
-	br.fill_opacity = 0.5f;
-	br.gradient = false;
-	disk = getCollisionHull();
-	graphics::drawDisk(disk.cx, disk.cy, disk.radius, br);*/
-
 	graphics::drawRect(pos.x, pos.y, 25, 25, brush);
 }
 
 void PacMan::init()
 {
+	if (!modern)
+	{
+		pos.y += 63;
+	}
 }
 
 PacMan::PacMan(const Menu& ingame)
@@ -604,7 +544,7 @@ PacMan::PacMan(const Menu& ingame)
 {
 	modern = menu.getModern(); // Getter in order not to do back to back calls (initialized and then remainds unchanged
 	multi = menu.getMulti(); //  Getter in order not to do back to back calls (initialized and then remainds unchanged
-	pos_grid = std::make_tuple(19, 23);
+	init();
 }
 
 PacMan::~PacMan()

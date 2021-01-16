@@ -34,16 +34,14 @@ class Phantom : public GameElement, public CollidableD
 	void updateC() override;
 	void updateM() override;
 	void updateChaseM();
+	void updateChaseC();
 	void updateMulti();
-	void updateStartM();
 	void chase();
 public:
 	bool movement[4] = { true, true, true, true }; // left, right, top, down
 	void update() override;
 	void draw() override;
 	Disk getCollisionHull() const override;
-	void drawInitM() override;
-	void drawInitC() override;
 	bool getCollidable() { return collid; };
 	void setCollidable(bool c) { collid = c; };
 	void setStart(bool s) { start = s; };

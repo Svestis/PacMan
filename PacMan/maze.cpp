@@ -12,10 +12,6 @@ void Maze::draw()
 		if (start)
 		{
 			createPacDotM();
-			/*createObstacleUpLeft();
-			createObstacleUpRight();
-			createObstacleDownLeft();
-			createObstacleDownRight();*/
 			createObstacleM();
 			start = false;
 		}
@@ -24,13 +20,14 @@ void Maze::draw()
 	}
 	else if (!modern)
 	{
-		brush.texture = std::string(ASSET_PATH) + std::string(MAZE2);
-		graphics::drawRect(width_to_x(canvas_width, 50.f), height_to_y(canvas_height, 55.f), maze_width, maze_height, brush);
 		if (start)
 		{
 			createPacDotC();
+			createObstacleC();
 			start = false;
 		}
+		brush.texture = std::string(ASSET_PATH) + std::string(MAZE2);
+		graphics::drawRect(width_to_x(canvas_width, 50.f), height_to_y(canvas_height, 55.f), maze_width, maze_height, brush);
 	}
 
 	for (auto i : pacdots)
@@ -179,6 +176,68 @@ void Maze::createPacDotC()
 	pacdots.push_back(new Pacdot(menu, 917, 550, true));
 }
 
+void Maze::createObstacleC()
+{
+	obstacles.push_back(new Obstacle(menu, 601, 314, 176, 64));
+
+	for (int i : {0, 193, 290})
+	{
+		obstacles.push_back(new Obstacle(menu, 600, 193+i, 173, 16));
+
+		obstacles.push_back(new Obstacle(menu, 600, 218+i, 23, 63));
+	}
+
+
+	for (int i : {0, 242})
+	{
+		for (int j : {0, 500})
+		{
+			obstacles.push_back(new Obstacle(menu, 350+j, 193 + i, 73, 17));
+		}
+	}
+
+	for (int i : {0, 450})
+	{
+		obstacles.push_back(new Obstacle(menu, 375+i, 460, 24, 63));
+	}
+
+	for (int i : {0, 638})
+	{
+		obstacles.push_back(new Obstacle(menu, 282 + i, 483, 59, 15));
+	}
+
+	for (int i : {0, 194})
+	{
+		for (int j: {487, 714})
+		obstacles.push_back(new Obstacle(menu, j, 242 + i, 98, 17));
+	}
+
+	for (int i : {750, 449})
+	{
+		for (int j : {362, 508})
+		{
+			obstacles.push_back(new Obstacle(menu, i, j, 22, 62));
+			
+		}
+		obstacles.push_back(new Obstacle(menu, i, 241, 22, 110));
+	}
+
+	for (int i : {776, 425})
+	{
+		obstacles.push_back(new Obstacle(menu, i, 532, 221, 17));
+	}
+
+	for (int inc : {850, 350})
+	{
+		obstacles.push_back(new Obstacle(menu, inc, 137, 73, 31));
+	}
+
+	for (int inc : {488, 712})
+	{
+		obstacles.push_back(new Obstacle(menu, inc, 137, 100, 31));
+	}
+}
+
 void Maze::createObstacleM()
 {
 	obstacles.push_back(new Obstacle(menu, 601, 256, 170, 61));
@@ -280,7 +339,7 @@ void Maze::createObstacleM()
 
 void Maze::createPacDotM()
 {
-	/*for (int inc : {50, 115}) // first/ last row
+	for (int inc : {50, 115}) // first/ last row
 	{
 		for (int i = 330; i < 600; i += 30)
 		{
@@ -425,10 +484,10 @@ void Maze::createPacDotM()
 	for (int i = 850; i < 895; i += 30)
 	{
 		pacdots.push_back(new Pacdot(menu, i, 255, false));
-	}*/
+	}
 
-	//pacdots.push_back(new Pacdot(menu, 295, 55, true));
-	//pacdots.push_back(new Pacdot(menu, 295, 485, true));
+	pacdots.push_back(new Pacdot(menu, 295, 55, true));
+	pacdots.push_back(new Pacdot(menu, 295, 485, true));
 	pacdots.push_back(new Pacdot(menu, 907, 55, true));
 	pacdots.push_back(new Pacdot(menu, 907, 485, true));
 }

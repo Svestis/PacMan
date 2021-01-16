@@ -20,6 +20,7 @@ class Maze
 	void createPacDotM();
 	void createPacDotC();
 	void createObstacleM();
+	void createObstacleC();
 	void init();
 protected:
 	const class Menu& menu;

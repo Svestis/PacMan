@@ -148,6 +148,64 @@ void Phantom::updateChaseM()
 	}
 }
 
+void Phantom::updateChaseC()
+{
+	if (phantom == BLINKY)
+	{
+		chase();
+	}
+	else if (phantom == PINKY)
+	{
+		if (pos.y > CANVAS_HEIGHT / 2 - 90 + 55 && !out)
+		{
+			pos.y -= graphics::getDeltaTime() * speed / 50.f;
+			updateUpM();
+			if (pos.y <= CANVAS_HEIGHT / 2 - 90 + 55) out = true;
+		}
+		else if (out)
+		{
+			chase();
+		}
+	}
+	else if (phantom == INKY)
+	{
+
+		if (pos.x < CANVAS_WIDTH / 2 && !out)
+		{
+			pos.x += graphics::getDeltaTime() * speed / 50.f;
+			updateRightM();
+		}
+		else if (pos.y > CANVAS_HEIGHT / 2 - 90 + 55 && !out)
+		{
+			pos.y -= graphics::getDeltaTime() * speed / 50.f;
+			updateUpM();
+			if (pos.y <= CANVAS_HEIGHT / 2 - 90 + 55) out = true;
+		}
+		else
+		{
+			chase();
+		}
+	}
+	else if (phantom == CLYDE)
+	{
+		if (pos.x > CANVAS_WIDTH / 2 && !out)
+		{
+			pos.x -= graphics::getDeltaTime() * speed / 50.f;
+			updateLeftM();
+		}
+		else if (pos.y > CANVAS_HEIGHT / 2 - 90 + 55 && !out)
+		{
+			pos.y -= graphics::getDeltaTime() * speed / 50.f;
+			updateUpM();
+			if (pos.y <= CANVAS_HEIGHT / 2 - 90 + 55) out = true;
+		}
+		else
+		{
+			chase();
+		}
+	}
+}
+
 void Phantom::updateMulti()
 {
 	if (graphics::getKeyState(graphics::SCANCODE_UP) && movement[2])
@@ -180,7 +238,61 @@ void Phantom::updateMulti()
 	}
 }
 
-void Phantom::updateStartM()
+void Phantom::updateC()
+{
+	if (phantom == PINKY)
+	{
+		if (pos.y < 300)
+		{
+			dir = -1;
+			updateUpM();
+		}
+		else if (pos.y > 325)
+		{
+			dir = 1;
+			updateDownM();;
+		}
+
+		pos.y -= dir * graphics::getDeltaTime() * speed / 50.f;
+	}
+	else if (phantom == CLYDE)
+	{
+		if (pos.y < 305)
+		{
+			dir = -1;
+			updateUpM();
+		}
+		else if (pos.y > 325)
+		{
+			dir = 1;
+			updateDownM();
+		}
+
+		pos.y -= dir * graphics::getDeltaTime() * speed / 50.f;
+	}
+	else if (phantom == INKY)
+	{
+		if (pos.y < 305)
+		{
+			dir = -1;
+			updateUpM();
+		}
+		else if (pos.y > 325)
+		{
+			dir = 1;
+			updateDownM();
+
+		}
+
+		pos.y -= dir * graphics::getDeltaTime() * speed / 50.f;
+	}
+	else if (phantom == BLINKY)
+	{
+		start = false;
+	}
+}
+
+void Phantom::updateM()
 {
 	if (phantom == PINKY)
 	{
@@ -232,7 +344,6 @@ void Phantom::updateStartM()
 	{
 		start = false;
 	}
-
 }
 
 void Phantom::updateLeftM()
@@ -301,15 +412,6 @@ void Phantom::updateDownM()
 	{
 		timer = 0;
 	}
-}
-
-void Phantom::updateC()
-{
-
-}
-
-void Phantom::updateM()
-{
 }
 
 void Phantom::updateLeftC()
@@ -392,14 +494,18 @@ void Phantom::update()
 			}
 			else
 			{
-				updateC();
+				updateChaseC();
 			}
 		}
 		else if (!multi && start)
 		{
 			if (modern)
 			{
-				updateStartM();
+				updateM();
+			}
+			else
+			{
+				updateC();
 			}
 		}
 		else if (multi)
@@ -409,147 +515,160 @@ void Phantom::update()
 	}
 }
 
-void Phantom::drawInitC()
-{
-	switch (phantom)
-	{
-	case(BLINKY):
-		brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_LEFT_1);
-		break;
-	case(PINKY):
-		brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_LEFT_1);
-		break;
-	case(INKY):
-		brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_LEFT_1);
-		break;
-	case(CLYDE):
-		brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_LEFT_1);
-		break;
-	}
-}
-
 void Phantom::drawPhantomC()
 {
-	switch (phantom)
+	if (!collid)
 	{
-	case(PINKY):
-		switch (rot)
+		switch (phantom)
 		{
-		case(LEFT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_LEFT_1);
+		case(PINKY):
+			switch (rot)
+			{
+			case(LEFT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_LEFT_1);
+				break;
+			case(LEFT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_LEFT_2);
+				break;
+			case(DOWN1):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_DOWN_1);
+				break;
+			case(DOWN2):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_DOWN_2);
+				break;
+			case(UP1):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_UP_1);
+				break;
+			case(UP2):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_UP_2);
+				break;
+			case(RIGHT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_RIGHT_1);
+				break;
+			case(RIGHT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_RIGHT_2);
+				break;
+			}
 			break;
-		case(LEFT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_LEFT_2);
+		case(INKY):
+			switch (rot)
+			{
+			case(LEFT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_LEFT_1);
+				break;
+			case(LEFT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_LEFT_2);
+				break;
+			case(DOWN1):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_DOWN_1);
+				break;
+			case(DOWN2):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_DOWN_2);
+				break;
+			case(UP1):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_UP_1);
+				break;
+			case(UP2):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_UP_2);
+				break;
+			case(RIGHT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_RIGHT_1);
+				break;
+			case(RIGHT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_RIGHT_2);
+				break;
+			}
 			break;
-		case(DOWN1):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_DOWN_1);
+		case(BLINKY):
+			switch (rot)
+			{
+			case(LEFT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_LEFT_1);
+				break;
+			case(LEFT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_LEFT_2);
+				break;
+			case(DOWN1):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_DOWN_1);
+				break;
+			case(DOWN2):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_DOWN_2);
+				break;
+			case(UP1):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_UP_1);
+				break;
+			case(UP2):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_UP_2);
+				break;
+			case(RIGHT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_RIGHT_1);
+				break;
+			case(RIGHT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_RIGHT_2);
+				break;
+			}
 			break;
-		case(DOWN2):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_DOWN_2);
-			break;
-		case(UP1):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_UP_1);
-			break;
-		case(UP2):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_UP_2);
-			break;
-		case(RIGHT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_RIGHT_1);
-			break;
-		case(RIGHT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(PINKY_C_RIGHT_2);
+		case(CLYDE):
+			switch (rot)
+			{
+			case(LEFT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_LEFT_1);
+				break;
+			case(LEFT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_LEFT_2);
+				break;
+			case(DOWN1):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_DOWN_1);
+				break;
+			case(DOWN2):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_DOWN_2);
+				break;
+			case(UP1):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_UP_1);
+				break;
+			case(UP2):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_UP_2);
+				break;
+			case(RIGHT1):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_RIGHT_1);
+				break;
+			case(RIGHT2):
+				brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_RIGHT_2);
+				break;
+			}
 			break;
 		}
-		break;
-	case(INKY):
-		switch (rot)
-		{
-		case(LEFT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_LEFT_1);
-			break;
-		case(LEFT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_LEFT_2);
-			break;
-		case(DOWN1):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_DOWN_1);
-			break;
-		case(DOWN2):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_DOWN_2);
-			break;
-		case(UP1):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_UP_1);
-			break;
-		case(UP2):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_UP_2);
-			break;
-		case(RIGHT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_RIGHT_1);
-			break;
-		case(RIGHT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(INKY_C_RIGHT_2);
-			break;
-		}
-		break;
-	case(BLINKY):
-		switch (rot)
-		{
-		case(LEFT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_LEFT_1);
-			break;
-		case(LEFT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_LEFT_2);
-			break;
-		case(DOWN1):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_DOWN_1);
-			break;
-		case(DOWN2):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_DOWN_2);
-			break;
-		case(UP1):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_UP_1);
-			break;
-		case(UP2):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_UP_2);
-			break;
-		case(RIGHT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_RIGHT_1);
-			break;
-		case(RIGHT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(BLINKY_C_RIGHT_2);
-			break;
-		}
-		break;
-	case(CLYDE):
-		switch (rot)
-		{
-		case(LEFT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_LEFT_1);
-			break;
-		case(LEFT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_LEFT_2);
-			break;
-		case(DOWN1):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_DOWN_1);
-			break;
-		case(DOWN2):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_DOWN_2);
-			break;
-		case(UP1):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_UP_1);
-			break;
-		case(UP2):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_UP_2);
-			break;
-		case(RIGHT1):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_RIGHT_1);
-			break;
-		case(RIGHT2):
-			brush.texture = std::string(ASSET_PATH) + std::string(CLYDE_C_RIGHT_2);
-			break;
-		}
-		break;
 	}
-	
+	else
+	{
+		switch (rot)
+		{
+		case(LEFT1):
+			brush.texture = std::string(ASSET_PATH) + std::string(WHITE_C_1);
+			break;
+		case(LEFT2):
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_1);
+			break;
+		case(DOWN1):
+			brush.texture = std::string(ASSET_PATH) + std::string(WHITE_C_1);
+			break;
+		case(DOWN2):
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_1);
+			break;
+		case(UP1):
+			brush.texture = std::string(ASSET_PATH) + std::string(WHITE_C_1);
+			break;
+		case(UP2):
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_1);
+			break;
+		case(RIGHT1):
+			brush.texture = std::string(ASSET_PATH) + std::string(WHITE_C_1);
+			break;
+		case(RIGHT2):
+			brush.texture = std::string(ASSET_PATH) + std::string(BLUE_C_1);
+			break;
+		}
+	}
 }
 
 void Phantom::drawPhantomM()
@@ -714,43 +833,21 @@ Disk Phantom::getCollisionHull() const
 	disk.cx = pos.x;
 	disk.cy = pos.y;
 	disk.radius = 12.5f;
+
 	return disk;
 }
-
-void Phantom::drawInitM()
-{
-}
-
 
 void Phantom::draw()
 {
 	brush.outline_opacity = 0.f;
-	if (start && !modern)
-	{
-		drawInitC();
-	}
-	else if (!start && !modern)
+	if (!modern)
 	{
 		drawPhantomC();
 	}
-	else if (!start && modern)
+	else
 	{
 		drawPhantomM();
 	}
-	else if (start && modern)
-	{
-		drawPhantomM();
-	}
-
-	/*graphics::Brush br;
-	brush.outline_opacity = 0.f;
-	br.fill_color[0] = 1.f;
-	br.fill_color[1] = 0.3f;
-	br.fill_color[2] = 0.3f;
-	br.fill_opacity = 0.5f;
-	br.gradient = false;
-	disk = getCollisionHull();
-	graphics::drawDisk(disk.cx, disk.cy, disk.radius, br);*/
 
 	graphics::drawRect(pos.x, pos.y, 25, 25, brush);
 }
@@ -790,6 +887,39 @@ void Phantom::init()
 		else if (phantom == CLYDE)
 		{
 			pos.y = pos.y + 45;
+			pos.x = pos.x + 50;
+			rot = DOWN1;
+			dir = -1;
+			speed = 4.f;
+		}
+	}
+	else if (!multi && !modern)
+	{
+		if (phantom == BLINKY)
+		{
+			pos.y = pos.y + 55;
+			pos.x = pos.x;
+			rot = LEFT1;
+			speed = 4.f;
+		}
+		else if (phantom == PINKY)
+		{
+			pos.y = pos.y + 100;
+			pos.x = pos.x;
+			rot = UP1;
+			speed = 4.f;
+		}
+		else if (phantom == INKY)
+		{
+			pos.y = pos.y + 100;
+			pos.x = pos.x - 50;
+			rot = DOWN1;
+			dir = -1;
+			speed = 4.f;
+		}
+		else if (phantom == CLYDE)
+		{
+			pos.y = pos.y + 100;
 			pos.x = pos.x + 50;
 			rot = DOWN1;
 			dir = -1;
