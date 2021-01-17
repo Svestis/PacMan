@@ -6,7 +6,7 @@
 *
 * This is the header file of the pong class (the rackets for the pong game)
 
-* FUNCTIONS:
+* FUNCTIONS: 
 *
 * update
 *   updating the rackets

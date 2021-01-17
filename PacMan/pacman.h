@@ -1,6 +1,6 @@
 /**
 * FILE: pacman.h
-* TITLE: pacman
+* TITLE: pacman 
 *
 * PURPOSE:
 *

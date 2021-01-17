@@ -1,5 +1,5 @@
 /**
-* FILE: menu.h
+* FILE: menu.h 
 * TITLE: menu
 *
 * PURPOSE:
@@ -242,10 +242,10 @@ class Menu
 		replay = false; // indicating if we are playing
 	float hover[14] = { 1.f, 1.f, 1.f, 1.f, 1.2f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }; // Hovering for close button, info button, music button, sound button, classic button (or back), bored button (or pong or play again), single player (or arcade or dont play again), multiplayer, full screen, blinky, pinky, inky, clyde, pause
 	double time_counter = 0.f, // a simple time counter
-		   time_counter_2 = 0.f, // a simple time counter
-		   pong_speed = 5.f, // speed of pong
-		   phantom_speed = 4.f, // speed of phantom
-		   pacman_speed = 5.f; // speed of pacman
+		time_counter_2 = 0.f, // a simple time counter
+		pong_speed = 5.f; // speed of pong
+	float phantom_speed = 4.f, // speed of phantom
+		pacman_speed = 5.f; // speed of pacman
 	int score = 0, // pacman score
 		pacman_local_score = 0, // pacman score as holder
 		local_score = 0, // local score seperating the displayed score from the logic score
@@ -266,7 +266,7 @@ class Menu
 					   level = 1, // pong level
 					   local_level = 1; // local level seperating game level from logic level
 	status current_status = STATUS_START; // start status
-	character phantom; // the phantom character to indicate if BLINKY, PINKY, INKY or CLYDE is playing
+	character phantom = BLINKY; // the phantom character to indicate if BLINKY, PINKY, INKY or CLYDE is playing
 	graphics::Brush brush, // a brush
 					loc_brush; // a brush
 	graphics::MouseState mouse; // a mouse state
@@ -325,8 +325,8 @@ class Menu
 	bool checkCollisionPong(float dir); // collision between ball and racket
 	void resetBrush(); // function to reset the brush
 	void updateMusic(bool musictype); // updating music
-	float window2CanvasX(float x); // window dim to canvas dim x
-	float window2CanvasY(float y); // window dim to canvas dim y
+	int window2CanvasX(int x); // window dim to canvas dim x
+	int window2CanvasY(int y); // window dim to canvas dim y
 public:
 	Maze* maze = nullptr; // a maze pointer
 	PongBall* pong_ball = nullptr; // a pong ball pointer
@@ -338,7 +338,7 @@ public:
 	bool playSound() const { return sound_on; }; // getter for sound on
 	void setWindowDimensions(unsigned short int w, unsigned short int h); // setting windo dim for size changing
 	unsigned short int getPongLevel() const { return level; }; // returning pong level
-	double getPongSpeed() const { return pong_speed; }; // returning pong speed
+	float getPongSpeed() const { return pong_speed; }; // returning pong speed
 	bool getModern() const { return modern; }; // returning if we are playing modern or not
 	bool getMulti() const { return multi; }; // returning if we are playing multi or not
 	character getPhantom() const { return phantom; }; // get phantom type

@@ -1,4 +1,4 @@
-/**
+/** 
 * FILE: maze.h
 * TITLE: maze
 *

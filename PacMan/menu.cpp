@@ -1,13 +1,236 @@
+/**
+* FILE: menu.cpp
+* TITLE: menu class cpp file
+*
+* PURPOSE:
+*
+* This is the class that handles all gameplay
+*
+*
+*	FUNCTIONS:
+*
+*	updateClassicScreen
+*		function to update the menu screen on classic gamemode
+*
+*	updateModernScreen
+*		function to update the modern screen on modern game mode
+*
+*	updateMenuScreen
+*		general function to update menu screen
+*
+*	updateGameC
+*		update function for classig game play
+*
+*	updateGameM
+*		update function for multiplayer game play
+*
+*	updateGameB
+*		update function for bored state
+*
+*	updateGameX
+*		update function for x button
+*
+*	updateB
+*		update function for back button
+*
+*	updateP
+*		update function for paused button
+*
+*	updateI
+*		update function for info button
+*
+*	updateM
+*		update function for music button
+*
+*	updateS
+*		update function for sound button
+*
+*	updateFullScreen
+*		update function for full screen button
+*
+*	updateGameMSelection
+*		update function for player selection on multiplayer
+*
+*	updateGameMInfo
+*		update function for selected player information
+*
+*	updateClassicWelcome
+*		updating classic welcome screen
+*
+*	updateClassicWelcome2
+*		updating second classic welcome screen
+*
+*	updateModernWelcome
+*		updating modern welcome screen
+*
+*	updateClassicGame
+*		update classic game general function
+*
+*	updateGameMultiPlayer
+*		update multiplayer game
+*
+*	updatePong
+*		update pong game
+*
+*	updateY
+*		update yes button after losing
+*
+*	updateN(status s)
+*		update no button after losing
+*
+*	drawMenuScreen
+*		general draw for menu
+*
+*	drawModernScreen
+*		drawing modern menu
+*
+*	drawClassicScreen
+*		drawing classic menu
+*
+*	drawGameC
+*		general drawing for classic game
+*
+*	drawClassicWelcome2
+*		drawing classic welcome screen
+*
+*	drawModernWelcome
+*		drawing modern welcome screen
+*
+*	drawPong
+*		drawing pong game
+*
+*	drawYN(std::string txt ="0")
+*		drawing yes/no message
+*
+*	drawGameM
+*		general drawing for modern game
+*
+*	drawGameB
+*		general drawing for bored state
+*
+*	drawM
+*		drawing music button
+*
+*	drawS
+*		drawing sound button
+*
+*	drawGameMSelection
+*		drawing player selection
+*
+*	drawGameMInfo
+*		drawing selected plaer info
+*
+*	drawClassicWelcome
+*		drawing first screen of classic welcmome
+*
+*	drawClassicGame
+*		drawing classic game
+*
+*	drawP
+*		drawing paused button
+*
+*	drawX
+*		drawing x button
+*
+*	drawI
+*		drawing info button
+*
+*	drawB
+*		drawing back button
+*
+*	drawFullScreen
+*		drawing full screen button
+*
+*	drawGameMultiPlayer
+*		drawing multiplayer game
+*
+*	cacheImages
+*		chacing images to be available to any brush
+*
+*	checkCollisionPacMan
+*		checking if pacman is colliding with an enemy and vice versa
+*
+*	checkCollisionPacDot
+*		checking if the passed pointer is colliding with a pacdot
+*
+*	checkCollisionObstacle
+*		checking if the passed pointer is colliding with an obstacle
+*
+*	checkCollisionPong
+*		checking collision between ball and racket
+*
+*	resetBrush
+*		function to resetting brush
+*
+*	updateMusic
+*		update music function
+*
+*	window2CanvasX
+*		modifying windo width to canvas width
+*
+*	window2CanvasY
+*		modifying window height to canvas height
+*
+*	update
+*		general update
+*
+*	draw
+*		general draw
+*
+*	init
+*		general init function
+*
+*	playSound
+*		getter of sound state
+*
+*	setWindowDimensions
+*		setting window dim for size change
+*
+*	getPongLevel
+*		returning pong level
+*
+*	getPongSpeed
+*		returning pong speed
+*
+*	getModern
+*		returning if we are playing on modern state
+*
+*	getMulti
+*		returning if we are playing multi player
+*
+*	getPhantom
+*		returning phantom character
+*
+* INCLUDED FILES:
+*
+* menu.h
+* config.h
+* graphics.h
+* util.h
+* fstream
+* iostream
+* algorithm
+
+* @file menu.cpp
+**/
+
 #include "menu.h"
 #include "graphics.h"
 #include "config.h"
-#include <iostream>
 #include "util.h"
 #include <fstream>
 #include <iostream>
 #include <algorithm>
 
-
+/**
+* Update the yes option on replay
+*
+* NAME: updateY
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateY()
 {
 	graphics::getMouseState(mouse);
@@ -47,6 +270,15 @@ void Menu::updateY()
 	else hover[5] = 1.2f;
 }
 
+/**
+* Update music on/off
+*
+* NAME: updateM
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateM()
 {
 	graphics::getMouseState(mouse);
@@ -60,6 +292,15 @@ void Menu::updateM()
 	else hover[2] = 1.2f;
 }
 
+/**
+* Update paused/ not paused
+*
+* NAME: updateP
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateP()
 {
 	graphics::getMouseState(mouse);
@@ -72,14 +313,32 @@ void Menu::updateP()
 	else hover[13] = 1.3f;
 }
 
+/**
+* Update sound on/off
+*
+* NAME: updateS
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateS()
 {
 	graphics::getMouseState(mouse);
 
-	if (mouse.button_left_released)	sound_on = !sound_on; //TODO: Add function to turn sound on off
+	if (mouse.button_left_released)	sound_on = !sound_on;
 	else hover[3] = 1.3f;
 }
 
+/**
+* Update no option on replay
+*
+* NAME: updateN
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateN(status s)
 {
 	graphics::getMouseState(mouse);
@@ -108,6 +367,15 @@ void Menu::updateN(status s)
 	else hover[6] = 1.2f;
 }
 
+/**
+* Update back buttonn
+*
+* NAME: updateB
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateB(status s)
 {
 	graphics::getMouseState(mouse);
@@ -163,6 +431,15 @@ void Menu::updateB(status s)
 	else hover[4] = 1.3f;
 }
 
+/**
+* Update close button
+*
+* NAME: updateX
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateX()
 {
 	// Checking the mouse state
@@ -172,6 +449,15 @@ void Menu::updateX()
 	else hover[0] = 1.2f;
 }
 
+/**
+* Update info button
+*
+* NAME: updateI
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateI()
 {
 	// Checking the mouse state
@@ -181,6 +467,15 @@ void Menu::updateI()
 	else hover[1] = 1.2f;
 }
 
+/**
+* Update full screen mode on/off
+*
+* NAME: updateFullScreen
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateFullScreen()
 {
 	// Checking the mouse state
@@ -194,10 +489,19 @@ void Menu::updateFullScreen()
 	else hover[8] = 1.2f;
 }
 
+/**
+* Update the classic menu screen
+*
+* NAME: updateClassicScreen
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateClassicScreen()
 {
 	// Closing windw on escape
-	if (graphics::getKeyState(graphics::SCANCODE_ESCAPE)) delete this; //TODO: Check this
+	if (graphics::getKeyState(graphics::SCANCODE_ESCAPE)) delete this;
 	// Music on/off
 	else if (graphics::getKeyState(graphics::SCANCODE_M) && !key_down)
 	{
@@ -210,7 +514,7 @@ void Menu::updateClassicScreen()
 	else if (graphics::getKeyState(graphics::SCANCODE_N) && !key_down)
 	{
 		key_down = true;
-		sound_on = !sound_on; //TODO: Add function to turn sound on off
+		sound_on = !sound_on;
 	}
 	// Back to classics
 	else if (graphics::getKeyState(graphics::SCANCODE_LSHIFT))
@@ -233,6 +537,15 @@ void Menu::updateClassicScreen()
 	else if (!graphics::getKeyState(graphics::SCANCODE_RETURN) && !graphics::getKeyState(graphics::SCANCODE_M) && !graphics::getKeyState(graphics::SCANCODE_N) && !graphics::getKeyState(graphics::SCANCODE_RSHIFT)) key_down = false;
 }
 
+/**
+* Update the screen on modern welcome
+*
+* NAME: updateModernWelcome
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateModernWelcome()
 {
 	graphics::getMouseState(mouse);
@@ -270,9 +583,9 @@ void Menu::updateModernWelcome()
 		key_down = true;
 		current_status = STATUS_PLAYINGCGAME;
 	}
-	else if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))	delete this; // TODO: check this one
+	else if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))	delete this;
 
-	else if (!key_down) // TODO: SECOND PRIORITY add more info button
+	else if (!key_down)
 	{
 		hover[0] = 1.f;
 		hover[8] = 1.f;
@@ -284,6 +597,15 @@ void Menu::updateModernWelcome()
 	else if (!graphics::getKeyState(graphics::SCANCODE_RETURN) && key_down)	key_down = false;
 }
 
+/**
+* Update the modern menu screen
+*
+* NAME: updateModernScreen
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateModernScreen()
 {
 	// Checking the mouse state
@@ -352,13 +674,30 @@ void Menu::updateModernScreen()
 	}
 }
 
-// General menu screen update function
+/**
+* general menu update function
+*
+* NAME: updateMenuScreen
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateMenuScreen()
 {
 	if (modern)	updateModernScreen();
 	else updateClassicScreen();
 }
 
+/**
+* Update the classic welcome screen
+*
+* NAME: updateClassicWelcome
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateClassicWelcome()
 {
 	if (graphics::getKeyState(graphics::SCANCODE_ESCAPE)) delete this;
@@ -369,7 +708,7 @@ void Menu::updateClassicWelcome()
 	}
 	else if (graphics::getKeyState(graphics::SCANCODE_B) && !key_down)
 	{
-		if (paused) !paused;
+		if (paused) paused = !paused;
 		key_down = true;
 		current_status = STATUS_START;
 	}
@@ -385,7 +724,7 @@ void Menu::updateClassicWelcome()
 	else if (graphics::getKeyState(graphics::SCANCODE_N) && !key_down)
 	{
 		key_down = true;
-		sound_on = !sound_on; //TODO: Add function to turn sound on off
+		sound_on = !sound_on;
 	}
 	else if (graphics::getKeyState(graphics::SCANCODE_RSHIFT) && !key_down)
 	{
@@ -399,6 +738,15 @@ void Menu::updateClassicWelcome()
 	}
 }
 
+/**
+* Update the classic gameplay
+*
+* NAME: updateClassicGame
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateClassicGame()
 {
 	if (modern)
@@ -432,7 +780,7 @@ void Menu::updateClassicGame()
 		}
 		else if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
 		{
-			delete this; // TODO: check this one
+			delete this;
 		}
 		else if ((window2CanvasX(mouse.cur_pos_x) >= 1124) &&
 			(window2CanvasX(mouse.cur_pos_x) <= 1154) && (window2CanvasY(mouse.cur_pos_y) >= 554) && (window2CanvasY(mouse.cur_pos_y) <= 585))
@@ -452,7 +800,7 @@ void Menu::updateClassicGame()
 		{
 			updateN(STATUS_START);
 		}
-		else // TODO: SECOND PRIORITY add more info button
+		else
 		{
 			hover[0] = 1.f;
 			hover[8] = 1.f;
@@ -469,7 +817,7 @@ void Menu::updateClassicGame()
 	{
 		if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
 		{
-			delete this; // TODO: check this one
+			delete this;
 		}
 		else if (graphics::getKeyState(graphics::SCANCODE_B) && !key_down)
 		{
@@ -771,7 +1119,15 @@ void Menu::updateClassicGame()
 	}
 }
 
-
+/**
+* General update function for starting the gameplay
+*
+* NAME: updateGameC
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateGameC()
 {
 	if (modern)
@@ -784,6 +1140,15 @@ void Menu::updateGameC()
 	}
 }
 
+/**
+* Update function for multiplayer ghost selection
+*
+* NAME: updateGameMSelection
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateGameMSelection()
 {
 	time_counter += graphics::getDeltaTime();
@@ -795,6 +1160,15 @@ void Menu::updateGameMSelection()
 	}
 }
 
+/**
+* Update function for multiplayer selected ghost info
+*
+* NAME: updateGameMInfo
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateGameMInfo()
 {
 	graphics::getMouseState(mouse);
@@ -846,7 +1220,7 @@ void Menu::updateGameMInfo()
 			hover[7] = 1.2f;
 		}
 	}
-	else // TODO: SECOND PRIORITY add more info button
+	else
 	{
 		hover[0] = 1.f;
 		hover[8] = 1.f;
@@ -857,6 +1231,15 @@ void Menu::updateGameMInfo()
 	}
 }
 
+/**
+* handling phantom selection for multipalyer
+*
+* NAME: updateGameM
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateGameM()
 {
 	graphics::getMouseState(mouse);
@@ -959,6 +1342,15 @@ void Menu::updateGameM()
 	updateGameMSelection();
 }
 
+/**
+* Update bored screen
+*
+* NAME: updateGameB
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateGameB()
 {
 	graphics::getMouseState(mouse);
@@ -1038,7 +1430,16 @@ void Menu::updateGameB()
 	}
 }
 
-// Changing music
+/**
+* Changing- playing/not playing nusic
+*
+* NAME: updateMusic
+*
+* @param musictype the type of music player (modern or not)
+* @param_type bool
+* @return none
+*
+**/
 void Menu::updateMusic(bool musictype)
 {
 	// Checking music type and playing it if it should play
@@ -1057,11 +1458,20 @@ void Menu::updateMusic(bool musictype)
 	}
 }
 
+/**
+* Update the classic welcome screen (no.2)
+*
+* NAME: updateClassicWelcome2
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateClassicWelcome2()
 {
 	if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
 	{
-		delete this; // TODO: check this one
+		delete this;
 	}
 	else if (graphics::getKeyState(graphics::SCANCODE_RETURN) && !key_down)
 	{
@@ -1088,7 +1498,7 @@ void Menu::updateClassicWelcome2()
 	else if (graphics::getKeyState(graphics::SCANCODE_N) && !key_down)
 	{
 		key_down = true;
-		sound_on = !sound_on; //TODO: Add function to turn sound on off
+		sound_on = !sound_on;
 	}
 	else if (graphics::getKeyState(graphics::SCANCODE_RSHIFT) && !key_down)
 	{
@@ -1102,6 +1512,15 @@ void Menu::updateClassicWelcome2()
 	}
 }
 
+/**
+* Update the Multiplayer game
+*
+* NAME: updateGameMultiPlayer
+*
+* @param none
+* @return none
+*
+**/
 void Menu::updateGameMultiPlayer()
 {
 	graphics::getMouseState(mouse);
@@ -1133,7 +1552,7 @@ void Menu::updateGameMultiPlayer()
 	}
 	else if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
 	{
-		delete this; // TODO: check this one
+		delete this;
 	}
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 1124) &&
 		(window2CanvasX(mouse.cur_pos_x) <= 1155) && (window2CanvasY(mouse.cur_pos_y) >= 554) && (window2CanvasY(mouse.cur_pos_y) <= 585))
@@ -1153,7 +1572,7 @@ void Menu::updateGameMultiPlayer()
 	{
 		updateN(STATUS_START);
 	}
-	else // TODO: SECOND PRIORITY add more info button
+	else
 	{
 		hover[0] = 1.f;
 		hover[8] = 1.f;
@@ -1348,7 +1767,7 @@ void Menu::updateGameMultiPlayer()
 		enemies[0] = nullptr;
 		delete maze;
 		maze = nullptr;
-		if (phantom_score > player_score) // TODO: PRIO player score increases with b button
+		if (phantom_score > player_score)
 		{
 			if (sound_on) graphics::playSound(std::string(ASSET_PATH) + std::string(GAMEOVERPACMAN), 1.f, false);
 			msg = "PHANTOM WINS";
@@ -1368,7 +1787,16 @@ void Menu::updateGameMultiPlayer()
 	}
 }
 
-void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
+/**
+* Update the oong gameplay
+*
+* NAME: updatePong
+*
+* @param none
+* @return none
+*
+**/
+void Menu::updatePong()
 {
 	graphics::getMouseState(mouse);
 	// Closing windw on close window click
@@ -1413,7 +1841,7 @@ void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
 	}
 	else if (graphics::getKeyState(graphics::SCANCODE_ESCAPE))
 	{
-		delete this; // TODO: check this one
+		delete this;
 	}
 	else if ((window2CanvasX(mouse.cur_pos_x) >= 128) &&
 		(window2CanvasX(mouse.cur_pos_x) <= 372) && (window2CanvasY(mouse.cur_pos_y) >= 259) && (window2CanvasY(mouse.cur_pos_y) <= 391 ) && lost)
@@ -1508,6 +1936,15 @@ void Menu::updatePong() // TODO: SECOND PRIO ADD MULTIPLAYER VS SINGLE PLAYER
 	}	
 }
 
+/**
+* General update function
+*
+* NAME: update
+*
+* @param none
+* @return none
+*
+**/
 void Menu::update()
 {
 	if (current_status == STATUS_START) 
@@ -1668,6 +2105,15 @@ void Menu::update()
 	
 }
 
+/**
+* Drawing classic menu screen
+*
+* NAME: drawClassicScreen
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawClassicScreen()
 {
 	// Resetting opacity
@@ -1711,10 +2157,6 @@ void Menu::drawClassicScreen()
 	brush.fill_color[0] = COLORRED_R;
 	brush.fill_color[1] = COLORRED_G;
 	brush.fill_color[2] = COLORRED_B;
-
-	// Setting font for classic game mode
-	//graphics::setFont(std::string(ASSET_PATH) + std::string(FONTC)); 
-	// TODO: Check why font is not working on change
 
 	// Drawing text
 	graphics::drawText(width_to_x(canvas_width, 26.25f), height_to_y(canvas_height, 7.f), 30.F, std::string(SCORE), brush);
@@ -1775,6 +2217,15 @@ void Menu::drawClassicScreen()
 	brush.fill_opacity = 1.f;
 }
 
+/**
+* Drawing close button
+*
+* NAME: drawX
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawX()
 {
 
@@ -1804,6 +2255,15 @@ void Menu::drawX()
 	resetBrush();
 }
 
+/**
+* Drawing info button
+*
+* NAME: drawI
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawI()
 {
 	brush.outline_opacity = 0.f;
@@ -1831,6 +2291,15 @@ void Menu::drawI()
 	resetBrush();
 }
 
+/**
+* Drawing full screen button
+*
+* NAME: drawFullScreen
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawFullScreen()
 {
 	brush.outline_opacity = 0.f;
@@ -1865,6 +2334,15 @@ void Menu::drawFullScreen()
 	resetBrush();
 }
 
+/**
+* Drawing back button
+*
+* NAME: drawB
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawB()
 {
 	brush.outline_opacity = 0.f;
@@ -1893,6 +2371,15 @@ void Menu::drawB()
 	resetBrush();
 }
 
+/**
+* Drawing pause button
+*
+* NAME: drawP
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawP()
 {
 	brush.outline_opacity = 0.f;
@@ -1935,6 +2422,15 @@ void Menu::drawP()
 	resetBrush();
 }
 
+/**
+* Drawing classic welcome screen
+*
+* NAME: drawClassicWelcome
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawClassicWelcome()
 {
 	brush.outline_opacity = 0.f;
@@ -2158,7 +2654,15 @@ void Menu::drawClassicWelcome()
 	}
 }
 
-
+/**
+* Drawing classic gameplay
+*
+* NAME: drawClassicGame
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawClassicGame()
 {
 	if (modern) 
@@ -2249,6 +2753,15 @@ void Menu::drawClassicGame()
 	}
 }
 
+/**
+* Drawing modern welcome screen screen
+*
+* NAME: drawModernWelcome
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawModernWelcome()
 {
 	brush.outline_opacity = 0.f;
@@ -2487,20 +3000,36 @@ void Menu::drawModernWelcome()
 	graphics::resetPose();
 }
 
+/**
+* Drawing game classic general function
+*
+* NAME: drawGameC
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawGameC()
 {
 	if (modern)
 	{
 		drawModernWelcome();
 	}
-	// TODO: Seperate classic game from modern game for single player
-
 	else 
 	{
 		drawClassicWelcome();		
 	}
 }
 
+/**
+* Drawing modern game
+*
+* NAME: drawClassicScreen
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawGameM()
 {
 	drawGameMSelection();
@@ -2512,6 +3041,15 @@ void Menu::drawGameM()
 	drawS();
 }
 
+/**
+* Drawing bored game
+*
+* NAME: drawGameB
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawGameB()
 {
 	brush.texture = std::string(ASSET_PATH) + std::string(BOREDARC);
@@ -2561,6 +3099,15 @@ void Menu::drawGameB()
 	drawB();
 }
 
+/**
+* Drawing music button game
+*
+* NAME: drawM
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawM()
 {
 	brush.outline_opacity = 0.f;
@@ -2596,6 +3143,15 @@ void Menu::drawM()
 	resetBrush();
 }
 
+/**
+* Drawing sound button
+*
+* NAME: drawS
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawS()
 {
 	
@@ -2635,6 +3191,15 @@ void Menu::drawS()
 	resetBrush();
 }
 
+/**
+* Drawing multiplayer ghost selection
+*
+* NAME: drawGameMSelection
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawGameMSelection()
 {
 
@@ -2730,6 +3295,15 @@ void Menu::drawGameMSelection()
 	brush.fill_color[2] = 1.f;
 }
 
+/**
+* Drawing game info for multipalyer game after ghost selection
+*
+* NAME: drawFameMInfo
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawGameMInfo()
 {
 	graphics::setScale(hover[7], hover[7]);
@@ -2788,7 +3362,7 @@ void Menu::drawGameMInfo()
 	graphics::drawRect(WINDOW_WIDTH - 219 - 52, CANVAS_HEIGHT / 2 - 50, 175, 175, brush);
 
 	brush.texture = std::string(ASSET_PATH) + std::string(WASD);
-	brush.outline_opacity = 0.5f; //TODO: 2ND PRIORITY CHANGE KEYBOARD SETTINGS (SWITCH PLAYERS FROM KEYS TO WASD)
+	brush.outline_opacity = 0.5f;
 	graphics::drawRect(120, CANVAS_HEIGHT - 150, 150, 75, brush);
 	brush.texture = std::string(ASSET_PATH) + std::string(ARROWS);
 	graphics::drawRect(CANVAS_WIDTH - 120, CANVAS_HEIGHT - 150, 150, 75, brush);
@@ -2796,6 +3370,15 @@ void Menu::drawGameMInfo()
 	
 }
 
+/**
+* Drawing modern menu screen
+*
+* NAME: drawModernScreen
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawModernScreen()
 {
 	graphics::Brush brush;
@@ -2924,8 +3507,15 @@ void Menu::drawModernScreen()
 	time_counter = 0.f;
 }
 
-// General draw menu sceen function
-void Menu::drawMenuScreen()
+/**
+* general draw menu function
+*
+* NAME: drawMenuScreen
+*
+* @param none
+* @return none
+*
+**/void Menu::drawMenuScreen()
 {
 	if (modern)
 	{
@@ -2956,6 +3546,15 @@ void Menu::drawClassicWelcome2()
 	
 }
 
+/**
+* Drawing multiplayer game
+*
+* NAME: drawGameMultiPlayer
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawGameMultiPlayer()
 {
 	if (lost)
@@ -3030,6 +3629,15 @@ void Menu::drawGameMultiPlayer()
 
 }
 
+/**
+* Drawing yes/no selection for replay
+*
+* NAME: drawYN
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawYN(std::string txt)
 {
 	if(txt == "0") graphics::drawText(width_to_x(canvas_width, 36.f), height_to_y(canvas_height, 30.f), 50.f, GAMEOVER, brush);
@@ -3056,7 +3664,15 @@ void Menu::drawYN(std::string txt)
 	graphics::resetPose();
 }
 
-
+/**
+* Drawing pong game
+*
+* NAME: drawPong
+*
+* @param none
+* @return none
+*
+**/
 void Menu::drawPong()
 {
 	if (lost)
@@ -3114,6 +3730,15 @@ void Menu::drawPong()
 
 }
 
+/**
+* general draw function
+*
+* NAME: draw
+*
+* @param none
+* @return none
+*
+**/
 void Menu::draw()
 {
 	if (current_status == STATUS_START)
@@ -3155,6 +3780,15 @@ void Menu::draw()
 
 }
 
+/**
+* general init
+*
+* NAME: init
+*
+* @param none
+* @return none
+*
+**/
 void Menu::init()
 {
 	cacheImages();
@@ -3162,26 +3796,56 @@ void Menu::init()
 	else if (!modern && music_on) graphics::playMusic(std::string(ASSET_PATH) + std::string(WELCOME_MUSICC), 1.0F, true, 4000);
 }
 
-float Menu::window2CanvasX(float x)
+/**
+* window size to canvas size x axis
+*
+* NAME: window2CanvasX
+*
+* @param x the x position on window
+* @param_type float
+* @return the position on canvas
+* @rtype float
+*
+**/
+int Menu::window2CanvasX(int x)
 {
-	return x * CANVAS_WIDTH / (float)window_width;
+	return x * CANVAS_WIDTH / window_width;
 }
 
-float Menu::window2CanvasY(float y)
+/**
+* window size to canvas size y axis
+*
+* NAME: window2CanvasX
+*
+* @param y the y position on window
+* @param_type float
+* @return the position on canvas
+* @rtype float
+*
+**/
+int Menu::window2CanvasY(int y)
 {
 	if (window_width >= WINDOW_WIDTH)
 	{
 		
-		return y * CANVAS_HEIGHT / (float)window_height;
+		return y * CANVAS_HEIGHT / window_height;
 		
 	}
 	else
 	{
-		return (y * CANVAS_HEIGHT / (float)window_height)*(window_width/window_height);
+		return (y * CANVAS_HEIGHT / window_height)*(window_width/window_height);
 	}
 }
 
-
+/**
+* Construcctor for menu
+*
+* NAME: Menu
+*
+* @return an instance of the menu class
+* @rtype Menu instance
+*
+**/
 Menu::Menu()
 {
 	std::ifstream settings;
@@ -3217,9 +3881,17 @@ Menu::Menu()
 	}
 
 	settings.close();
-
 }
 
+/**
+* Destructor for Menu
+*
+* NAME: ~Nenu
+*
+* @param none
+* @return none
+*
+**/
 Menu::~Menu()
 {
 	std::ofstream settings(std::string(ASSET_PATH) + "settings.txt");
@@ -3230,15 +3902,49 @@ Menu::~Menu()
 	settings << "PacManHighScore: " << highscore << std::endl;
 
 	settings.close();
-	
-	graphics::stopMusic();
+
 	if (pacman)
 	{
 		delete pacman;
 	}
-	graphics::destroyWindow();
+	for (int i = 0; i < 4; i++)
+	{
+		if (enemies[i])
+		{
+			delete enemies[i];
+		}
+	}
+	if (pong_player)
+	{
+		delete pong_player;
+	}
+	if (pong_ai)
+	{
+		delete pong_ai;
+	}
+	if (pong_ball)
+	{
+		delete pong_ball;
+	}
+	if (maze)
+	{
+		delete maze;
+	}
+	//graphics::destroyWindow();
 }
 
+/**
+* Setting window dimensions for resize
+*
+* NAME: setWindowDimensions
+*
+* @param w the width to resize
+* @param_type unsigned short int
+* @param h the height to resize
+* @param_type unsigned short int
+* @return none
+*
+**/
 void Menu::setWindowDimensions(unsigned short int w, unsigned short int h)
 {
 	window_height = h;
@@ -3260,6 +3966,17 @@ void Menu::setWindowDimensions(unsigned short int w, unsigned short int h)
 	}
 }
 
+/**
+* Checking collision between pong and ball
+*
+* NAME: checkCollisionPong
+*
+* @param dir direction of ball (left/right)
+* @param_type float
+* @return true if collision, false if not
+* @rtype bool
+*
+**/
 bool Menu::checkCollisionPong(float dir)
 {
 	if (!pong_player || !pong_ai || !pong_ball)
@@ -3315,10 +4032,21 @@ bool Menu::checkCollisionPong(float dir)
 	return false;
 }
 
+/**
+* Checking collision between pacman and phantom
+*
+* NAME: checkCollisionPacMan
+*
+* @param num the number of the phantom to check collid with pacman
+* @param_type int
+* @return true if collision, false if not
+* @rtype bool
+*
+**/
 bool Menu::checkCollisionPacMan(int num)
 {
-	float dx, dy, d;
-	Disk pacmanD, en1D, en2D, en3D, en4D;
+	float d;
+	Disk pacmanD, en1D;
 
 	if (!pacman || !enemies[num])
 	{
@@ -3357,6 +4085,19 @@ bool Menu::checkCollisionPacMan(int num)
 	return false;
 }
 
+/**
+* Checking collision between pacam/ghost and pacdot
+*
+* NAME: checkCollisionPacDot
+*
+* @param cur_dot current do
+* @param_type Pacdot pointer
+* @param is_pacman indicating if we are checking for pacman or ghost
+* @param_type bool
+* @return true if collision, false if not
+* @rtype bool
+*
+**/
 bool Menu::checkCollisionPacDot(Pacdot* cur_dot, bool is_pacman)
 {
 	float d;
@@ -3392,9 +4133,24 @@ bool Menu::checkCollisionPacDot(Pacdot* cur_dot, bool is_pacman)
 	return false;
 }
 
+/**
+* Checking collision between obstacle and pacman/ghost
+*
+* NAME: checkCollisionObstacle
+*
+* @param cur_obst the obstacle against which we are checking
+* @param_type Obstacle pointer
+* @param is_pacman indicating if we are checking pacman or ghost
+* @param_type bool
+* @param num the number of the ghost against which we are checking
+* @param_type int
+* @return true if collision, false if not
+* @rtype bool
+*
+**/
 bool Menu::checkCollisionObstacle(Obstacle* cur_obst, bool is_pacman, int num)
 {
-	float dx, dy, d, nX, nY, nearestX, nearestY, topR, bottomR, leftR, rightR, distLeft, distRight, distTop, distBottom;
+	float dx, dy, nX, nY, nearestX, nearestY, topR, bottomR, leftR, rightR, distLeft, distRight, distTop, distBottom;
 	Disk collidElement;
 	Rectangle obstacleR;
 
@@ -3545,6 +4301,15 @@ bool Menu::checkCollisionObstacle(Obstacle* cur_obst, bool is_pacman, int num)
 		return false;
 }
 
+/**
+* Resetting brush
+*
+* NAME: resetBrush
+*
+* @param none
+* @return none
+*
+**/
 void Menu::resetBrush()
 {
 	brush.texture = "";
@@ -3555,6 +4320,15 @@ void Menu::resetBrush()
 	brush.fill_color[2] = 1.f;
 }
 
+/**
+* chaching images
+*
+* NAME: cacheImages
+*
+* @param none
+* @return none
+*
+**/
 void Menu::cacheImages()
 {
 	brush.texture = std::string(ASSET_PATH) + std::string(BACKGROUND_MENUM);
@@ -3832,6 +4606,6 @@ void Menu::cacheImages()
 	brush.texture = std::string(ASSET_PATH) + std::string(MAZE2);
 	graphics::drawRect(0, 0, 1, 1, brush);
 	brush.texture = std::string(ASSET_PATH) + std::string(LETSPLAY);
-	graphics:; drawRect(0, 0, 1, 1, brush);
+	graphics::drawRect(0, 0, 1, 1, brush);
 	brush.texture = "";
 }

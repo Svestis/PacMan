@@ -1,13 +1,58 @@
+/**
+* FILE: maze.cpp
+* TITLE: maze class cpp file
+*
+* PURPOSE:
+*
+* This is the implementation file of the maze class
+*
+* FUNCTIONS:
+*
+* draw
+*   drawing the maze
+*
+* createPacDotC
+*	creating the pacdots on the maze on classic mode
+*
+* createPacDotM
+*	creating the pacdots on the maze on modern mode
+*
+* createObstacleM
+*	creating the obstacles on the maze on modern mode
+*
+* createObstacleC
+*	creating the obstacles on the maze on classic mode
+*
+* destroyDot
+*	destroying (eating) a signle dot
+*
+* INCLUDED FILES:
+*
+* maze.h
+* menu.h
+* util.h
+*
+* @file maze.cpp
+**/
+
 #include "maze.h"
 #include "menu.h"
 #include "util.h"
-#include <iostream>
 
+/**
+* Draws the maze
+*
+* NAME: draw
+*
+* @param none
+* @return none
+*
+**/
 void Maze::draw()
 {
 	brush.outline_opacity = 0.f;
 	brush.fill_opacity = 1.f;
-	if (modern)
+	if (modern) // modern case
 	{
 		if (start)
 		{
@@ -18,7 +63,7 @@ void Maze::draw()
 		brush.texture = std::string(ASSET_PATH) + std::string(MAZE1);
 		graphics::drawRect(width_to_x(canvas_width, 50.f), height_to_y(canvas_height, 45.f), maze_width, maze_height, brush);
 	}
-	else if (!modern)
+	else if (!modern) // not modern case
 	{
 		if (start)
 		{
@@ -30,16 +75,25 @@ void Maze::draw()
 		graphics::drawRect(width_to_x(canvas_width, 50.f), height_to_y(canvas_height, 55.f), maze_width, maze_height, brush);
 	}
 
-	for (auto i : pacdots)
+	for (auto i : pacdots) // drawing pacdots
 	{
 		i->draw();
 	}
 }
 
+/**
+* creates the pacdots on classic maze
+*
+* NAME: createPacDotC
+*
+* @param none
+* @return none
+*
+**/
 void Maze::createPacDotC()
 {
 
-	for (int inc : {103, 410}) // first/ last row
+	for (int inc : {103, 410})
 	{
 		for (int i = 330; i < 600; i += 30)
 		{
@@ -54,14 +108,14 @@ void Maze::createPacDotC()
 
 	for (int inc : {555, 170})
 	{
-		for (int i = 330; i < 900; i += 30) // last row
+		for (int i = 330; i < 900; i += 30)
 		{
 			pacdots.push_back(new Pacdot(menu, i, inc, false));
 		}
 	}
 
 
-	for (int inc : {285, 917}) // first/last column
+	for (int inc : {285, 917})
 	{
 		for (int i = 139; i < 229; i += 30)
 		{
@@ -83,7 +137,7 @@ void Maze::createPacDotC()
 	pacdots.push_back(new Pacdot(menu, 412, 135, false));
 	pacdots.push_back(new Pacdot(menu, 787, 135, false));
 	
-	for (int inc : {412, 787}) // second / one-before the end column
+	for (int inc : {412, 787})
 	{
 		for (int i = 197; i < 390; i += 30)
 		{
@@ -176,6 +230,15 @@ void Maze::createPacDotC()
 	pacdots.push_back(new Pacdot(menu, 917, 550, true));
 }
 
+/**
+* creates the obstacles on classic maze
+*
+* NAME: createObstaclesC
+*
+* @param none
+* @return none
+*
+**/
 void Maze::createObstacleC()
 {
 	obstacles.push_back(new Obstacle(menu, 601, 314, 176, 64));
@@ -238,6 +301,15 @@ void Maze::createObstacleC()
 	}
 }
 
+/**
+* creates the obstacles on modern maze
+*
+* NAME: createObstacleM
+*
+* @param none
+* @return none
+*
+**/
 void Maze::createObstacleM()
 {
 	obstacles.push_back(new Obstacle(menu, 601, 256, 170, 61));
@@ -337,9 +409,18 @@ void Maze::createObstacleM()
 	obstacles.push_back(new Obstacle(menu, 456, 162, 22, 60));
 }
 
+/**
+* creates the pacdots on modern maze
+*
+* NAME: createPacDotC
+*
+* @param none
+* @return none
+*
+**/
 void Maze::createPacDotM()
 {
-	for (int inc : {50, 115}) // first/ last row
+	for (int inc : {50, 115})
 	{
 		for (int i = 330; i < 600; i += 30)
 		{
@@ -353,17 +434,17 @@ void Maze::createPacDotM()
 	}
 
 
-	for (int i = 330; i < 900; i += 30) // last row
+	for (int i = 330; i < 900; i += 30)
 	{
 		pacdots.push_back(new Pacdot(menu, i, 490, false));
 	}
 
-	for (int i = 330; i < 900; i += 30) // 1 before last row
+	for (int i = 330; i < 900; i += 30)
 	{
 		pacdots.push_back(new Pacdot(menu, i, 350, false));
 	}
 
-	for (int inc : {295, 907}) // first/last column
+	for (int inc : {295, 907})
 	{
 		for (int i = 85; i < 155; i += 30)
 		{
@@ -395,7 +476,7 @@ void Maze::createPacDotM()
 	pacdots.push_back(new Pacdot(menu, 420, 85, false));
 	pacdots.push_back(new Pacdot(menu, 780, 85, false));
 
-	for (int inc : {420, 780}) // second / one-before the end column
+	for (int inc : {420, 780})
 	{
 		for (int i = 145; i < 330; i += 30)
 		{
@@ -408,7 +489,7 @@ void Maze::createPacDotM()
 		}
 	}
 
-	for (int i = 555; i < 670; i += 30) // first row
+	for (int i = 555; i < 670; i += 30)
 	{
 		pacdots.push_back(new Pacdot(menu, i, 85, false));
 	}
@@ -492,6 +573,15 @@ void Maze::createPacDotM()
 	pacdots.push_back(new Pacdot(menu, 907, 485, true));
 }
 
+/**
+* Destroys a signled dot (eating)
+*
+* NAME: destroyDot
+*
+* @param none
+* @return none
+*
+**/
 void Maze::destroyDot(Pacdot* element)
 {
 	auto it = find(pacdots.begin(), pacdots.end(), element);
@@ -506,22 +596,41 @@ void Maze::destroyDot(Pacdot* element)
 	(pacdots).erase(pacdots.begin() + index);
 }
 
-
+/**
+* Construcctor for the maze
+*
+* NAME: Maze
+*
+* @param ingame
+* @param_type Menu reference
+* @return an instance of the maze class initialized with a reference to the Menu running instance and a value indicating if the computer is playing
+* @rtype maze instance
+*
+**/
 Maze::Maze(const Menu& ingame)
 	:menu(ingame)
 {
 	modern = menu.getModern();
 }
 
+/**
+* Destructor for the maze
+*
+* NAME: ~Maze
+*
+* @param none
+* @return none
+*
+**/
 Maze::~Maze()
 {
-	for (auto element : pacdots)
+	for (auto element : pacdots) // destroying the pacdots
 	{
 		delete element;
 	}
 	pacdots.clear();
 
-	for (auto element : obstacles)
+	for (auto element : obstacles) // destroying the obstacles
 	{
 		delete element;
 	}

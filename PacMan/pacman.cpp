@@ -1,8 +1,104 @@
+/**
+* FILE: pacman.cpp
+* TITLE: pacman class cpp file
+*
+* PURPOSE:
+*
+* This is the class for the pacman.
+*
+*	FUNCTIONS:
+*
+*	 init
+*		general init function
+*
+*	 drawPacmanC
+*		drawing pacman in classig game mode
+*
+*	 drawPacmanM
+*		drawing pacman in modern game mode
+*
+*	 updateLeftC
+*		updating left movement classic
+*
+*	updateRightC
+*		updating right movement classic
+*
+*	 updateUpC
+*		updating up movmeent classic
+*
+*	 updateDownC
+*		updating down movement classic
+*
+*	 updateLeftM
+*		updating left movement modern
+*
+*	 updateRightM
+*		updating right movement modern
+*
+*	 updateUpM
+*		updating up movement modern
+*
+*	 updateDownM
+*		updating down movement modern
+*
+*	 updateC
+*		general update for classic
+*
+*	 updateM
+*		general update for modern
+*
+*	 drawInitM
+*		init for modern ame
+*
+*	 drawInitC
+*		init for classic game
+*
+*	 updateMulti
+*		updating for multiplayer
+*
+*	 update
+*		general update
+*
+*	 draw
+*		general draw
+*
+*	 getCollisionHull
+*		returning collision area
+*
+*	 getCollidable
+*		returning bool on if the pacman can die
+*
+*	 setCollidable
+*		changing the value to set if pacman can die or not
+*
+*	 setSpeed
+*		setting pacman speed
+*
+*	 getPosition
+*		getting pacman position
+*
+* INCLUDED FILES:
+*
+* pacman.h
+* menu.h
+* graphics.h
+*
+* @file pacman.cpp
+**/
+
 #include "pacman.h"
 #include "graphics.h"
 #include "menu.h"
 
-// updating images for left state
+/**
+* Update left move for classic pacman
+*
+* NAME: updateLeftC
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::updateLeftC()
 {
 	timer += graphics::getDeltaTime();
@@ -24,6 +120,15 @@ void PacMan::updateLeftC()
 	}
 }
 
+/**
+* Update right move for clasic pacman
+*
+* NAME: updateRightC
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::updateRightC()
 {	timer += graphics::getDeltaTime();
 	if (timer < 750/speed)
@@ -44,6 +149,15 @@ void PacMan::updateRightC()
 	}
 }
 
+/**
+* Update up move for classic pacman
+*
+* NAME: updateUpC
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::updateUpC()
 {
 	timer += graphics::getDeltaTime();
@@ -65,6 +179,15 @@ void PacMan::updateUpC()
 	}
 }
 
+/**
+* Update down move for classic pacman
+*
+* NAME: updateDownC
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::updateDownC()
 {
 	timer += graphics::getDeltaTime();
@@ -86,6 +209,15 @@ void PacMan::updateDownC()
 	}
 }
 
+/**
+* Update left move for modern pacman
+*
+* NAME: updateLeftM
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::updateLeftM()
 {
 	timer += graphics::getDeltaTime();
@@ -107,6 +239,15 @@ void PacMan::updateLeftM()
 	}
 }
 
+/**
+* Update right move for modern pacman
+*
+* NAME: updateRightM
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::updateRightM()
 {
 	timer += graphics::getDeltaTime();
@@ -128,6 +269,15 @@ void PacMan::updateRightM()
 	}
 }
 
+/**
+* Update up move for modern pacman
+*
+* NAME: updateUpM
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::updateUpM()
 {
 	timer += graphics::getDeltaTime();
@@ -149,6 +299,15 @@ void PacMan::updateUpM()
 	}
 }
 
+/**
+* Update down move for modern pacman
+*
+* NAME: updatedownM
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::updateDownM()
 {
 	timer += graphics::getDeltaTime();
@@ -170,6 +329,15 @@ void PacMan::updateDownM()
 	}
 }
 
+/**
+* Draw pacman initial state for classic game
+*
+* NAME: drawInitC
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::drawInitC()
 {
 	if (start) timer += graphics::getDeltaTime();
@@ -197,6 +365,15 @@ void PacMan::drawInitC()
 	brush.outline_opacity = 0.f;
 }
 
+/**
+* Draw pacman initial state for modern game
+*
+* NAME: drawInitM
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::drawInitM()
 {
 	if (start) timer += graphics::getDeltaTime();
@@ -224,6 +401,15 @@ void PacMan::drawInitM()
 	brush.outline_opacity = 0.f;
 }
 
+/**
+* Update pacman for modern game
+*
+* NAME: updateM
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::updateM()
 {
 	if ((graphics::getKeyState(graphics::SCANCODE_W) || graphics::getKeyState(graphics::SCANCODE_UP)) && movement[2])
@@ -256,6 +442,15 @@ void PacMan::updateM()
 	}	
 }
 
+/**
+* Update pacman for classic game
+*
+* NAME: updateC
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::updateC()
 {
 	if ((graphics::getKeyState(graphics::SCANCODE_W) || graphics::getKeyState(graphics::SCANCODE_UP)) && movement[2] && moveUp)
@@ -354,6 +549,15 @@ void PacMan::updateC()
 	if (pos.y > CANVAS_HEIGHT) pos.y = CANVAS_HEIGHT;
 }
 
+/**
+* Update pacman general function
+*
+* NAME: update
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::update()
 {
 	if (!menu.paused)
@@ -376,6 +580,15 @@ void PacMan::update()
 	}
 }
 
+/**
+* Update pacman for multi game
+*
+* NAME: updateMulti
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::updateMulti()
 {
 	if (graphics::getKeyState(graphics::SCANCODE_W) && movement[2])
@@ -408,6 +621,15 @@ void PacMan::updateMulti()
 	}
 }
 
+/**
+* draw pacman for classic game
+*
+* NAME: drawPacmanC
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::drawPacmanC()
 {
 	if (rot == CENTER) 
@@ -448,6 +670,15 @@ void PacMan::drawPacmanC()
 	}	
 }
 
+/**
+* draw pacman for modern game
+*
+* NAME: drawPacmanM
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::drawPacmanM()
 {
 	if (rot == LEFT1)
@@ -500,6 +731,16 @@ void PacMan::drawPacmanM()
 	}
 }
 
+/**
+* Returns the collision space of pacman
+*
+* NAME: getCollisionHull
+*
+* @param none
+* @return a disk shape indicating the rectangle area of collision of pacman
+* @rtype Disk
+*
+**/
 Disk PacMan::getCollisionHull() const
 {
 	Disk disk;
@@ -509,6 +750,15 @@ Disk PacMan::getCollisionHull() const
 	return disk;
 }
 
+/**
+* General draw function
+*
+* NAME: draw
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::draw()
 {
 	if (start && !modern)
@@ -531,6 +781,15 @@ void PacMan::draw()
 	graphics::drawRect(pos.x, pos.y, 25, 25, brush);
 }
 
+/**
+* General init function
+*
+* NAME: init
+*
+* @param none
+* @return none
+*
+**/
 void PacMan::init()
 {
 	if (!modern)
@@ -539,6 +798,17 @@ void PacMan::init()
 	}
 }
 
+/**
+* Construcctor for pacman
+*
+* NAME: PacMan
+*
+* @param ingame
+* @param_type Menu reference
+* @return an instance of the pacman class initialized with a reference to the Menu running instance
+* @rtype Pacman instance
+*
+**/
 PacMan::PacMan(const Menu& ingame)
 	:GameElement(ingame)
 {
@@ -547,6 +817,15 @@ PacMan::PacMan(const Menu& ingame)
 	init();
 }
 
+/**
+* Destructor for pacman
+*
+* NAME: ~PacMan
+*
+* @param none
+* @return none
+*
+**/
 PacMan::~PacMan()
 {
 }

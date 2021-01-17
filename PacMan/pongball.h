@@ -7,7 +7,7 @@
 * This is the class for the ball of the pong side game
 *
 * CLASS:
-* PongBall
+* PongBall 
 *
 *	FUNCTIONS:
 *
@@ -57,8 +57,7 @@
 
 class PongBall : public CollidableD
 {
-	Position pos{ CANVAS_WIDTH / 2, 10.f + (std::rand() % (CANVAS_HEIGHT -10 + 1)) }; // ball position
-	Disk disk; // disk area for collision
+	Position pos{ CANVAS_WIDTH / 2, 10.f + (std::rand() % (CANVAS_HEIGHT -10 + 1)) }; // ball positioì
 	bool active = true; // boolean indicating if the ball is active
 	float dir = 1.f, // direction (left-right)
 		angleY = 1.f, // angle on y axis

@@ -1,6 +1,6 @@
 /**
 * FILE: pacdot.h
-* TITLE: pacdot
+* TITLE: pacdot 
 *
 * PURPOSE:
 *
@@ -40,7 +40,6 @@
 class Pacdot: public CollidableD
 {
 	graphics::Brush brush; // the brush used for drawing
-	Disk disk; // disk indicating the collision area
 	Position pos; // the position (x,y) of the pacdot
 	bool modern, // indicating if we are playing on modern mode or not
 		 big; // indicating if this pacdot is big (superdot)

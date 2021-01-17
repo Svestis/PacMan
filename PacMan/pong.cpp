@@ -17,14 +17,16 @@
 * init
 *   defining the position in x axis according to the player type (human or pc)
 *
+* getCollisionHull
+*	returning the collision area for the rackets
+*
 * INCLUDED FILES:
 *
-* 
 * pong.h
 * menu.h
 * utli.h
 *
-* @file pong.h
+* @file pong.cpp
 **/
 
 #include "pong.h"
@@ -46,18 +48,18 @@ void Pong::update()
 	{
 		if (menu.pong_ball->getDir() < 0) // If the ball is coming towards the ai
 		{
-			if (menu.pong_ball->getY() > pos.y + error) // TODO: PRIO change this to pointer/reference Checking if the ball is lower (bigger Y) than the current position + error
+			if (menu.pong_ball->getY() > pos.y + error)
 			{
 				pos.y += menu.getPongSpeed() * graphics::getDeltaTime() / 30.f; // Move the racket down
 			}
-			else if (menu.pong_ball->getY() < pos.y + error) // TODO: PRIO change this to pointer/reference Checking if the ball is higher (lower Y) than the current position + error
+			else if (menu.pong_ball->getY() < pos.y + error)
 			{
 				pos.y -= menu.getPongSpeed() * graphics::getDeltaTime() / 30.f; // Move the racket up
 			}
 		}
 		else // If the ball is moving away
 		{
-			error = std::rand() %(int)( ((400 / menu.getPongLevel() * 0.95) / 4 + 1) + (400 / menu.getPongLevel() * 0.95) / 4); // TODO: PRIO chnage this to pointer/reference Recalculating the error according to the racket size
+			error = std::rand() %(int)( ((400 / menu.getPongLevel() * 0.95) / 4 + 1) + (400 / menu.getPongLevel() * 0.95) / 4);
 		}
 
 	}
@@ -65,11 +67,11 @@ void Pong::update()
 	{
 		if (graphics::getKeyState(graphics::SCANCODE_W) || graphics::getKeyState(graphics::SCANCODE_UP)) // Moving up
 		{
-			pos.y -= menu.getPongSpeed() * graphics::getDeltaTime() / 30.f; // TODO: PRIO change this to pointer reference
+			pos.y -= menu.getPongSpeed() * graphics::getDeltaTime() / 30.f;
 		}
 		else if (graphics::getKeyState(graphics::SCANCODE_S) || graphics::getKeyState(graphics::SCANCODE_DOWN)) // Moving down
 		{
-			pos.y += menu.getPongSpeed() * graphics::getDeltaTime() / 30.f;; // TODO: PRIO change this to pointer/reference
+			pos.y += menu.getPongSpeed() * graphics::getDeltaTime() / 30.f;
 		}
 	}
 	if (pos.y < (400 / menu.getPongLevel() * 0.95) / 2 - 10) pos.y = (400 / menu.getPongLevel()* 0.95) / 2 - 10; //Preventing going off grid - down
@@ -91,13 +93,13 @@ void Pong::draw()
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = std::string(ASSET_PATH) + std::string(PONG_AI);
-		graphics::drawRect(pos.x, pos.y, 30, 400/ menu.getPongLevel() *0.95, brush); // TODO: PRIO change this to pointer/reference
+		graphics::drawRect(pos.x, pos.y, 30, 400/ menu.getPongLevel() *0.95, brush);
 	}
 	else // Printing the player racket on screen
 	{
 		brush.outline_opacity = 0.f;
 		brush.texture = std::string(ASSET_PATH) + std::string(PONG_P);
-		graphics::drawRect(pos.x, pos.y, 30, 400/menu.getPongLevel()*0.95, brush); // TODO: PRIO change this to pointer/reference
+		graphics::drawRect(pos.x, pos.y, 30, 400/menu.getPongLevel()*0.95, brush);
 	}
 }
 
@@ -117,13 +119,13 @@ Rectangle Pong::getCollisionHull() const
 	rect.cx = pos.x; // Defining x
 	rect.cy = pos.y; // Defining y
 	rect.w = 1; // Defining width of the collision rectangle
-	rect.h = (float)(400.f / (float)menu.getPongLevel() * 0.95f)-20.f; // TODO: PRIO change this to pointer/reference Defining h of the collision rectangle according to the racket height
+	rect.h = (float)(400.f / (float)menu.getPongLevel() * 0.95f)-20.f;
 	return rect;
 }
 
 /**
 * Construcctor for the pong racket
-*
+* 
 * NAME: Pong
 *
 * @param ingame

@@ -1,6 +1,110 @@
-#include "phantom.h"
-#include "menu.h"
+/**
+* FILE: phantom.cpp
+* TITLE: phantom class cpp file
+*
+* PURPOSE:
+*
+* This is the class for the phantoms (enemies of pacman)
+*
+*	FUNCTIONS:
+*	
+*	init
+*		init function
+*
+*	drawPhantomC
+*		drawing classic phantom
+*
+*	drawPhantomM
+*		drawing modern phantom
+*
+*	updateLeftC
+*		updating left classic
+*
+*	updateRightC
+*		updating right classic
+*
+*	updateUpC
+*		updating up classic
+*
+*	updateDownC
+*		updating down clasic
+*
+*	updateLeftM
+*		updating left modern
+*
+*	updateRightM
+*		updating right modern
+*
+*	updateUpM
+*		updating up modern
+*
+*	updateDownM
+*		updating down modern
+*
+*	updateC
+*		updating classic
+*
+*	updateM
+*		updating modern
+*
+*	updateChaseM
+*		updating modern chawse mode
+*
+*	updateChaseC
+*		updating classic chase mode
+*
+*	updateMulti
+*		updating multi
+*
+*	chase
+*		chasing function
+*
+*	update
+*		general update
+*
+*	draw
+*		general draw
+*
+*	getCollisionHull
+*		returning collision points
+*
+*	getCollidable
+*		returning if phantom can die or not
+*
+*	setCollidable
+*		changing if the phantom can die or not
+*
+*	setStart
+*		setting start state of phantom
+*
+*	getStart
+*		returning if phantom has started
+*
+*	setSpeed
+*		setting phantom speed
+*
+* INCLUDED FILES:
+*
+* pacman.h
+* menu.h
+* graphics.h
+*
+* @file phantom.cpp
+**/
 
+#include "pacman.h"
+#include "menu.h"
+#include "graphics.h"
+
+/**
+* Chase mode functionan
+*
+* NAME: chase
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::chase()
 {
 	float distXLeft = 0.f;
@@ -90,6 +194,16 @@ void Phantom::chase()
 		}
 	}
 }
+
+/**
+* Update chase mode for modern game
+*
+* NAME: updateChaseM
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::updateChaseM()
 {
 	if (phantom == BLINKY)
@@ -148,6 +262,15 @@ void Phantom::updateChaseM()
 	}
 }
 
+/**
+* Update chase mode for classic game
+*
+* NAME: updateChaseC
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::updateChaseC()
 {
 	if (phantom == BLINKY)
@@ -206,6 +329,15 @@ void Phantom::updateChaseC()
 	}
 }
 
+/**
+* Update multiplayer game
+*
+* NAME: updateMulti
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::updateMulti()
 {
 	if (graphics::getKeyState(graphics::SCANCODE_UP) && movement[2])
@@ -238,6 +370,15 @@ void Phantom::updateMulti()
 	}
 }
 
+/**
+* Update classic game before exit from ghost house
+*
+* NAME: updateC
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::updateC()
 {
 	if (phantom == PINKY)
@@ -292,6 +433,15 @@ void Phantom::updateC()
 	}
 }
 
+/**
+* Update modern mode for modern game (before exit from ghost house)
+*
+* NAME: updateChaseM
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::updateM()
 {
 	if (phantom == PINKY)
@@ -346,6 +496,15 @@ void Phantom::updateM()
 	}
 }
 
+/**
+* Update left move for modern ghost
+*
+* NAME: updateLeftM
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::updateLeftM()
 {
 	timer += graphics::getDeltaTime();
@@ -363,6 +522,15 @@ void Phantom::updateLeftM()
 	}
 }
 
+/**
+* Update right move for modern ghost
+*
+* NAME: updateRightM
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::updateRightM()
 {
 	timer += graphics::getDeltaTime();
@@ -380,6 +548,15 @@ void Phantom::updateRightM()
 	}
 }
 
+/**
+* Update up move for modern ghost
+*
+* NAME: updateUpM
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::updateUpM()
 {
 	timer += graphics::getDeltaTime();
@@ -397,6 +574,15 @@ void Phantom::updateUpM()
 	}
 }
 
+/**
+* Update down move for modern ghost
+*
+* NAME: updateDownM
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::updateDownM()
 {
 	timer += graphics::getDeltaTime();
@@ -414,6 +600,15 @@ void Phantom::updateDownM()
 	}
 }
 
+/**
+* Update left move for classic pacman
+*
+* NAME: updateLeftC
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::updateLeftC()
 {
 	timer += graphics::getDeltaTime();
@@ -431,6 +626,15 @@ void Phantom::updateLeftC()
 	}
 }
 
+/**
+* Update right move for classic pacman
+*
+* NAME: updateRightC
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::updateRightC()
 {
 	timer += graphics::getDeltaTime();
@@ -448,6 +652,15 @@ void Phantom::updateRightC()
 	}
 }
 
+/**
+* Update up move for classic pacman
+*
+* NAME: updateUpC
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::updateUpC()
 {
 	timer += graphics::getDeltaTime();
@@ -465,6 +678,15 @@ void Phantom::updateUpC()
 	}
 }
 
+/**
+* Update down move for classic pacman
+*
+* NAME: updateDownC
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::updateDownC()
 {
 	timer += graphics::getDeltaTime();
@@ -482,6 +704,15 @@ void Phantom::updateDownC()
 	}
 }
 
+/**
+* General update function
+*
+* NAME: update
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::update()
 {
 	if (!menu.paused)
@@ -515,6 +746,15 @@ void Phantom::update()
 	}
 }
 
+/**
+* drawing classic phantom
+*
+* NAME: drawPhantomC
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::drawPhantomC()
 {
 	if (!collid)
@@ -671,6 +911,15 @@ void Phantom::drawPhantomC()
 	}
 }
 
+/**
+* drawing modern phantom
+*
+* NAME: drawPhantomC
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::drawPhantomM()
 {
 	if (!collid)
@@ -827,6 +1076,16 @@ void Phantom::drawPhantomM()
 	}
 }
 
+/**
+* Returns the collision space of ghost
+*
+* NAME: getCollisionHull
+*
+* @param none
+* @return a disk shape indicating the rectangle area of collision of ghost
+* @rtype Disk
+*
+**/
 Disk Phantom::getCollisionHull() const
 {
 	Disk disk;
@@ -837,6 +1096,15 @@ Disk Phantom::getCollisionHull() const
 	return disk;
 }
 
+/**
+* General draw function
+*
+* NAME: draw
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::draw()
 {
 	brush.outline_opacity = 0.f;
@@ -852,6 +1120,15 @@ void Phantom::draw()
 	graphics::drawRect(pos.x, pos.y, 25, 25, brush);
 }
 
+/**
+* General init function
+*
+* NAME: init
+*
+* @param none
+* @return none
+*
+**/
 void Phantom::init()
 {
 	modern = menu.getModern();
@@ -928,12 +1205,36 @@ void Phantom::init()
 	}
 }
 
+/**
+* Construcctor for pacman
+*
+* NAME: Phantom
+*
+* @param ingame
+* @param_type Menu reference
+* @return an instance of the phantom class initialized with a reference to the Menu running instance
+* @rtype Phantom instance
+*
+**/
 Phantom::Phantom(const Menu& ingame)
 	: GameElement(ingame)
 {
 	init();
 }
 
+/**
+* Construcctor for pacman
+*
+* NAME: Phantom
+*
+* @param ingame
+* @param_type Menu reference
+* @param charac the character of the ghost (pinky, inky, blinky, clyde)
+* @param_type character
+* @return an instance of the phantom class initialized with a reference to the Menu running instance
+* @rtype Phantom instance
+*
+**/
 Phantom::Phantom(const Menu& ingame, character charac)
 	: GameElement(ingame)
 {
@@ -941,6 +1242,15 @@ Phantom::Phantom(const Menu& ingame, character charac)
 	init();
 }
 
+/**
+* Destructor for phantom
+*
+* NAME: ~Phantom
+*
+* @param none
+* @return none
+*
+**/
 Phantom::~Phantom()
 {
 }

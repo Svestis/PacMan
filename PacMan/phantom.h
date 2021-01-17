@@ -2,7 +2,7 @@
 * FILE: phantom.h
 * TITLE: phantom
 *
-* PURPOSE:
+* PURPOSE: 
 *
 * This is the class for the phantoms of the pacman.
 *
@@ -147,7 +147,7 @@ public:
 	void setCollidable(bool c) { collid = c; }; // changing if phantom can die or not
 	void setStart(bool s) { start = s; }; // setting start
 	bool getStart() { return start; }; // getting start
-	void setSpeed(double s) { speed = s; }; // setting phantom speed
+	void setSpeed(float s) { speed = s; }; // setting phantom speed
 	Phantom(const class Menu& ingame); // constructor
 	Phantom(const class Menu& ingame, character charac); // constructor
 	~Phantom(); // destructor

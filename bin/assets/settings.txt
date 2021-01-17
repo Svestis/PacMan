@@ -1,0 +1,4 @@
+MusicOn: 1
+SoundOn: 1
+PongHighScore: 0
+PacManHighScore: 0

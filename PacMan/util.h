@@ -1,7 +1,7 @@
 /**
 * FILE: util.h
 * TITLE: util
-*
+* 
 * PURPOSE:
 *
 * Including all utility functions

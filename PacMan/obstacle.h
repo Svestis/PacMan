@@ -1,6 +1,6 @@
 /**
 * FILE: obstacle.h
-* TITLE: obstacle
+* TITLE: obstacle 
 *
 * PURPOSE:
 *
@@ -33,12 +33,11 @@
 
 class Obstacle : public CollidableR
 {
-	Rectangle rect; // rectangle for collision
 	Position pos, w_h; // position (x,y) of the obstacle and width/height
 protected:
 	const class Menu& menu; // the running instance of the menu
 public:
 	Rectangle getCollisionHull() const; // returning the collision areas of the obstacle
-	Obstacle(const class Menu& ingame, int x, int y, int w, int h); // constructor
+	Obstacle(const class Menu& ingame, float x, float y, float w, float h); // constructor
 	~Obstacle(); // destructor
 };
