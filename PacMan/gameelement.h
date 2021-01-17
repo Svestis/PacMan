@@ -105,7 +105,7 @@ class GameElement
 protected:
 	const class Menu& menu; // the running instance of the menu
 public:
-	GameElement(const class Menu& ingame); // constructor
+	GameElement(const class Menu& ingame); // constructor 
 	virtual void update() = 0; // update virtual function
 	virtual void draw() = 0; // draw virtual function
 	virtual void init() = 0; // init virtual function

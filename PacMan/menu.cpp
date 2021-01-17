@@ -150,9 +150,6 @@ void Menu::updateB(status s)
 		current_status = s;
 		obst_counter = 0;
 		obst_counter_2 = 0;
-		obst_counter_3 = 0;
-		obst_counter_4 = 0;
-		obst_counter_5 = 0;
 		pacman_level = 1;
 		pacman_lives = 4;
 		pacman_speed = 5.f;
@@ -3160,11 +3157,9 @@ void Menu::draw()
 
 void Menu::init()
 {
-	
 	cacheImages();
 	if (modern && music_on) graphics::playMusic(std::string(ASSET_PATH) + std::string(WELCOME_MUSICM), 1.0f, true, 4000);
 	else if (!modern && music_on) graphics::playMusic(std::string(ASSET_PATH) + std::string(WELCOME_MUSICC), 1.0F, true, 4000);
-	
 }
 
 float Menu::window2CanvasX(float x)

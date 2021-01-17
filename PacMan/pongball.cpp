@@ -52,7 +52,6 @@ void PongBall::setAngle(Rectangle& rect)
 PongBall::PongBall(const Menu& ingame)
 	:menu(ingame)
 {
-	init();
 }
 
 PongBall::~PongBall()

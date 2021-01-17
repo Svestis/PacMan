@@ -69,7 +69,7 @@ class Maze
 	void createPacDotM(); // creating Pacdots on Modern mode
 	void createPacDotC(); // creating Pacdots on Classic mode
 	void createObstacleM(); // creating Obstacles on modern mode
-	void createObstacleC(); // creating Obstacles on Classic Mode
+	void createObstacleC(); // creating Obstacles on Classic Mode 
 protected:
 	const class Menu& menu; // variable holding the instance of the running menu
 public:

@@ -16,7 +16,7 @@
 *
 * INCLUDED FILES:
 *
-* graphics.h
+* graphics.h 
 * config.h
 * maze.h
 * gameelement.h

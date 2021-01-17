@@ -4,7 +4,7 @@
 *
 * PURPOSE:
 *
-* This is the class for the pacdots of the pacman.
+* This is the class for the pacdots of the pacman. 
 *
 * CLASS:
 * Pacdot

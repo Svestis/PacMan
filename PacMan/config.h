@@ -1,5 +1,3 @@
-#pragma once
-
 /**
 * FILE: config.h
 * TITLE: configureation file
@@ -18,6 +16,8 @@
 *
 * @file config.h
 **/
+
+#pragma once
 
 // PATHS
 #define ASSET_PATH "assets\\"

@@ -258,25 +258,25 @@ void PacMan::updateM()
 
 void PacMan::updateC()
 {
-	if ((graphics::getKeyState(graphics::SCANCODE_W) || graphics::getKeyState(graphics::SCANCODE_UP)) && movement[2])
+	if ((graphics::getKeyState(graphics::SCANCODE_W) || graphics::getKeyState(graphics::SCANCODE_UP)) && movement[2] && moveUp)
 	{
 		pos.y -= speed * graphics::getDeltaTime() / 50.f ;
 		updateUpC();
 		dir = UP;
 	}
-	else if ((graphics::getKeyState(graphics::SCANCODE_S) || graphics::getKeyState(graphics::SCANCODE_DOWN)) && movement[3])
+	else if ((graphics::getKeyState(graphics::SCANCODE_S) || graphics::getKeyState(graphics::SCANCODE_DOWN)) && movement[3] && moveDown)
 	{
 		pos.y += speed * graphics::getDeltaTime() / 50.f;
 		updateDownC();
 		dir = DOWN;
 	}
-	else if ((graphics::getKeyState(graphics::SCANCODE_A) || graphics::getKeyState(graphics::SCANCODE_LEFT)) && movement[0])
+	else if ((graphics::getKeyState(graphics::SCANCODE_A) || graphics::getKeyState(graphics::SCANCODE_LEFT)) && movement[0] && moveLeft)
 	{
 		pos.x -= speed * graphics::getDeltaTime() / 50.f;
 		updateLeftC();
 		dir = LEFT;
 	}
-	else if ((graphics::getKeyState(graphics::SCANCODE_D) || graphics::getKeyState(graphics::SCANCODE_RIGHT)) && movement[1])
+	else if ((graphics::getKeyState(graphics::SCANCODE_D) || graphics::getKeyState(graphics::SCANCODE_RIGHT)) && movement[1] && moveRight)
 	{
 		pos.x += speed * graphics::getDeltaTime() / 50.f;
 		updateRightC();

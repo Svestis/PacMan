@@ -27,7 +27,7 @@
 * config.h
 * menu.h
 *
-* @file main.cpp
+* @file main.cpp 
 **/
 
 #include "graphics.h"

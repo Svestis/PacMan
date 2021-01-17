@@ -1,5 +1,3 @@
-#pragma once
-
 /**
 * FILE: pong.h
 * TITLE: pong class header file
@@ -26,6 +24,8 @@
 *
 * @file pong.h
 **/
+
+#pragma once
 
 #include <random>
 #include "config.h"
