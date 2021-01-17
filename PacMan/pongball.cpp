@@ -1,6 +1,5 @@
 #include "pongball.h"
 #include "config.h"
-#include <iostream>
 #include "menu.h"
 
 void PongBall::update()
@@ -24,10 +23,6 @@ void PongBall::draw()
 	brush.texture = std::string(ASSET_PATH) + std::string(PONG_BALL);
 	graphics::drawRect(pos.x, pos.y, 35, 35, brush);
 	disk = getCollisionHull();
-}
-
-void PongBall::init()
-{
 }
 
 Disk PongBall::getCollisionHull() const

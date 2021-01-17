@@ -1,3 +1,55 @@
+// --------------------------------------------------------------------- not finished ---------------------------------------------------------------------
+/**
+* FILE: menu.h
+* TITLE: menu
+*
+* PURPOSE:
+*
+* This is the class for the menu, handling all the gameplay
+*
+* CLASS:
+* Maze
+*
+*	FUNCTIONS:
+*
+*	createPacDotM
+*		creating the Pacdots on the modern maze
+*
+*	createPacDotC
+*		creating the Pacdots on the classic maze
+*
+*	createObstacleM
+*		modeling the obstacles on the modern maze
+*
+*	createObstacleC
+*		modeling the obstacles on the classic maze
+*
+*	draw
+*		drawing the maze
+*
+*	destroyDot
+*		destroying single dots (eating)
+*
+*	getModern
+*		returning the value of the modern variable, indicating if we are playing modern or classic
+*
+*	getHeight
+*		returning the height of the maze
+*
+*	getWidth
+*		returning the width of the maze
+*
+* INCLUDED FILES:
+*
+* graphics.h
+* config.h
+* pacdot.h
+* obstacle.h
+* vector
+*
+* @file maze.h
+**/
+
 #pragma once
 
 #include "graphics.h"

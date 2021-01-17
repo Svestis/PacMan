@@ -2,10 +2,6 @@
 #include "config.h"
 #include "menu.h"
 
-void Pacdot::update()
-{
-}
-
 void Pacdot::draw()
 {
 	brush.outline_opacity = 0.f;
@@ -33,10 +29,6 @@ void Pacdot::draw()
 			graphics::drawRect(pos.x, pos.y, 25, 25, brush);
 		}
 	}
-}
-
-void Pacdot::init()
-{
 }
 
 Pacdot::Pacdot(const Menu& ingame, int x, int y, bool is_big)

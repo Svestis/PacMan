@@ -610,11 +610,6 @@ void Menu::updateClassicGame()
 		}
 	}
 
-	if (maze)
-	{
-		maze->update();
-	}
-
 	for (int i = 0; i < 4; i++)
 	{
 		if (enemies[i]) enemies[i]->update();
@@ -1177,11 +1172,6 @@ void Menu::updateGameMultiPlayer()
 	{
 		maze = new Maze(*this);
 		time_counter_2 = 0;
-	}
-
-	if (maze)
-	{
-		maze->update();
 	}
 
 	if (!enemies[0] && !replay)

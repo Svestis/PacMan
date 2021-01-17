@@ -492,48 +492,6 @@ void Maze::createPacDotM()
 	pacdots.push_back(new Pacdot(menu, 907, 485, true));
 }
 
-void Maze::gridM()
-{
-	brush.texture = "";
-	brush.outline_opacity = 0.f;
-	brush.fill_opacity = .2f;
-	for (int i = 0; i < 40; i++)
-	{
-		graphics::drawRect(i * maze_width / 40 + 260, canvas_height / 2 - 30, 1, canvas_height / 2 + 200, brush);
-	}
-
-	for (int i = 0; i < 40; i++)
-	{
-		graphics::drawRect(canvas_width / 2, i * maze_height / 40 + 26, canvas_width / 2 + 150, 1, brush);
-	}
-
-}
-
-void Maze::gridC()
-{
-	brush.texture = "";
-	brush.outline_opacity = 0.f;
-	brush.fill_opacity = .2f;
-	for (int i = 0; i < (int)(maze_width / 17); i++)
-	{
-		graphics::drawRect(i * maze_width / 40 + 250, canvas_height / 2 + 30, 1, canvas_height / 2 + 205, brush);
-	}
-
-	for (int i = 0; i < (int)(maze_height / 12); i++)
-	{
-		graphics::drawRect(canvas_width / 2, i * maze_height / 40 + 79, canvas_width / 2 + 150, 1, brush);
-	}
-}
-
-void Maze::update()
-{
-
-}
-
-void Maze::init()
-{
-}
-
 void Maze::destroyDot(Pacdot* element)
 {
 	auto it = find(pacdots.begin(), pacdots.end(), element);
