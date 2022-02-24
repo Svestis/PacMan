@@ -8,3 +8,4 @@ A video presenting the best projects can be found [here](https://www.youtube.com
 
 Built using the [SGG library](https://github.com/cgaueb/sgg)
 
+![Start screen](/bin/assets/pacman.png "Start screen")
